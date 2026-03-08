@@ -1,0 +1,1132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liver Cirrhosis - About Us</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="icon" href="{% static 'images/AboutUsIcon.png' %}" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+      
+      :root {
+        --primary: #667eea;
+        --secondary: #764ba2;
+        --accent: #00d2ff;
+        --glass-bg: rgba(255, 255, 255, 0.9);
+        --glass-border: rgba(255, 255, 255, 0.4);
+        --nav-glass: rgba(255, 255, 255, 0.15);
+        --text-dark: #1e293b;
+        --text-light: #64748b;
+        --bg-color: #f4f7fb;
+        --card-bg: #ffffff;
+      }
+
+      body.dark-mode {
+        --primary: #8aa1f8;
+        --secondary: #9068be;
+        --accent: #4ddbff;
+        --glass-bg: rgba(15, 15, 15, 0.85); /* Darker glass */
+        --glass-border: rgba(255, 255, 255, 0.08); /* Fainter border */
+        --nav-glass: rgba(10, 10, 10, 0.8);
+        --text-dark: #ffffff; /* Brighter white for contrast */
+        --text-light: #a0a0a0;
+        --bg-color: #0b0b0b; /* Very dark black/charcoal */
+        --card-bg: #141414; /* Slightly lighter medium black */
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        font-family: 'Outfit', sans-serif;
+        background: var(--bg-color);
+        color: var(--text-dark);
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+        width: 100vw;
+        max-width: 100%;
+        transition: background 0.4s ease, color 0.4s ease;
+        position: relative;
+      }
+
+      body.dark-mode::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      /* Ultra-Premium Navbar */
+      nav {
+        background: transparent;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        transition: padding 0.5s ease, background 0.5s ease, width 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.6s ease, top 0.6s ease, box-shadow 0.6s ease;
+      }
+
+      nav.nav-scrolled {
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        padding: 10px 30px;
+        width: 70%;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode nav.nav-scrolled {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        background: rgb(89 89 89 / 85%);
+      }
+
+      .navbar-left {
+        margin-left: 40px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .company-logo {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        background: transparent;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-5px) rotate(3deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+      }
+
+      .company-name {
+        font-weight: 800;
+        font-size: 1.2rem;
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 1px;
+      }
+
+      .navbar-right {
+        margin-right: 0px;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text-dark);
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: rgb(60 150 189 / 5%);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode .nav-link {
+        background: rgb(60 150 189 / 5%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: #fff;
+      }
+
+      body.dark-mode .nav-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-color: transparent;
+      }
+
+      .nav-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        color: #fff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        top: -98%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(45deg) translateY(-100%);
+        transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+      }
+
+      .nav-link:hover::after {
+        transform: rotate(45deg) translateY(100%);
+      }
+
+      .nav-link i {
+        position: relative;
+        z-index: 2;
+        margin-right: 8px;
+      }
+
+      .nav-link span {
+        position: relative;
+        z-index: 2;
+      }
+      
+      .theme-btn {
+        background: none;
+        border: none;
+        color: var(--text-dark);
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .theme-btn:hover {
+        background: rgba(0, 0, 0, 0.05);
+        transform: rotate(15deg);
+      }
+
+      body.dark-mode .theme-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 120px 20px 60px;
+        text-align: center;
+      }
+
+      .container h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 3rem;
+        color: var(--text-dark);
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .card-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        justify-items: center;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .info-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 60px;
+        text-align: left;
+      }
+      
+      .info-block {
+        background: var(--card-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        transition: all 0.4s ease;
+      }
+      
+      body.dark-mode .info-block {
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      }
+      
+      .info-block:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.15);
+        border-color: var(--primary);
+      }
+
+      .info-block h3 {
+        color: var(--primary);
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .info-block h3 i {
+        font-size: 1.8rem;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.2));
+      }
+      
+      .info-block p {
+        color: var(--text-light);
+        line-height: 1.7;
+        font-size: 1.05rem;
+      }
+
+      /* Prediction Journey Section */
+      .journey-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 30px;
+        margin: 60px 0;
+        position: relative;
+        padding: 0 40px;
+      }
+
+      .journey-step {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .step-icon {
+        width: 80px;
+        height: 80px;
+        background: var(--card-bg);
+        border: 2px solid transparent;
+        background-image: linear-gradient(var(--card-bg), var(--card-bg)), linear-gradient(135deg, var(--primary), var(--accent));
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        position: relative;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.1);
+        transition: all 0.4s ease;
+      }
+
+      .step-icon i {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .journey-step:hover .step-icon {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        transform: scale(1.1);
+        box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
+      }
+
+      .journey-step:hover .step-icon i {
+        -webkit-text-fill-color: white;
+        background: none;
+      }
+
+      .step-connector {
+    display: none;
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    width: 3px;
+    height: 129px;
+    background: rgba(102, 126, 234, 0.1);
+    z-index: -1000;
+    transform: translateX(-50%);
+    overflow: hidden;
+      }
+
+      .step-connector::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--line-progress, 0%);
+        background: linear-gradient(to top, var(--accent), var(--primary));
+        transition: height 0.4s ease;
+      }
+
+      .journey-step h4 { margin: 10px 0 5px; color: var(--text-dark); position: relative; z-index: 2; }
+      .journey-step p { font-size: 0.85rem; color: var(--text-light); line-height: 1.5; position: relative; z-index: 2; }
+
+      /* Stats Section */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin: 60px 0;
+      }
+
+      .stat-card {
+        background: var(--card-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 40px 20px;
+        text-align: center;
+        transition: all 0.4s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent);
+        box-shadow: 0 20px 40px rgba(0, 210, 255, 0.1);
+      }
+
+      .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        display: block;
+        margin-bottom: 10px;
+        background: linear-gradient(to right, var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .stat-label {
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 1.1rem;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .stat-desc {
+        font-size: 0.9rem;
+        color: var(--text-light);
+      }
+
+      @media (max-width: 650px) {
+        .journey-container { flex-direction: column; gap: 0; align-items: center; padding: 0 20px; }
+        .journey-step { width: 100%; padding-bottom: 120px; position: relative; }
+        .journey-step h4 { position: relative; top: -18px; z-index: 2; margin-top: 5px; }
+
+        .journey-step p {
+          position: absolute;
+          opacity: 0;
+          pointer-events: none;
+          background: white;
+          color: black;
+          padding: 15px;
+          width: 240px;
+          bottom: 230px;
+          left: 50%;
+          transform: translate(-50%, -10px);
+          font-size: 0.85rem;
+          z-index: 100;
+          border-radius: 15px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          line-height: 1.6;
+          text-align: center;
+        }
+
+        body.dark-mode .journey-step p {
+          background: #1e293b;
+          color: white;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .journey-step .step-icon:hover ~ p {
+          opacity: 1;
+          pointer-events: auto;
+         
+        }
+        
+        .step-connector { display: block; } /* Visible only on mobile */
+      }
+
+      /* Advanced Footer with Wave */
+      /* Creative "Vital Pulse" Organic Divider */
+      .footer-wave {
+        display: block;
+        width: 100%;
+        height: 180px;
+        margin-top: auto;
+        margin-bottom: -48px;
+        position: relative;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      .pulse-line {
+        fill: none;
+        stroke: rgba(50, 133, 211, 0.5);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 2000;
+        stroke-dashoffset: 2000;
+        animation: pulseDraw 8s linear infinite;
+        opacity: 0.8;
+      }
+
+      .pulse-blob {
+        fill: rgba(50, 133, 211, 0.15);
+        animation: blobFloat 12s ease-in-out infinite;
+      }
+
+      .pulse-blob-2 {
+        fill: rgba(50, 133, 211, 0.1);
+        animation: blobFloat 15s ease-in-out infinite reverse;
+      }
+
+      body.dark-mode .pulse-blob { fill: rgb(55 108 112 / 20%); }
+      body.dark-mode .pulse-blob-2 { fill: rgb(55 108 112 / 40%); }
+      body.dark-mode .pulse-line { stroke: rgb(68 212 223 / 90%); opacity: 0.9; }
+
+      @keyframes pulseDraw {
+        to { stroke-dashoffset: 0; }
+      }
+
+      @keyframes blobFloat {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(50px, -30px) scale(1.1); }
+        66% { transform: translate(-30px, 20px) scale(0.9); }
+      }
+
+      footer {
+        background: #0f172a;
+        color: #94a3b8;
+        font-family: 'Outfit', sans-serif;
+        position: relative;
+        text-align: left;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 2rem 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 3rem;
+      }
+
+      .footer-left, .footer-links, .footer-social {
+        flex: 1;
+        min-width: 250px;
+      }
+
+      footer h3, footer h4 {
+        color: #f8fafc;
+        margin-bottom: 1.5rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        position: relative;
+        padding-bottom: 12px;
+      }
+
+      footer h3 i {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-right: 8px;
+        font-size: 1.2em;
+      }
+
+      footer h3::after, footer h4::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 40px;
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-radius: 2px;
+        transition: width 0.4s ease;
+      }
+
+      .footer-left:hover h3::after, .footer-links:hover h4::after, .footer-social:hover h4::after {
+        width: 70px;
+      }
+
+      .footer-left p {
+        font-size: 1rem;
+        line-height: 1.8;
+      }
+
+      .footer-links ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 1.2rem;
+      }
+
+      .footer-links a {
+        color: #94a3b8;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+      }
+
+      .footer-links a i {
+        color: var(--primary);
+        font-size: 0.9em;
+        transition: transform 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: #f8fafc;
+        transform: translateX(10px);
+      }
+
+      .social-icons-footer {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+      }
+
+      .social-icons-footer a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #f8fafc;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-size: 1.2rem;
+      }
+
+      .social-icons-footer a:hover {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        transform: translateY(-8px) rotate(360deg) scale(1.1);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .made-with {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-size: 1rem;
+        color: #f8fafc;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 0.4s ease;
+        font-weight: 600;
+      }
+
+      .made-with:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      }
+
+      .heart {
+        color: #ff4757;
+        margin: 0 10px;
+        font-size: 1.4rem;
+        animation: pulse 1s infinite;
+        display: inline-block;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); text-shadow: 0 0 15px rgba(255, 71, 87, 0.8); }
+        100% { transform: scale(1); }
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(0, 0, 0, 0.4);
+        font-size: 0.95rem;
+        color: #64748b;
+        letter-spacing: 1px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 991px) {
+        nav { padding: 15px 20px; }
+        nav.nav-scrolled { width: 90%; }
+        .card-container { grid-template-columns: repeat(2, 1fr); }
+        .footer-content {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          text-align: left;
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        nav { padding: 12px 15px; flex-direction: column; justify-content: center; }
+        .company-name { display: inline-block; font-size: 1rem; }
+        .navbar-left { justify-content: center; margin-bottom: 10px; }
+        .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; }
+        nav.nav-scrolled { width: 95%; top: 10px; }
+        .nav-link { padding: 8px 10px; font-size: 0.75rem; }
+        .nav-link span { display: inline; }
+        .nav-link i { margin-right: 4px; font-size: 0.9rem; }
+        .card-container { grid-template-columns: 1fr; gap: 20px; }
+        .container { padding: 160px 15px 40px; }
+        .container h2 { font-size: 2rem; }
+        
+        .footer-wave { height: 80px; margin-bottom: -2px; }
+        .footer-content { 
+          grid-template-columns: 1fr;
+          text-align: center;
+          padding: 1.5rem 1rem; 
+          gap: 1.5rem; 
+        }
+        footer h3, footer h4 { margin-bottom: 1rem; font-size: 1.2rem; }
+        footer h3::after, footer h4::after {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        .footer-left p { font-size: 0.9rem; }
+        .social-icons-footer { justify-content: center; margin-bottom: 1rem; }
+
+        .footer-social p {
+          justify-content: center;
+        }
+        .info-block { padding: 20px; }
+      }
+
+      @media (max-width: 480px) {
+        .company-logo { width: 30px; height: 30px; }
+        .theme-btn { width: 35px; height: 35px; font-size: 1.1rem; }
+        .card { padding: 25px 15px; }
+      }
+
+      /* Profile Dropdown Logic */
+      .profile-container {
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
+
+      .profile-icon {
+        width: 35px;
+        height: 35px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .profile-container:hover .profile-icon {
+        transform: scale(1.1) rotate(5deg);
+        filter: drop-shadow(0 0 8px var(--primary));
+      }
+
+      .profile-details {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--card-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        z-index: 100;
+        min-width: 250px;
+        color: var(--text-dark);
+        margin-top: 10px;
+        backdrop-filter: blur(10px);
+        animation: fadeInAvatar 0.3s ease;
+      }
+
+      /* Hover Bridge */
+      .profile-details::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 0;
+        width: 100%;
+        height: 10px;
+      }
+
+      .profile-container:hover .profile-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dropdown-avatar {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+        position: relative;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+      }
+
+      .profile-details h3 { margin-bottom: 15px; color: var(--text-dark); font-weight: 700; }
+      .profile-details p { margin: 5px 0; font-size: 0.95rem; color: var(--text-light); width: 100%; text-align: left; }
+      .profile-details p b { color: var(--text-dark); }
+      
+      .logout-btn {
+        margin-top: 15px;
+        display: inline-block;
+        padding: 10px 20px;
+        background: linear-gradient(135deg, #ff4757, var(--secondary));
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        border: none;
+      }
+
+      .logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+      }
+
+      body.dark-mode .logout-btn {
+        background: linear-gradient(135deg, #ff6b81, var(--secondary));
+      }
+
+      @keyframes fadeInAvatar { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'home' %}" class="navbar-left" style="text-decoration: none;">
+        <img
+          src="{% static 'images/liver icon.png' %}"
+          alt="Company Logo"
+          class="company-logo"
+        />
+        <span class="company-name">LIVER CIRRHOSIS</span>
+      </a>
+      <div class="navbar-right">
+        <a href="{% url 'prediction' %}" class="nav-link"><i class="fa-solid fa-stethoscope"></i> <span>Prediction</span></a>
+        <a href="{% url 'records' %}" class="nav-link"><i class="fa-solid fa-file-medical"></i> <span>Dashboard</span></a>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle Dark Mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+
+        {% if user.is_authenticated %}
+        <div class="profile-container">
+          <!-- Premium SVG Avatar used as Nav Icon -->
+          <svg class="profile-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="navAvatarGradAbout" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:var(--primary);stop-opacity:1" />
+                <stop offset="100%" style="stop-color:var(--accent);stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="45" fill="none" stroke="url(#navAvatarGradAbout)" stroke-width="5" />
+            <circle cx="50" cy="40" r="18" fill="url(#navAvatarGradAbout)" />
+            <path d="M25 80C25 65 35 58 50 58C65 58 75 65 75 80" fill="url(#navAvatarGradAbout)" />
+          </svg>
+
+          <div class="profile-details">
+            <h3>User Details</h3>
+            <div class="dropdown-avatar">
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                <circle cx="50" cy="50" r="48" fill="var(--card-bg)" stroke="url(#navAvatarGradAbout)" stroke-width="2" />
+                <circle cx="50" cy="40" r="20" fill="url(#navAvatarGradAbout)" />
+                <path d="M22 82C22 65 34 58 50 58C66 58 78 65 78 82" fill="url(#navAvatarGradAbout)" />
+              </svg>
+            </div>
+            <p><b>Name:</b> {{ request.user.custom_user.first_name }} {{ request.user.custom_user.last_name }}</p>
+            <p><b>Email:</b> {{ request.user.email }}</p>
+            <a href="{% url 'edit_profile' %}" style="margin-top: 15px; display: inline-block; color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem;">Edit Profile</a>
+            <a href="{% url 'logout' %}" class="logout-btn">Log Out</a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </nav>
+    <div class="container">
+      <h2>About Us</h2>
+
+      <div style="background: var(--card-bg); padding: 40px; border-radius: 24px; border: 1px solid var(--glass-border); margin-bottom: 50px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+        <h3 style="color: var(--primary); margin-bottom: 20px; font-weight: 700;">Mission & Vision</h3>
+        <p style="color: var(--text-light); line-height: 1.8; font-size: 1.1rem; max-width: 800px; margin: 0 auto;">
+          Our project was born from a desire to combine medicine with modern technology. Our vision is to create a future where liver cirrhosis is no longer a silent threat, but a manageable condition detected through proactive intelligence. We are on a mission to put powerful diagnostic capabilities into the hands of those who need them most.
+        </p>
+      </div>
+
+      <!-- Project Info Section -->
+      <div class="info-section">
+        <div class="info-block">
+          <h3><i class="fa-solid fa-hospital-user"></i> Our Project</h3>
+          <p>Liver Cirrhosis Prediction is a vital digital health ecosystem designed to bridge the gap between complex clinical data and actionable medical insights. Our platform assists healthcare professionals by predicting cirrhosis stages with high precision, enabling personalized patient care and better clinical outcomes.</p>
+        </div>
+        
+        <div class="info-block">
+          <h3><i class="fa-solid fa-bullseye"></i> Core Goals</h3>
+          <p>Our primary objective is to facilitate early intervention. By identifying cirrhosis at its initial stages, we aim to significantly improve survival rates and reduce the burden on healthcare systems through proactive monitoring and accurate risk assessment.</p>
+        </div>
+
+        <div class="info-block">
+          <h3><i class="fa-solid fa-brain"></i> Technical Vision</h3>
+          <p>We leverage cutting-edge LightGBM and Ensemble Learning algorithms. Our models are trained on diverse clinical datasets, ensuring that the predictions remain robust against variations in patient age, gender, and complex biochemical marker profiles.</p>
+        </div>
+
+        <div class="info-block">
+          <h3><i class="fa-solid fa-shield-halved"></i> Data Integrity</h3>
+          <p>Security and privacy are at the heart of our architecture. Every prediction is stored within a secure, encrypted framework, allowing patients to track their health history over time without compromising their sensitive medical information.</p>
+        </div>
+
+        <div class="info-block">
+          <h3><i class="fa-solid fa-chart-line"></i> Strategic Impact</h3>
+          <p>By transforming raw laboratory results into visual trends, we empower patients to understand their health journey. Our dynamic dashboard provides a 360-degree view of clinical progress, making complex medical data accessible to everyone.</p>
+        </div>
+
+        <div class="info-block">
+          <h3><i class="fa-solid fa-rocket"></i> Future Roadmap</h3>
+          <p>We are continuously evolving. Our future milestones include the integration of real-time wearable data, AI-driven nutritional recommendations, and collaborative portals for direct doctor-patient clinical synchronization.</p>
+        </div>
+
+        <div class="info-block">
+          <h3><i class="fa-solid fa-comments"></i> AI Consultation</h3>
+          <p>Beyond static predictions, our Qwen-powered chatbot provides interactive medical explanations. It can analyze your complex PDF reports and offer human-like guidance on what your clinical biomarkers actually mean for your health.</p>
+        </div>
+
+        <div class="info-block">
+          <h3><i class="fa-solid fa-clock-rotate-left"></i> Session Memory</h3>
+          <p>Never lose track of your health discussions. Our platform securely retains your last 15 chat sessions, allowing you to pick up exactly where you left off, whether you're reviewing past advice or comparing new trends.</p>
+        </div>
+      </div>
+
+      <div style="margin: 60px 0; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05)); padding: 50px 30px; border-radius: 30px; border: 1px dashed var(--primary); position: relative; overflow: hidden;">
+        <h3 style="color: var(--text-dark); margin-bottom: 40px; font-weight: 800; text-align: center;">Key System Features</h3>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px 20px;">
+          <!-- Feature 1 -->
+          <div style="flex: 1 1 300px; max-width: 320px; text-align: center;">
+            <div style="margin-bottom: 15px; height: 60px; display: flex; align-items: center; justify-content: center;">
+              <i class="fa-solid fa-gauge-high" style="font-size: 2.8rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h4 style="margin-bottom: 10px;">Instant Analytics</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Get your prediction results in milliseconds with our optimized inference engine.</p>
+          </div>
+          <!-- Feature 2 -->
+          <div style="flex: 1 1 300px; max-width: 320px; text-align: center;">
+            <div style="margin-bottom: 15px; height: 60px; display: flex; align-items: center; justify-content: center;">
+              <i class="fa-solid fa-chart-pie" style="font-size: 2.8rem; background: linear-gradient(135deg, var(--secondary), var(--primary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h4 style="margin-bottom: 10px;">Visual Dashboard</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Monitor your health trends through interactive charts and historical records.</p>
+          </div>
+          <!-- Feature 3 -->
+          <div style="flex: 1 1 300px; max-width: 320px; text-align: center;">
+            <div style="margin-bottom: 15px; height: 60px; display: flex; align-items: center; justify-content: center;">
+              <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 2.8rem; background: linear-gradient(135deg, var(--accent), var(--primary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h4 style="margin-bottom: 10px;">Custom Builder</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Generate personalized medical charts selecting only the variables you want to track.</p>
+          </div>
+          <!-- Feature 4 -->
+          <div style="flex: 1 1 300px; max-width: 320px; text-align: center;">
+            <div style="margin-bottom: 15px; height: 60px; display: flex; align-items: center; justify-content: center;">
+              <i class="fa-solid fa-file-pdf" style="font-size: 2.8rem; background: linear-gradient(135deg, #ff4757, #ff6b81); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h4 style="margin-bottom: 10px;">Clinical Reports</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Export professionally formatted PDF reports for easy sharing with your doctor.</p>
+          </div>
+          <!-- Feature 5 -->
+          <div style="flex: 1 1 300px; max-width: 320px; text-align: center;">
+            <div style="margin-bottom: 15px; height: 60px; display: flex; align-items: center; justify-content: center;">
+              <i class="fa-solid fa-comment-medical" style="font-size: 2.8rem; background: linear-gradient(135deg, #46c8e5, #4a83cd); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            </div>
+            <h4 style="margin-bottom: 10px;">AI Assistant</h4>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Meet Dr. Qwen—your 24/7 hepatology companion for report analysis and health queries.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 80px; text-align: center;">The Prediction Journey</h2>
+      <div class="journey-container">
+        <div class="journey-step">
+          <div class="step-icon"><i class="fa-solid fa-file-waveform"></i></div>
+          <h4>Data Input</h4>
+          <p class="p">User securely enters clinical biomarkers and patient diagnostics into our encrypted platform.</p>
+          <div class="step-connector"></div>
+        </div>
+        <div class="journey-step">
+          <div class="step-icon"><i class="fa-solid fa-microchip"></i></div>
+          <h4>AI Processing</h4>
+          <p>Our LightGBM ensemble algorithm analyzes 10+ variables against trained clinical datasets.</p>
+          <div class="step-connector"></div>
+        </div>
+        <div class="journey-step">
+          <div class="step-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <h4>Insight Generation</h4>
+          <p>Critical predictions and historical trends are generated instantly on your dashboard.</p>
+          <div class="step-connector"></div>
+        </div>
+        <div class="journey-step">
+          <div class="step-icon"><i class="fa-solid fa-stethoscope"></i></div>
+          <h4>Clinical Advisory</h4>
+          <p>Export professional reports to facilitate collaboration with medical specialists.</p>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 80px; text-align: center;">Technical Milestones</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number">94.8%</span>
+          <span class="stat-label">Model Accuracy</span>
+          <p class="stat-desc">Targeted precision achieved through rigorous cross-validation on real patient data.</p>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">&lt; 500ms</span>
+          <span class="stat-label">Response Time</span>
+          <p class="stat-desc">Ultra-fast inference engine designed for real-time medical decision support.</p>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">Qwen</span>
+          <span class="stat-label">LLM Intelligence</span>
+          <p class="stat-desc">State-of-the-art medical reasoning integrated for conversational report explanations.</p>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">15+</span>
+          <span class="stat-label">Chat Persistence</span>
+          <p class="stat-desc">Secure cloud-sync session management allowing patients to revisit medical consultations.</p>
+        </div>
+      </div>
+    </div>
+    <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <circle class="pulse-blob" cx="200" cy="250" r="100"></circle>
+      <circle class="pulse-blob-2" cx="1200" cy="200" r="150"></circle>
+      <path class="pulse-line" d="M0,224 L100,224 L120,180 L140,260 L160,224 L400,224 L420,150 L440,290 L460,224 L800,224 L820,200 L840,240 L860,224 L1200,224 L1220,100 L1240,310 L1260,224 L1440,224"></path>
+      <path d="M0,320 L1440,320 L1440,224 L0,224 Z" fill="#0f172a"></path>
+    </svg>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-left">
+          <h3><i class="fa-solid fa-staff-snake"></i> Liver Cirrhosis</h3>
+          <p>Empowering patients and healthcare professionals with advanced, intelligent prediction tools. Stay informed, stay healthy.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li><a href="{% url 'prediction' %}"><i class="fa-solid fa-stethoscope"></i> Prediction</a></li>
+            <li><a href="{% url 'records' %}"><i class="fa-solid fa-file-medical"></i> Dashboard</a></li>
+            <li><a href="{% url 'edit_profile' %}"><i class="fa-solid fa-user-pen"></i> Edit Profile</a></li>
+            <li><a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+          </ul>
+        </div>
+        <div class="footer-social">
+          <h4>Connect</h4>
+          <p><i class="fa-solid fa-envelope"></i> support@livercirrhosis.org</p>
+          <div class="social-icons-footer">
+            <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-icon" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-icon" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon" title="GitHub"><i class="fa-brands fa-github"></i></a>
+          </div>
+          <div class="made-with">
+            Made with <span class="heart"><i class="fa-solid fa-heart"></i></span> & Django
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2025 Liver Cirrhosis Project. All rights reserved.
+      </div>
+    </footer>
+
+    <script>
+      // Dark Mode Toggle Logic
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const themeIcon = themeToggleBtn.querySelector('i');
+      
+      const savedTheme = localStorage.getItem('liverCirrhosisTheme');
+      if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          themeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+          if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.replace('fa-moon', 'fa-sun');
+              localStorage.setItem('liverCirrhosisTheme', 'dark');
+          } else {
+              themeIcon.classList.replace('fa-sun', 'fa-moon');
+              localStorage.setItem('liverCirrhosisTheme', 'light');
+          }
+      });
+
+      // Add scrolled class to navbar when user scrolls down
+      window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 50) {
+          nav.classList.add('nav-scrolled');
+        } else {
+          nav.classList.remove('nav-scrolled');
+        }
+
+        // Update Journey Progress
+        const connectors = document.querySelectorAll('.step-connector');
+        connectors.forEach(connector => {
+          const rect = connector.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          // Calculate visibility. When connector enters viewport bottom, it starts to fill.
+          // It fills completely when the next step is clearly visible.
+          let triggerPoint = viewportHeight * 0.8;
+          let fillPoint = viewportHeight * 0.4;
+          let progress = (triggerPoint - rect.top) / (triggerPoint - fillPoint);
+          progress = Math.max(0, Math.min(1, progress));
+          connector.style.setProperty('--line-progress', (progress * 100) + '%');
+        });
+      });
+    </script>
+      {% include 'ai.html' %}
+  </body>
+</html>

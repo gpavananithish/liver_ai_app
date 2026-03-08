@@ -1,0 +1,1399 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liver Cirrhosis - SignUp</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="icon" href="{% static 'images/signupIcon.png' %}" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+      
+      :root {
+        --primary: #667eea;
+        --secondary: #764ba2;
+        --accent: #00d2ff;
+        --glass-bg: rgba(255, 255, 255, 0.9);
+        --glass-border: rgba(255, 255, 255, 0.4);
+        --nav-glass: rgba(255, 255, 255, 0.15);
+        --text-dark: #1e293b;
+        --text-light: #64748b;
+        --bg-color: #f4f7fb;
+        --card-bg: #ffffff;
+      }
+
+      body.dark-mode {
+        --primary: #8aa1f8;
+        --secondary: #9068be;
+        --accent: #4ddbff;
+        --glass-bg: rgba(15, 15, 15, 0.85);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --nav-glass: rgba(10, 10, 10, 0.8);
+        --text-dark: #ffffff;
+        --text-light: #a0a0a0;
+        --bg-color: #0b0b0b;
+        --card-bg: #141414;
+      }
+
+      body {
+        font-family: 'Outfit', sans-serif;
+        background: var(--bg-color);
+        color: var(--text-dark);
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+        transition: background 0.4s ease, color 0.4s ease;
+      }
+
+      /* Ultra-Premium Navbar */
+      nav {
+        background: transparent;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        transition: padding 0.5s ease, background 0.5s ease, width 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.6s ease, top 0.6s ease, box-shadow 0.6s ease;
+      }
+
+      nav.nav-scrolled {
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        padding: 10px 30px;
+        width: 70%;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode nav.nav-scrolled {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        background: rgb(89 89 89 / 85%);
+      }
+
+      .navbar-left {
+        margin-left: 40px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .company-logo {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        background: transparent;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-5px) rotate(3deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+      }
+
+      .company-name {
+        font-weight: 800;
+        font-size: 1.2rem;
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 1px;
+      }
+
+      .navbar-right {
+        margin-right: 20px;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text-dark);
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: rgb(60 150 189 / 5%);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode .nav-link {
+        background: rgb(60 150 189 / 5%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: #fff;
+      }
+
+      body.dark-mode .nav-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-color: transparent;
+      }
+
+      .nav-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+      
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        top: -98%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(45deg) translateY(-100%);
+        transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+      }
+
+      .nav-link:hover::after {
+        transform: rotate(45deg) translateY(100%);
+      }
+
+      .theme-btn {
+        background: none;
+        border: none;
+        color: var(--text-dark);
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .theme-btn:hover {
+        background: rgba(0, 0, 0, 0.05);
+        transform: rotate(15deg);
+      }
+
+      body.dark-mode .theme-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Main container overrides */
+      .container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 120px 2rem 2rem;
+      }
+
+      .login-block {
+        display: flex;
+        width: 90%;
+        max-width: 1200px;
+        background: var(--card-bg);
+        border-radius: 30px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.1), inset 0 0 0 1px var(--glass-border);
+        overflow: hidden;
+        transition: all 0.4s ease;
+      }
+
+      body.dark-mode .login-block {
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+      }
+
+      .image-side {
+        width: 45%;
+        flex-shrink: 0;
+        padding: 40px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, rgba(102,126,234,0.08) 0%, rgba(118,75,162,0.08) 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .image-side::before {
+        content: '';
+        position: absolute;
+        top: -60px; right: -60px;
+        width: 200px; height: 200px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(118,75,162,0.16) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .image-side::after {
+        content: '';
+        position: absolute;
+        bottom: -40px; left: -40px;
+        width: 160px; height: 160px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(102,126,234,0.14) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .illustration-svg {
+        width: 100%;
+        max-width: 420px;
+        height: auto;
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 20px 40px rgba(118,75,162,0.18));
+        transition: filter 0.4s ease;
+      }
+      body.dark-mode .illustration-svg {
+        filter: drop-shadow(0 20px 40px rgba(144,104,190,0.3));
+      }
+
+      .svg-bg-primary { fill: rgba(102,126,234,0.1); }
+      body.dark-mode .svg-bg-primary { fill: rgba(138,161,248,0.12); }
+      .svg-accent { fill: #667eea; }
+      body.dark-mode .svg-accent { fill: #8aa1f8; }
+      .svg-accent-2 { fill: #764ba2; }
+      body.dark-mode .svg-accent-2 { fill: #9068be; }
+      .svg-cyan { fill: #00d2ff; }
+      body.dark-mode .svg-cyan { fill: #4ddbff; }
+      .svg-card { fill: #f8fafc; stroke: rgba(102,126,234,0.2); }
+      body.dark-mode .svg-card { fill: #1a1a2e; stroke: rgba(138,161,248,0.2); }
+      .svg-text { fill: #1e293b; }
+      body.dark-mode .svg-text { fill: #e2e8f0; }
+      .svg-text-light { fill: #64748b; }
+      body.dark-mode .svg-text-light { fill: #94a3b8; }
+      .svg-line { stroke: rgba(102,126,234,0.35); }
+      body.dark-mode .svg-line { stroke: rgba(138,161,248,0.35); }
+      .svg-green { fill: #22c55e; }
+      .svg-red { fill: #ff4757; }
+
+      .illus-caption {
+        margin-top: 18px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+      .illus-caption h3 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0 0 5px 0;
+      }
+      .illus-caption p {
+        font-size: 0.82rem;
+        color: var(--text-light);
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      @keyframes float-illus {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-8px); }
+      }
+      .illustration-svg { animation: float-illus 5.5s ease-in-out infinite; }
+
+      .form-side {
+        background: transparent;
+        flex: 1;
+        padding: 2.5rem 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow-y: auto;
+      }
+
+      .form-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        color: var(--text-dark);
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 1rem;
+      }
+
+      .form-row .form-group {
+        flex: 1;
+        margin-bottom: 0;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.4rem;
+        color: var(--text-dark);
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding-left: 5px;
+      }
+
+      .input-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .form-control {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 500;
+        font-size: 0.95rem;
+        background: rgba(0,0,0,0.02);
+        border: 2px solid rgba(0,0,0,0.1);
+        padding: 0.8rem 1rem;
+        border-radius: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        padding-left: 45px;
+        color: var(--text-dark);
+        transition: all 0.3s ease;
+      }
+
+      body.dark-mode .form-control {
+        background: rgba(255,255,255,0.05);
+        border: 2px solid rgba(255,255,255,0.1);
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        background: transparent;
+      }
+
+      body.dark-mode .form-control:focus {
+        background: rgba(0,0,0,0.2);
+      }
+
+      .input-group-text {
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        transform: translateY(-50%);
+        color: var(--primary);
+        pointer-events: none;
+        font-size: 1rem;
+      }
+      
+      input::placeholder {
+        text-align: left;
+        color: var(--text-light);
+        opacity: 0.7;
+      }
+
+      .btn-primary {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border: none;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        width: 100%;
+        margin-top: 1.5rem;
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 25px rgba(102, 126, 234, 0.5);
+      }
+
+      .social-login {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 1.5rem;
+      }
+
+      .social-btn {
+        background: var(--card-bg);
+        border: 1px solid var(--glass-border);
+        color: var(--primary);
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      }
+
+      body.dark-mode .social-btn {
+        border-color: rgba(255,255,255,0.1);
+      }
+
+      .social-btn:hover {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        color: white;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        border-color: transparent;
+      }
+
+      .or-divider {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .or-divider::before,
+      .or-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background-color: var(--glass-border);
+      }
+
+      body.dark-mode .or-divider::before,
+      body.dark-mode .or-divider::after {
+        background-color: rgba(255,255,255,0.1);
+      }
+
+      .or-divider span {
+        color: var(--text-light);
+        font-size: 0.85rem;
+        padding: 0 15px;
+        font-weight: 500;
+      }
+
+      .signup-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--text-dark);
+        font-weight: 500;
+      }
+      
+      .signup-link a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+        transition: color 0.3s ease;
+      }
+
+      .signup-link a:hover {
+        color: var(--accent);
+      }
+
+      /* Premium Django Messages */
+      .messages {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 400px;
+        pointer-events: none;
+      }
+
+      .messages li {
+        padding: 1.2rem 1.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px;
+        margin-bottom: 0;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        animation: slideInRight 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 0.6s ease 5s forwards;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        pointer-events: auto;
+        color: var(--text-dark);
+        border: 1px solid var(--glass-border);
+      }
+
+      body.dark-mode .messages li {
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      }
+
+      .messages li i {
+        font-size: 1.4rem;
+      }
+
+      .messages .success i { color: #667eea; text-shadow: 0 0 10px rgba(102, 126, 234, 0.4); }
+      .messages .error i, .messages .danger i { color: #ff4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.4); }
+      
+      body.dark-mode .messages .success i { color: #8aa1f8; }
+      body.dark-mode .messages .error i, body.dark-mode .messages .danger i { color: #ff6b81; }
+
+      @keyframes slideInRight {
+        0% { opacity: 0; transform: translateX(50px); }
+        100% { opacity: 1; transform: translateX(0); }
+      }
+
+      @keyframes fadeOut {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+      }
+
+      /* Advanced Footer with Wave */
+      /* Creative Layered Success Steps */
+      .footer-wave {
+        display: block;
+        width: 100%;
+        height: 180px;
+        margin-top: auto;
+        margin-bottom: -5px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .footer-wave polygon {
+        transition: all 0.4s ease;
+        animation: stepFloat 8s ease-in-out infinite;
+        stroke-width: 2px;
+      }
+
+      .step-1 { 
+        fill: rgba(50, 133, 211, 0.05); 
+        stroke: rgba(50, 133, 211, 0.2); 
+        animation-delay: 0s; 
+      }
+      .step-2 { 
+        fill: rgba(50, 133, 211, 0.15); 
+        stroke: rgba(50, 133, 211, 0.4); 
+        animation-delay: -2s; 
+      }
+      .step-3 { 
+        fill: rgba(50, 133, 211, 0.4); 
+        stroke: rgba(50, 133, 211, 0.8); 
+        stroke-width: 3px;
+        animation-delay: -4s; 
+      }
+
+      body.dark-mode .step-1 { 
+        fill: rgba(218, 230, 234, 0.2); 
+        stroke: rgba(77, 219, 255, 0.2); 
+      }
+      body.dark-mode .step-2 { 
+        fill: rgba(218, 230, 234, 0.5); 
+        stroke: rgba(77, 219, 255, 0.4); 
+      }
+      body.dark-mode .step-3 { 
+        fill: rgba(218, 230, 234, 0.887); 
+        stroke: #4ddbffd6; 
+        stroke-width: 3px;
+      }
+
+      @keyframes stepFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      footer {
+        background: #0f172a;
+        color: #94a3b8;
+        font-family: 'Outfit', sans-serif;
+        position: relative;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 2.5rem 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 3rem;
+      }
+
+      .footer-left, .footer-links, .footer-social {
+        flex: 1;
+        min-width: 250px;
+      }
+
+      footer h3, footer h4 {
+        color: #f8fafc;
+        margin-bottom: 1.5rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        position: relative;
+        padding-bottom: 12px;
+      }
+
+      footer h3 i {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-right: 8px;
+        font-size: 1.2em;
+      }
+
+      footer h3::after, footer h4::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 40px;
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-radius: 2px;
+        transition: width 0.4s ease;
+      }
+
+      .footer-left:hover h3::after, .footer-links:hover h4::after, .footer-social:hover h4::after {
+        width: 70px;
+      }
+
+      .footer-left p {
+        font-size: 1.05rem;
+        line-height: 1.8;
+      }
+
+      .footer-links ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 1.2rem;
+      }
+
+      .footer-links a {
+        color: #94a3b8;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+      }
+
+      .footer-links a i {
+        color: var(--primary);
+        font-size: 0.9em;
+        transition: transform 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: #f8fafc;
+        transform: translateX(10px);
+      }
+
+      .footer-links a:hover i {
+        transform: translateX(5px);
+        color: var(--accent);
+      }
+
+      .social-icons-footer {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+      }
+
+      .social-icons-footer a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #f8fafc;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-size: 1.2rem;
+      }
+
+      .social-icons-footer a:hover {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        transform: translateY(-8px) rotate(360deg) scale(1.1);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .made-with {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-size: 1rem;
+        color: #f8fafc;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 0.4s ease;
+        font-weight: 600;
+      }
+
+      .made-with:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      }
+
+      .heart {
+        color: #ff4757;
+        margin: 0 10px;
+        font-size: 1.4rem;
+        animation: pulse 1s infinite;
+        display: inline-block;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); text-shadow: 0 0 15px rgba(255, 71, 87, 0.8); }
+        100% { transform: scale(1); }
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.4);
+        font-size: 0.95rem;
+        color: #64748b;
+        letter-spacing: 1px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+      }
+
+      /* Premium Django Messages Pop-ups */
+      .messages {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 400px;
+        pointer-events: none;
+      }
+
+      .messages li {
+        padding: 1.2rem 1.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px;
+        margin-bottom: 0;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        animation: slideInRight 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 0.6s ease 5s forwards;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        pointer-events: auto;
+        color: var(--text-dark);
+        border: 1px solid var(--glass-border);
+      }
+
+      body.dark-mode .messages li {
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      }
+
+      .messages li i {
+        font-size: 1.4rem;
+      }
+
+      .messages .success i { color: #667eea; text-shadow: 0 0 10px rgba(102, 126, 234, 0.4); }
+      .messages .error i, .messages .danger i { color: #ff4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.4); }
+      
+      body.dark-mode .messages .success i { color: #8aa1f8; }
+      body.dark-mode .messages .error i, body.dark-mode .messages .danger i { color: #ff6b81; }
+
+      @keyframes slideInRight {
+        0% { opacity: 0; transform: translateX(50px); }
+        100% { opacity: 1; transform: translateX(0); }
+      }
+
+      @keyframes fadeOut {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 991px) {
+        .login-block {
+          width: 95%;
+          max-width: 900px;
+        }
+        nav { padding: 15px 25px; }
+        nav.nav-scrolled { width: 85%; }
+        .form-side { padding: 2rem; }
+        .image-side { padding: 20px; }
+        .footer-content {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          text-align: left;
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        nav { padding: 12px 15px; flex-direction: column; justify-content: center; }
+        .company-name { display: inline-block; font-size: 1rem; }
+        .navbar-left { justify-content: center; margin-bottom: 10px; margin-left: 0; }
+        .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; flex-wrap: wrap; }
+        nav.nav-scrolled { width: 95%; top: 10px; padding: 12px 15px; }
+        .nav-link { padding: 8px 10px; font-size: 0.75rem; }
+        .nav-link i { margin-right: 4px; font-size: 0.9rem; }
+
+        .container { 
+          padding: 160px 1rem 2rem; 
+        }
+        
+        .login-block {
+          flex-direction: column;
+          border-radius: 20px;
+        }
+        
+        .image-side { 
+          width: 100%;
+          padding: 15px;
+          border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .image-side .illustration-svg {
+          max-height: 200px;
+          width: 100%;
+          object-fit: contain;
+        }
+        
+        .form-side { 
+          padding: 2rem 1.5rem; 
+        }
+        
+        .form-title {
+          font-size: 1.8rem;
+          margin-bottom: 1rem;
+          text-align: center;
+        }
+
+        .form-row {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+          gap: 30px;
+        }
+        
+        footer h3::after, footer h4::after {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        
+        .social-icons-footer {
+          justify-content: center;
+        }
+
+        .footer-social p {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .company-logo { width: 30px; height: 30px; }
+        .theme-btn { width: 35px; height: 35px; font-size: 1rem; }
+        .btn-primary { padding: 0.8rem 1.5rem; font-size: 1rem; }
+        .form-control { padding: 0.7rem; padding-left: 40px; font-size: 0.9rem; }
+        .form-title { font-size: 1.6rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'home' %}" class="navbar-left" style="text-decoration: none;">
+        <img
+          src="{% static 'images/liver icon.png' %}"
+          alt="Company Logo"
+          class="company-logo"
+        />
+
+        <span class="company-name">LIVER CIRRHOSIS</span>
+      </a>
+      <div class="navbar-right">
+        <a href="{% url 'prediction' %}" class="nav-link"><i class="fa-solid fa-stethoscope"></i> Prediction</a>
+        <a href="{% url 'records' %}" class="nav-link"><i class="fa-solid fa-file-medical"></i> Dashboard</a>
+        <a href="{% url 'about' %}" class="nav-link"><i class="fa-solid fa-circle-info"></i> About Us</a>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle Dark Mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="login-block">
+        <div class="image-side">
+          <!-- Premium SVG illustration \u2014 Sign Up / Patient Onboarding -->
+          <svg class="illustration-svg" viewBox="0 0 430 430" xmlns="http://www.w3.org/2000/svg" aria-label="Patient Registration Illustration">
+            <defs>
+              <radialGradient id="blobGradS" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#764ba2" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#667eea" stop-opacity="0.03"/>
+              </radialGradient>
+              <linearGradient id="cardGradS" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#f0f4ff"/>
+              </linearGradient>
+              <linearGradient id="accentGradS" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#667eea"/>
+                <stop offset="100%" stop-color="#764ba2"/>
+              </linearGradient>
+              <linearGradient id="cyanGradS" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#00d2ff"/>
+                <stop offset="100%" stop-color="#667eea"/>
+              </linearGradient>
+              <linearGradient id="phoneGradS" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1e1b4b"/>
+                <stop offset="100%" stop-color="#0f172a"/>
+              </linearGradient>
+              <linearGradient id="purpleButton" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#764ba2"/>
+                <stop offset="100%" stop-color="#667eea"/>
+              </linearGradient>
+              <filter id="glowS">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="shadowS">
+                <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#764ba2" flood-opacity="0.2"/>
+              </filter>
+            </defs>
+
+            <!-- BACKGROUND -->
+            <ellipse cx="215" cy="215" rx="192" ry="178" fill="url(#blobGradS)"/>
+            <!-- Orbit arcs -->
+            <ellipse cx="215" cy="215" rx="180" ry="66" fill="none" stroke="#764ba2" stroke-width="1" stroke-dasharray="5 9" opacity="0.16" transform="rotate(30 215 215)"/>
+            <ellipse cx="215" cy="215" rx="158" ry="52" fill="none" stroke="#667eea" stroke-width="0.8" stroke-dasharray="3 11" opacity="0.12" transform="rotate(-20 215 215)"/>
+
+            <!-- === PHONE MOCKUP (main focal) === -->
+            <!-- Phone outer shell -->
+            <rect x="130" y="54" width="145" height="258" rx="22" fill="url(#cardGradS)" filter="url(#shadowS)"/>
+            <rect x="130" y="54" width="145" height="258" rx="22" fill="none" stroke="#764ba2" stroke-width="1.2" opacity="0.3"/>
+            <!-- Phone screen -->
+            <rect x="140" y="66" width="125" height="234" rx="14" fill="url(#phoneGradS)"/>
+            <!-- Status bar -->
+            <rect x="175" y="68" width="45" height="10" rx="5" fill="#1e293b"/>
+            <!-- Screen top glow bar -->
+            <rect x="140" y="66" width="125" height="5" rx="2" fill="url(#purpleButton)" opacity="0.7"/>
+
+            <!-- === PHONE APP UI CONTENT === -->
+            <!-- App header -->
+            <rect x="146" y="84" width="113" height="28" rx="6" fill="#1e293b" opacity="0.5"/>
+            <!-- Back arrow + title text -->
+            <polyline points="153,98 159,92 159,104" fill="none" stroke="#667eea" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="165" y="93" width="60" height="7" rx="3" fill="#667eea" opacity="0.5"/>
+            <rect x="245" y="91" width="10" height="10" rx="5" fill="#764ba2" opacity="0.6"/>
+
+            <!-- Profile Card inside phone -->
+            <rect x="146" y="120" width="113" height="88" rx="10" fill="white" opacity="0.07"/>
+            <rect x="146" y="120" width="113" height="88" rx="10" fill="none" stroke="#667eea" stroke-width="0.8" opacity="0.4"/>
+            <!-- Avatar circle -->
+            <circle cx="175" cy="148" r="20" fill="url(#accentGradS)" opacity="0.85"/>
+            <!-- Robot Head in Phone -->
+            <rect x="159" y="132" width="32" height="32" rx="8" fill="url(#cardGradS)" stroke="#667eea" stroke-width="0.8"/>
+            <rect x="164" y="138" width="22" height="12" rx="4" fill="#1e293b"/>
+            <circle cx="170" cy="144" r="2" fill="#00d2ff" filter="url(#glowS)"/>
+            <circle cx="180" cy="144" r="2" fill="#00d2ff" filter="url(#glowS)"/>
+            <!-- Antenna -->
+            <line x1="175" y1="132" x2="175" y2="124" stroke="#667eea" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="175" cy="124" r="2" fill="#667eea"/>
+            <!-- Verified badge on avatar -->
+            <circle cx="189" cy="133" r="8" fill="#22c55e"/>
+            <polyline points="185,133 188,136 194,129" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Profile text lines -->
+            <rect x="200" y="132" width="52" height="7" rx="3" fill="white" opacity="0.5"/>
+            <rect x="200" y="143" width="38" height="5" rx="2" fill="white" opacity="0.3"/>
+            <rect x="200" y="152" width="44" height="5" rx="2.5" fill="url(#cyanGradS)" opacity="0.7"/>
+            <!-- Joined date strip -->
+            <rect x="152" y="192" width="100" height="10" rx="4" fill="white" opacity="0.08"/>
+            <rect x="158" y="194" width="52" height="5" rx="2" fill="white" opacity="0.25"/>
+
+            <!-- Stats row in phone -->
+            <rect x="146" y="216" width="34" height="40" rx="6" fill="white" opacity="0.06"/>
+            <rect x="185" y="216" width="34" height="40" rx="6" fill="white" opacity="0.06"/>
+            <rect x="224" y="216" width="34" height="40" rx="6" fill="white" opacity="0.06"/>
+            <!-- Stat values -->
+            <rect x="150" y="222" width="26" height=\"6\" rx="2" fill=\"#00d2ff\" opacity=\"0.6\"/>
+            <rect x="189" y="222" width="26" height="6" rx="2" fill="#667eea" opacity="0.6"/>
+            <rect x="228" y="222" width="26" height="6" rx="2" fill="#764ba2" opacity="0.6"/>
+            <rect x="150" y="232" width="20" height="4" rx="2" fill="white" opacity="0.2"/>
+            <rect x="189" y="232" width="20" height="4" rx="2" fill="white" opacity="0.2"/>
+            <rect x="228" y="232" width="20" height="4" rx="2" fill="white" opacity="0.2"/>
+
+            <!-- CTA button on phone -->
+            <rect x="150" y="265" width="105" height="26" rx="8" fill="url(#purpleButton)"/>
+            <rect x="174" y="274" width="57" height="7" rx="3" fill="white" opacity="0.85"/>
+            <!-- Home bar -->
+            <rect x="183" y="296" width="39" height="4" rx="2" fill="white" opacity="0.2"/>
+
+            <!-- === FLOATING PROFILE CARD (left) === -->
+            <rect x="16" y="130" width="104" height="120" rx="14" fill="url(#cardGradS)" filter="url(#shadowS)"/>
+            <rect x="16" y="130" width="104" height="120" rx="14" fill="none" stroke="#667eea" stroke-width="1" opacity="0.25"/>
+            <!-- Avatar large -->
+            <circle cx="68" cy="165" r="24" fill="url(#accentGradS)" opacity="0.2"/>
+            <!-- Robot Head large -->
+            <rect x="48" y="145" width="40" height="40" rx="10" fill="url(#cardGradS)" stroke="#667eea" stroke-width="1"/>
+            <rect x="54" y="154" width="28" height="15" rx="5" fill="#1e293b"/>
+            <circle cx="61" cy="161" r="2.5" fill="#00d2ff" filter="url(#glowS)"/>
+            <circle cx="75" cy="161" r="2.5" fill="#00d2ff" filter="url(#glowS)"/>
+            <line x1="68" y1="145" x2="68" y2="132" stroke="#667eea" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="68" cy="132" r="3" fill="#667eea"/>
+            <!-- Card text lines -->
+            <rect x="26" y="200" width="84" height="6" rx="3" fill="#1e293b" opacity="0.2"/>
+            <rect x="30" y="210" width="58" height="5" rx="2" fill="#94a3b8" opacity="0.35"/>
+            <rect x="26" y="222" width="84" height="16" rx="6" fill="url(#accentGradS)" opacity="0.12"/>
+            <rect x="36" y="227" width="50" height="5" rx="2" fill="#667eea" opacity="0.5"/>
+
+            <!-- === ECG CHART CARD (right) === -->
+            <rect x="312" y="140" width="104" height="90" rx="14" fill="url(#cardGradS)" filter="url(#shadowS)"/>
+            <rect x="312" y="140" width="104" height="90" rx="14" fill="none" stroke="#00d2ff" stroke-width="1" opacity="0.25"/>
+            <!-- Live ECG -->\n            <polyline points="318,185 327,185 332,172 338,198 345,162 352,186 358,186 365,178 372,196 378,168 385,186 392,186 406,186" fill="none" stroke="url(#cyanGradS)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+            <circle cx="406" cy="186" r="4" fill="#00d2ff" filter="url(#glowS)"/>
+            <!-- Label -->
+            <rect x="318" y="150" width="52" height="6" rx="3" fill="#1e293b" opacity="0.2"/>
+            <rect x="318" y="160" width="34" height="4" rx="2" fill="#00d2ff" opacity="0.4"/>
+            <!-- Stage badge -->\n            <rect x="318" y="206" width="98" height="18" rx="7" fill="url(#cyanGradS)" opacity="0.15"/>
+            <rect x="326" y="211" width="62" height="6" rx="3" fill="#00d2ff" opacity="0.55"/>
+
+            <!-- === FLOATING METRIC CHIPS === -->
+            <!-- Chip 1 -->
+            <rect x="328" y="58" width="90" height="28" rx="10" fill="url(#cardGradS)" filter="url(#shadowS)"/>
+            <circle cx="344" cy="72" r="8" fill="url(#accentGradS)" opacity="0.85"/>
+            <rect x="356" y="66" width="54" height="5" rx="2" fill="#667eea" opacity="0.4"/>
+            <rect x="356" y="74" width="38" height="4" rx="2" fill="#94a3b8" opacity="0.3"/>
+            <!-- Chip 2 -->
+            <rect x="10" y="280" width="90" height="28" rx="10" fill="url(#cardGradS)" filter="url(#shadowS)"/>
+            <circle cx="26" cy="294" r="8" fill="#22c55e" opacity="0.9"/>
+            <polyline points="21,294 24,297 31,289" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="38" y="288" width="54" height="5" rx="2" fill="#22c55e" opacity="0.4"/>
+            <rect x="38" y="296" width="38" height="4" rx="2" fill="#94a3b8" opacity="0.3"/>
+            <!-- Chip 3: Alert -->
+            <rect x="328" y="316" width="90" height="28" rx="10" fill="url(#cardGradS)" filter="url(#shadowS)"/>
+            <circle cx="344" cy="330" r="8" fill="#ff4757" opacity="0.85"/>
+            <rect x="342\" y="325" width="4" height="6" rx="1" fill="white"/>
+            <circle cx="344" cy="333" r="1.5" fill="white"/>
+            <rect x="356" y="324" width="54" height="5" rx="2" fill="#ff4757" opacity="0.4"/>
+            <rect x="356" y="332" width="38" height="4" rx="2" fill="#94a3b8" opacity="0.3"/>
+
+            <!-- DNA double helix (bottom decorative) -->
+            <path d="M50,358 Q60,370 50,382 Q40,394 50,406" fill="none" stroke="#667eea" stroke-width="2" stroke-dasharray="3 5" opacity="0.28" stroke-linecap="round"/>
+            <path d="M68,358 Q58,370 68,382 Q78,394 68,406" fill="none" stroke="#764ba2" stroke-width="2" stroke-dasharray="3 5" opacity="0.22" stroke-linecap="round"/>
+            <line x1="50" y1="364" x2="68" y2="364" stroke="#00d2ff" stroke-width="1.2" opacity="0.22"/>
+            <line x1="50" y1="376" x2="68" y2="376" stroke="#667eea" stroke-width="1.2" opacity="0.22"/>
+            <line x1="50" y1="388" x2="68" y2="388" stroke="#00d2ff" stroke-width="1.2" opacity="0.22"/>
+            <line x1="50" y1="400" x2="68" y2="400" stroke="#667eea" stroke-width="1.2" opacity="0.22"/>
+
+            <!-- Scatter particles -->
+            <circle cx="390" cy="268" r="6" fill="#00d2ff" opacity="0.45" filter="url(#glowS)"/>
+            <circle cx="408" cy="290" r="4" fill="#764ba2" opacity="0.4"/>
+            <circle cx="374" cy="296" r="3.5" fill="#667eea" opacity="0.45"/>
+            <circle cx="30" cy="92" r="5" fill="#667eea" opacity="0.35"/>
+            <circle cx="14" cy="112" r="3" fill="#00d2ff" opacity="0.35"/>
+            <circle cx="40" cy="108" r="4" fill="#764ba2" opacity="0.3"/>
+
+            <!-- Decorative plus signs -->
+            <text x="4" y="58" font-size="22" fill="#764ba2" opacity="0.16" font-weight="bold">+</text>
+            <text x="408" y="118" font-size="18" fill="#667eea" opacity="0.18" font-weight="bold">+</text>
+            <text x="172" y="424" font-size="14" fill="#00d2ff" opacity="0.2" font-weight="bold">+</text>
+            <text x="300" y="420" font-size="20" fill="#764ba2" opacity="0.16" font-weight="bold">+</text>
+          </svg>
+          <div class="illus-caption">
+            <h3>Begin Your Health Journey</h3>
+            <p>Create a secure patient account &amp; unlock<br>AI-powered liver stage predictions</p>
+          </div>
+        </div>
+        <div class="form-side">
+          <h2 class="form-title">Sign Up</h2>
+          {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+              {% if "success" in message.tags %}
+              <i class="fas fa-check-circle"></i>
+              {% elif "error" in message.tags or "danger" in message.tags %}
+              <i class="fas fa-exclamation-circle"></i>
+              {% else %}
+              <i class="fas fa-info-circle"></i>
+              {% endif %}
+              {{ message }}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+
+          <div class="social-login">
+            <button class="social-btn" aria-label="Sign up with Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </button>
+            <button class="social-btn" aria-label="Sign up with X">
+              <i class="fa-brands fa-x-twitter"></i>
+            </button>
+            <button class="social-btn" aria-label="Sign up with Google">
+              <i class="fab fa-google"></i>
+            </button>
+          </div>
+
+          <div class="or-divider">
+            <span>Or</span>
+          </div>
+
+          <form method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="username">Username</label>
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"></i
+                ></span>
+                <input
+                  name="username"
+                  type="text"
+                  id="username"
+                  class="form-control"
+                  placeholder="Enter your Username"
+                  required
+                />
+              </div>
+            </div>
+
+
+
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="first_name">First Name</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fas fa-user"></i
+                  ></span>
+                  <input
+                    name="first_name"
+                    type="text"
+                    id="first_name"
+                    class="form-control"
+                    placeholder="First Name"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fas fa-user"></i
+                  ></span>
+                  <input
+                    name="last_name"
+                    type="text"
+                    id="last_name"
+                    class="form-control"
+                    placeholder="Last Name"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="gender">Gender</label>
+                <div class="input-group">
+                  <span class="input-group-text"
+                    ><i class="fas fa-venus-mars"></i
+                  ></span>
+                  <select style="font-weight: normal;" name="gender" id="gender" class="form-control">
+                    <option value="">Select Gender</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                  <input
+                    name="dob"
+                    type="date"
+                    id="dob"
+                    class="form-control"
+                    placeholder="Date of Birth"
+                  />
+                </div>
+              </div>
+            </div> 
+
+
+
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fas fa-envelope"></i
+                ></span>
+                <input
+                  name="email"
+                  type="email"
+                  id="email"
+                  class="form-control"
+                  placeholder="Enter your Email"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fas fa-lock"></i
+                ></span>
+                <input
+                  name="password"
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="confirm_password">Confirm Password</label>
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fas fa-lock"></i
+                ></span>
+                <input
+                  name="confirm_password"
+                  type="password"
+                  id="confirm_password"
+                  class="form-control"
+                  placeholder="Confirm your password"
+                  required
+                />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+          </form>
+
+          <div class="signup-link">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Creative Triple-Layered Curvy Flow -->
+    <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path class="step-1" d="M0,160 C360,64 1080,256 1440,160 L1440,320 L0,320 Z"></path>
+      <path class="step-2" d="M0,224 C480,128 960,320 1440,224 L1440,320 L0,320 Z"></path>
+      <path class="step-3" d="M0,288 C540,192 900,384 1440,288 L1440,320 L0,320 Z"></path>
+    </svg>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-left">
+          <h3><i class="fa-solid fa-staff-snake"></i> Liver Cirrhosis</h3>
+          <p>Empowering patients and healthcare professionals with advanced, intelligent prediction tools. Stay informed, stay healthy.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="{% url 'login' %}"><i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard</a></li>
+            <li><a href="{% url 'signup' %}"><i class="fa-solid fa-user-plus"></i> Create Account</a></li>
+          </ul>
+        </div>
+        <div class="footer-social">
+          <h4>Connect</h4>
+          <p><i class="fa-solid fa-envelope"></i> support@livercirrhosis.org</p>
+          <div class="social-icons-footer">
+            <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-icon" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-icon" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon" title="GitHub"><i class="fa-brands fa-github"></i></a>
+          </div>
+          <div class="made-with">
+            Made with <span class="heart"><i class="fa-solid fa-heart"></i></span> & Django
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2025 Liver Cirrhosis Project. All rights reserved.
+      </div>
+    </footer>
+
+    <script>
+      // Dark Mode Toggle Logic
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const themeIcon = themeToggleBtn.querySelector('i');
+      
+      const savedTheme = localStorage.getItem('liverCirrhosisTheme');
+      if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          themeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+          if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.replace('fa-moon', 'fa-sun');
+              localStorage.setItem('liverCirrhosisTheme', 'dark');
+          } else {
+              themeIcon.classList.replace('fa-sun', 'fa-moon');
+              localStorage.setItem('liverCirrhosisTheme', 'light');
+          }
+      });
+
+      // Add scrolled class to navbar when user scrolls down
+      window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 50) {
+          nav.classList.add('nav-scrolled');
+        } else {
+          nav.classList.remove('nav-scrolled');
+        }
+      });
+    </script>
+      {% include 'ai.html' %}
+  </body>
+</html>

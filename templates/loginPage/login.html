@@ -1,0 +1,1315 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liver Cirrhosis - Login</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="icon" href="{% static 'images/loginIcon.png' %}" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+      
+      :root {
+        --primary: #667eea;
+        --secondary: #764ba2;
+        --accent: #00d2ff;
+        --glass-bg: rgba(255, 255, 255, 0.9);
+        --glass-border: rgba(255, 255, 255, 0.4);
+        --nav-glass: rgba(255, 255, 255, 0.15);
+        --text-dark: #1e293b;
+        --text-light: #64748b;
+        --bg-color: #f4f7fb;
+        --card-bg: #ffffff;
+      }
+
+      body.dark-mode {
+        --primary: #8aa1f8;
+        --secondary: #9068be;
+        --accent: #4ddbff;
+        --glass-bg: rgba(15, 15, 15, 0.85); /* Darker glass */
+        --glass-border: rgba(255, 255, 255, 0.08); /* Fainter border */
+        --nav-glass: rgba(10, 10, 10, 0.8);
+        --text-dark: #ffffff; /* Brighter white for contrast */
+        --text-light: #a0a0a0;
+        --bg-color: #0b0b0b; /* Very dark black/charcoal */
+        --card-bg: #141414; /* Slightly lighter medium black */
+      }
+
+      body {
+        font-family: 'Outfit', sans-serif;
+        background: var(--bg-color);
+        color: var(--text-dark);
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+        transition: background 0.4s ease, color 0.4s ease;
+      }
+
+      /* Ultra-Premium Navbar */
+      nav {
+        background: transparent;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        /* Smooth transition for width, padding, background, box-shadow, and positioning */
+        transition: padding 0.5s ease, background 0.5s ease, width 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.6s ease, top 0.6s ease, box-shadow 0.6s ease;
+      }
+
+      nav.nav-scrolled {
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        padding: 10px 30px;
+        width: 70%;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode nav.nav-scrolled {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        background: rgb(89 89 89 / 85%)
+      }
+
+      .navbar-left {
+        margin-left: 40px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .company-logo {
+        width: 35px; /* Reduced from 50px */
+        height: 35px; /* Reduced from 50px */
+        border-radius: 8px; /* Slightly smaller radius */
+        background: transparent; /* Removed white background */
+        box-shadow: none; /* Removed shadow */
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-5px) rotate(3deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+      }
+
+      .company-name {
+        font-weight: 800;
+        font-size: 1.2rem; /* Reduced from 1.5rem */
+        background: linear-gradient(to right, var(--accent), var(--primary)); /* Gradient applied here */
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 1px;
+        text-shadow: none; /* Removed text shadow */
+      }
+
+      .navbar-right {
+        display: flex;
+        margin-right: 20px;
+      
+        gap: 15px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text-dark); /* Changed from #fff to dark text */
+        text-decoration: none;
+        padding: 8px 16px; /* Reduced from 10px 20px */
+        border-radius: 20px; /* Reduced from 30px */
+        font-weight: 600;
+        font-size: 0.9rem; /* Reduced from 0.95rem */
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background:rgb(60 150 189 / 5%); /* Darker subtle background */
+        border: 1px solid rgba(0, 0, 0, 0.1); /* Darker border */
+      }
+
+      body.dark-mode .nav-link {
+        background:rgb(60 150 189 / 5%); /* Matching the body card backgrounds */
+        border: 1px solid rgba(255, 255, 255, 0.4); /* High visibility bright border */
+        color: #fff;
+      }
+
+      body.dark-mode .nav-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-color: transparent;
+      }
+
+      .nav-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+      
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        top: -98%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(45deg) translateY(-100%);
+        transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+      }
+
+      .nav-link:hover::after {
+        transform: rotate(45deg) translateY(100%);
+      }
+
+      .theme-btn {
+        background: none;
+        border: none;
+        color: var(--text-dark);
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .theme-btn:hover {
+        background: rgba(0, 0, 0, 0.05);
+        transform: rotate(15deg);
+      }
+
+      body.dark-mode .theme-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Main container overrides */
+      .container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 120px 2rem 2rem;
+      }
+
+      .login-block {
+        display: flex;
+        justify-content: space-between;
+        width: 85%;
+        max-width: 1000px;
+        background: var(--card-bg);
+        border-radius: 30px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.1), inset 0 0 0 1px var(--glass-border);
+        overflow: hidden;
+        transition: all 0.4s ease;
+      }
+
+      body.dark-mode .login-block {
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+      }
+
+      .image-side {
+        flex: 1.2;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, rgba(102,126,234,0.08) 0%, rgba(118,75,162,0.08) 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .image-side::before {
+        content: '';
+        position: absolute;
+        top: -60px; right: -60px;
+        width: 220px; height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(102,126,234,0.18) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .image-side::after {
+        content: '';
+        position: absolute;
+        bottom: -40px; left: -40px;
+        width: 180px; height: 180px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(0,210,255,0.14) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .illustration-svg {
+        width: 100%;
+        max-width: 340px;
+        height: auto;
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 20px 40px rgba(102,126,234,0.18));
+        transition: filter 0.4s ease;
+      }
+      body.dark-mode .illustration-svg {
+        filter: drop-shadow(0 20px 40px rgba(138,161,248,0.28));
+      }
+
+      /* SVG element theme tokens */
+      .svg-bg-primary { fill: rgba(102,126,234,0.1); }
+      body.dark-mode .svg-bg-primary { fill: rgba(138,161,248,0.12); }
+
+      .svg-accent { fill: #667eea; }
+      body.dark-mode .svg-accent { fill: #8aa1f8; }
+
+      .svg-accent-2 { fill: #764ba2; }
+      body.dark-mode .svg-accent-2 { fill: #9068be; }
+
+      .svg-cyan { fill: #00d2ff; }
+      body.dark-mode .svg-cyan { fill: #4ddbff; }
+
+      .svg-white { fill: #ffffff; }
+      body.dark-mode .svg-white { fill: #1e1e2e; }
+
+      .svg-card { fill: #f8fafc; stroke: rgba(102,126,234,0.2); }
+      body.dark-mode .svg-card { fill: #1a1a2e; stroke: rgba(138,161,248,0.2); }
+
+      .svg-text { fill: #1e293b; }
+      body.dark-mode .svg-text { fill: #e2e8f0; }
+
+      .svg-text-light { fill: #64748b; }
+      body.dark-mode .svg-text-light { fill: #94a3b8; }
+
+      .svg-line { stroke: rgba(102,126,234,0.3); }
+      body.dark-mode .svg-line { stroke: rgba(138,161,248,0.3); }
+
+      .svg-green { fill: #22c55e; }
+      .svg-red { fill: #ff4757; }
+
+      .illus-caption {
+        margin-top: 20px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+      .illus-caption h3 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0 0 6px 0;
+      }
+      .illus-caption p {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      /* Float animation for illustration */
+      @keyframes float-illus {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      .illustration-svg { animation: float-illus 5s ease-in-out infinite; }
+
+      .form-side {
+        background: transparent;
+        flex: 1;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .form-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 2rem;
+        color: var(--text-dark);
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      .input-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .form-control {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
+        background: rgba(0,0,0,0.02);
+        border: 2px solid rgba(0,0,0,0.1);
+        padding: 1rem;
+        border-radius: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        padding-left: 45px;
+        color: var(--text-dark);
+        transition: all 0.3s ease;
+      }
+
+      body.dark-mode .form-control {
+        background: rgba(255,255,255,0.05);
+        border: 2px solid rgba(255,255,255,0.1);
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        background: transparent;
+      }
+
+      body.dark-mode .form-control:focus {
+        background: rgba(0,0,0,0.2);
+      }
+
+      .input-group-text {
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        transform: translateY(-50%);
+        color: var(--primary);
+        pointer-events: none;
+        font-size: 1.1rem;
+      }
+      
+      input::placeholder {
+        text-align: left;
+        color: var(--text-light);
+        opacity: 0.7;
+      }
+
+      .btn-primary {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border: none;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        width: 100%;
+        margin-top: 1rem;
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 25px rgba(102, 126, 234, 0.5);
+      }
+
+      .social-login {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 2rem;
+      }
+
+      .social-btn {
+        background: var(--card-bg);
+        border: 1px solid var(--glass-border);
+        color: var(--primary);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      }
+
+      body.dark-mode .social-btn {
+        border-color: rgba(255,255,255,0.1);
+      }
+
+      .social-btn:hover {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        color: white;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        border-color: transparent;
+      }
+
+      .or-divider {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .or-divider::before,
+      .or-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background-color: var(--glass-border);
+      }
+
+      body.dark-mode .or-divider::before,
+      body.dark-mode .or-divider::after {
+        background-color: rgba(255,255,255,0.1);
+      }
+
+      .or-divider span {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        padding: 0 15px;
+        font-weight: 500;
+      }
+
+      .signup-link {
+        text-align: center;
+        margin-top: 2rem;
+        color: var(--text-dark);
+        font-weight: 500;
+      }
+      
+      .signup-link a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+        transition: color 0.3s ease;
+      }
+
+      .signup-link a:hover {
+        color: var(--accent);
+      }
+
+      /* Premium Django Messages */
+      .messages {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 400px;
+        pointer-events: none;
+      }
+
+      .messages li {
+        padding: 1.2rem 1.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px;
+        margin-bottom: 0;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        animation: slideInRight 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 0.6s ease 5s forwards;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        pointer-events: auto;
+        color: var(--text-dark);
+        border: 1px solid var(--glass-border);
+      }
+
+      body.dark-mode .messages li {
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      }
+
+      .messages li i {
+        font-size: 1.4rem;
+      }
+
+      .messages .success i { color: #667eea; text-shadow: 0 0 10px rgba(102, 126, 234, 0.4); }
+      .messages .error i, .messages .danger i { color: #ff4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.4); }
+      
+      body.dark-mode .messages .success i { color: #8aa1f8; }
+      body.dark-mode .messages .error i, body.dark-mode .messages .danger i { color: #ff6b81; }
+
+      @keyframes slideInRight {
+        0% { opacity: 0; transform: translateX(50px); }
+        100% { opacity: 1; transform: translateX(0); }
+      }
+
+      @keyframes fadeOut {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+      }
+
+      /* Advanced Footer with Wave */
+      /* Creative Triple-Layered Energy Waves */
+      /* Creative Triple-Layered Energy Waves */
+      .footer-wave {
+        display: block;
+        width: 100%;
+        height: 200px;
+        margin-top: auto;
+        margin-bottom: -5px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .footer-wave path {
+        transition: all 0.4s ease;
+        animation: waveMove 20s linear infinite;
+        stroke-width: 2px;
+      }
+
+      .wave-bg { 
+        fill: rgba(50, 133, 211, 0.05); 
+        stroke: rgba(50, 133, 211, 0.2);
+        animation-duration: 30s !important; 
+      }
+      .wave-mid { 
+        fill: rgba(50, 133, 211, 0.15); 
+        stroke: rgba(50, 133, 211, 0.3);
+        animation-direction: reverse !important; 
+        animation-duration: 25s !important; 
+      }
+      .wave-top { 
+        fill: rgba(50, 133, 211, 0.4); 
+        stroke: rgba(50, 133, 211, 0.8);
+        stroke-width: 3px;
+      }
+
+      body.dark-mode .wave-bg { 
+        fill: rgba(218, 230, 234, 0.2); 
+        stroke: rgba(77, 219, 255, 0.2);
+      }
+      body.dark-mode .wave-mid { 
+        fill: rgba(218, 230, 234, 0.5); 
+        stroke: rgba(77, 219, 255, 0.4);
+      }
+      body.dark-mode .wave-top { 
+        fill: rgba(218, 230, 234, 0.887); 
+        stroke: #4ddbffd6;
+        stroke-width: 3px;
+      }
+
+      @keyframes waveMove {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-1440px); }
+      }
+
+      footer {
+        background: #0f172a;
+        color: #94a3b8;
+        font-family: 'Outfit', sans-serif;
+        position: relative;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 2.5rem 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 3rem;
+      }
+
+      .footer-left, .footer-links, .footer-social {
+        flex: 1;
+        min-width: 250px;
+      }
+
+      footer h3, footer h4 {
+        color: #f8fafc;
+        margin-bottom: 1.5rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        position: relative;
+        padding-bottom: 12px;
+      }
+
+      footer h3 i {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-right: 8px;
+        font-size: 1.2em;
+      }
+
+      footer h3::after, footer h4::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 40px;
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-radius: 2px;
+        transition: width 0.4s ease;
+      }
+
+      .footer-left:hover h3::after, .footer-links:hover h4::after, .footer-social:hover h4::after {
+        width: 70px;
+      }
+
+      .footer-left p {
+        font-size: 1.05rem;
+        line-height: 1.8;
+      }
+
+      .footer-links ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 1.2rem;
+      }
+
+      .footer-links a {
+        color: #94a3b8;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+      }
+
+      .footer-links a i {
+        color: var(--primary);
+        font-size: 0.9em;
+        transition: transform 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: #f8fafc;
+        transform: translateX(10px);
+      }
+
+      .footer-links a:hover i {
+        transform: translateX(5px);
+        color: var(--accent);
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+      }
+
+      .social-icons a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #f8fafc;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-size: 1.2rem;
+      }
+
+      .social-icons a:hover {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        transform: translateY(-8px) rotate(360deg) scale(1.1);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .made-with {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-size: 1rem;
+        color: #f8fafc;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 0.4s ease;
+        font-weight: 600;
+      }
+
+      .made-with:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      }
+
+      .heart {
+        color: #ff4757;
+        margin: 0 10px;
+        font-size: 1.4rem;
+        animation: pulse 1s infinite;
+        display: inline-block;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); text-shadow: 0 0 15px rgba(255, 71, 87, 0.8); }
+        100% { transform: scale(1); }
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.4);
+        font-size: 0.95rem;
+        color: #64748b;
+        letter-spacing: 1px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+      }
+
+      /* Premium Django Messages Pop-ups */
+      .messages {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 400px;
+        pointer-events: none;
+      }
+
+      .messages li {
+        padding: 1.2rem 1.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px;
+        margin-bottom: 0;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        animation: slideInRight 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 0.6s ease 5s forwards;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        pointer-events: auto;
+        color: var(--text-dark);
+        border: 1px solid var(--glass-border);
+      }
+
+      body.dark-mode .messages li {
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      }
+
+      .messages li i {
+        font-size: 1.4rem;
+      }
+
+      .messages .success i { color: #667eea; text-shadow: 0 0 10px rgba(102, 126, 234, 0.4); }
+      .messages .error i, .messages .danger i { color: #ff4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.4); }
+      
+      body.dark-mode .messages .success i { color: #8aa1f8; }
+      body.dark-mode .messages .error i, body.dark-mode .messages .danger i { color: #ff6b81; }
+
+      @keyframes slideInRight {
+        0% { opacity: 0; transform: translateX(50px); }
+        100% { opacity: 1; transform: translateX(0); }
+      }
+
+      @keyframes fadeOut {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 991px) {
+        .login-block {
+          width: 95%;
+          max-width: 800px;
+        }
+        nav { padding: 15px 25px; }
+        nav.nav-scrolled { width: 85%; }
+        .form-side { padding: 2rem; }
+        .image-side { padding: 20px; }
+        .footer-content {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          text-align: left;
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        nav { padding: 12px 15px; flex-direction: column; justify-content: center; }
+        .company-name { display: inline-block; font-size: 1rem; }
+        .navbar-left { justify-content: center; margin-bottom: 10px; margin-left: 0; }
+        .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; flex-wrap: wrap; }
+        nav.nav-scrolled { width: 95%; top: 10px; padding: 12px 15px; }
+        .nav-link { padding: 8px 10px; font-size: 0.75rem; }
+        .nav-link i { margin-right: 4px; font-size: 0.9rem; }
+
+        .container { 
+          padding: 160px 1rem 2rem; 
+        }
+        
+        .login-block {
+          flex-direction: column;
+          border-radius: 20px;
+        }
+        
+        .image-side { 
+          width: 100%;
+          padding: 15px;
+          border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .image-side .illustration-svg {
+          max-height: 180px; 
+          width: 100%;
+          object-fit: contain;
+        }
+        
+        .form-side { 
+          padding: 2rem 1.5rem; 
+        }
+        
+        .form-title {
+          font-size: 1.8rem;
+          margin-bottom: 1.5rem;
+          text-align: center;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+          gap: 30px;
+        }
+        
+        footer h3::after, footer h4::after {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        
+        .social-icons {
+          justify-content: center;
+        }
+
+        .footer-social p {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .company-logo { width: 30px; height: 30px; }
+        .theme-btn { width: 35px; height: 35px; font-size: 1rem; }
+        .btn-primary { padding: 0.8rem 1.5rem; font-size: 1rem; }
+        .form-control { padding: 0.8rem; padding-left: 40px; font-size: 0.95rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'home' %}" class="navbar-left" style="text-decoration: none;">
+        <img
+          src="{% static 'images/liver icon.png' %}"
+          alt="Company Logo"
+          class="company-logo"
+        />
+        <span class="company-name">LIVER CIRRHOSIS</span>
+      </a>
+      <div class="navbar-right">
+        <a href="{% url 'prediction' %}" class="nav-link"><i class="fa-solid fa-stethoscope"></i> Prediction</a>
+        <a href="{% url 'records' %}" class="nav-link"><i class="fa-solid fa-file-medical"></i> Dashboard</a>
+        <a href="{% url 'about' %}" class="nav-link"><i class="fa-solid fa-circle-info"></i> About Us</a>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle Dark Mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="login-block">
+        <div class="image-side">
+          <svg class="illustration-svg" viewBox="0 0 440 420" xmlns="http://www.w3.org/2000/svg" aria-label="Medical Dashboard Login Illustration">
+            <defs>
+              <!-- Light mode gradients -->
+              <radialGradient id="blobGradL" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#667eea" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#764ba2" stop-opacity="0.04"/>
+              </radialGradient>
+              <linearGradient id="cardGradL" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+                <stop offset="100%" stop-color="#f0f4ff" stop-opacity="1"/>
+              </linearGradient>
+              <linearGradient id="accentGradL" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#667eea"/>
+                <stop offset="100%" stop-color="#764ba2"/>
+              </linearGradient>
+              <linearGradient id="cyanGradL" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#00d2ff"/>
+                <stop offset="100%" stop-color="#667eea"/>
+              </linearGradient>
+              <linearGradient id="liverGradL" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#764ba2"/>
+                <stop offset="60%" stop-color="#667eea"/>
+                <stop offset="100%" stop-color="#00d2ff"/>
+              </linearGradient>
+              <linearGradient id="screenGradL" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.96"/>
+                <stop offset="100%" stop-color="#0f172a" stop-opacity="0.98"/>
+              </linearGradient>
+              <filter id="softGlow">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="dropShadow">
+                <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#667eea" flood-opacity="0.22"/>
+              </filter>
+              <clipPath id="screenClip">
+                <rect x="76" y="82" width="232" height="148" rx="6"/>
+              </clipPath>
+            </defs>
+
+            <!-- === BACKGROUND === -->
+            <!-- Large radial ambient blob -->
+            <ellipse cx="218" cy="210" rx="195" ry="175" fill="url(#blobGradL)"/>
+            <!-- Orbital ring 1 -->
+            <ellipse cx="218" cy="210" rx="175" ry="68" fill="none" stroke="#667eea" stroke-width="1" stroke-dasharray="6 8" opacity="0.18" transform="rotate(-25 218 210)"/>
+            <!-- Orbital ring 2 -->
+            <ellipse cx="218" cy="210" rx="155" ry="55" fill="none" stroke="#00d2ff" stroke-width="0.8" stroke-dasharray="4 10" opacity="0.13" transform="rotate(20 218 210)"/>
+
+            <!-- === LAPTOP / DASHBOARD SCREEN === -->
+            <!-- Laptop base -->
+            <rect x="55" y="60" width="276" height="188" rx="14" fill="url(#cardGradL)" filter="url(#dropShadow)" class="svg-laptop-body"/>
+            <rect x="55" y="60" width="276" height="188" rx="14" fill="none" stroke="#667eea" stroke-width="1.2" opacity="0.25"/>
+            <!-- Screen bezel -->
+            <rect x="70" y="72" width="246" height="160" rx="8" fill="url(#screenGradL)"/>
+            <!-- Screen glow accent top -->
+            <rect x="70" y="72" width="246" height="6" rx="0" fill="#667eea" opacity="0.6"/>
+
+            <!-- Screen UI content -->
+            <!-- Header bar -->
+            <rect x="76" y="82" width="232" height="22" fill="#1e293b" rx="4" opacity="0.8"/>
+            <circle cx="87" cy="93" r="4" fill="#ff4757"/>
+            <circle cx="100" cy="93" r="4" fill="#ffa502"/>
+            <circle cx="113" cy="93" r="4" fill="#22c55e"/>
+            <rect x="160" y="88" width="80" height="10" rx="3" fill="#667eea" opacity="0.4"/>
+
+            <!-- Dashboard main area: liver visualization -->
+            <!-- Liver shape (detailed anatomical) -->
+            <g filter="url(#softGlow)" clip-path="url(#screenClip)">
+              <!-- Liver body -->
+              <path d="M148,140 C138,120 120,115 112,128 C104,141 110,162 124,168 C130,171 138,170 144,176 C150,183 149,198 155,207 C161,215 175,216 183,208 C192,197 190,175 182,162 C175,150 160,158 148,140Z" fill="url(#liverGradL)" opacity="0.92"/>
+              <!-- Liver right lobe -->
+              <path d="M183,140 C190,125 205,118 218,128 C230,138 228,160 215,168 C207,173 197,170 190,178 C184,186 185,200 180,208 C175,216 163,215 155,207" fill="url(#accentGradL)" opacity="0.65"/>
+              <!-- Bile duct -->
+              <path d="M162,185 C162,200 166,218 170,230" fill="none" stroke="#00d2ff" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+              <!-- Blood vessels -->
+              <path d="M148,145 C142,135 135,132 130,138" fill="none" stroke="white" stroke-width="1.2" opacity="0.35" stroke-linecap="round"/>
+              <path d="M165,145 C170,138 180,135 188,140" fill="none" stroke="white" stroke-width="1" opacity="0.3" stroke-linecap="round"/>
+              <!-- Glow overlay -->
+              <ellipse cx="165" cy="168" rx="40" ry="35" fill="#667eea" opacity="0.08"/>
+            </g>
+
+            <!-- ECG line overlay at bottom of screen -->
+            <polyline points="76,218 95,218 103,200 112,236 122,188 132,222 144,222 155,218 175,218 185,200 195,236 205,188 215,222 234,222 245,218 260,218 270,218 290,218 308,218" fill="none" stroke="url(#cyanGradL)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+            <!-- ECG live dot -->
+            <circle cx="308" cy="218" r="4" fill="#00d2ff" filter="url(#softGlow)"/>
+
+            <!-- Laptop hinge + base -->
+            <rect x="55" y="248" width="276" height="6" rx="2" fill="#cbd5e1" opacity="0.5" class="svg-stand"/>
+            <ellipse cx="193" cy="258" rx="60" ry="7" fill="#e2e8f0" opacity="0.35" class="svg-stand"/>
+
+            <!-- === FLOATING STAT CARDS === -->
+            <!-- Card 1: Bilirubin -->
+            <rect x="326" y="78" width="100" height="66" rx="12" fill="url(#cardGradL)" filter="url(#dropShadow)" class="svg-floatcard"/>
+            <rect x="326" y="78" width="100" height="66" rx="12" fill="none" stroke="#667eea" stroke-width="1" opacity="0.3"/>
+            <rect x="334" y="88" width="24" height="24" rx="6" fill="url(#accentGradL)" opacity="0.9"/>
+            <!-- vial icon in card -->
+            <rect x="343" y="91" width="6" height="15" rx="2" fill="white" opacity="0.9"/>
+            <circle cx="346" cy="104" r="4" fill="white" opacity="0.6"/>
+            <rect x="334" y="118" width="84" height="4" rx="2" fill="#667eea" opacity="0.35"/>
+            <rect x="334" y="126" width="55" height="4" rx="2" fill="#94a3b8" opacity="0.4"/>
+            <rect x="362" y="86" width="55" height="16" rx="6" fill="#22c55e" opacity="0.12"/>
+            <rect x="370" y="91" width="38" height="5" rx="2" fill="#22c55e" opacity="0.7"/>
+
+            <!-- Card 2: Risk Score -->
+            <rect x="326" y="162" width="100" height="66" rx="12" fill="url(#cardGradL)" filter="url(#dropShadow)" class="svg-floatcard"/>
+            <rect x="326" y="162" width="100" height="66" rx="12" fill="none" stroke="#764ba2" stroke-width="1" opacity="0.3"/>
+            <rect x="334" y="172" width="24" height="24" rx="6" fill="url(#accentGradL)" opacity="0.85"/>
+            <!-- heartbeat icon in card -->
+            <polyline points="337,184 341,184 343,179 346,190 349,176 351,184 355,184" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="334" y="202" width="84" height="4" rx="2" fill="#764ba2" opacity="0.35"/>
+            <rect x="334" y="210" width="55" height="4" rx="2" fill="#94a3b8" opacity="0.4"/>
+            <!-- Mini bar chart in card -->
+            <rect x="368" y="202" width="6" height="10" rx="1.5" fill="#667eea" opacity="0.6"/>
+            <rect x="377" y="196" width="6" height="16" rx="1.5" fill="#667eea" opacity="0.8"/>
+            <rect x="386" y="199" width="6" height="13" rx="1.5" fill="#764ba2" opacity="0.7"/>
+            <rect x="395" y="193" width="6" height="19" rx="1.5" fill="url(#accentGradL)" opacity="0.9"/>
+
+            <!-- Card 3: Stage badge -->
+            <rect x="8" y="158" width="90" height="60" rx="12" fill="url(#cardGradL)" filter="url(#dropShadow)" class="svg-floatcard"/>
+            <rect x="8" y="158" width="90" height="60" rx="12" fill="none" stroke="#00d2ff" stroke-width="1" opacity="0.3"/>
+            <circle cx="30" cy="178" r="10" fill="url(#cyanGradL)" opacity="0.9"/>
+            <!-- shield icon -->
+            <path d="M25,174 Q30,170 35,174 L35,181 Q30,185 25,181Z" fill="white" opacity="0.8"/>
+            <rect x="42" y="170" width="46" height="5" rx="2" fill="#1e293b" opacity="0.3"/>
+            <rect x="42" y="179" width="32" height="4" rx="2" fill="#94a3b8" opacity="0.35"/>
+            <rect x="16" y="196" width="72" height="10" rx="4" fill="url(#cyanGradL)" opacity="0.18"/>
+            <rect x="26" y="199" width="42" height="4" rx="2" fill="#00d2ff" opacity="0.6"/>
+
+            <!-- === ROBOT ASSISTANT (Premium AI replacement) === -->
+            <g class="svg-robot">
+              <!-- Shadow under robot -->
+              <ellipse cx="56" cy="385" rx="30" ry="6" fill="#667eea" opacity="0.1"/>
+              
+              <!-- Body/Torso -->
+              <path d="M35,340 L77,340 L82,380 Q82,395 56,395 Q30,395 30,380 Z" fill="url(#cardGradL)" stroke="#e2e8f0" stroke-width="1" class="svg-card"/>
+              <!-- Glowing core in chest -->
+              <circle cx="56" cy="360" r="8" fill="url(#accentGradL)" opacity="0.4" filter="url(#softGlow)"/>
+              <circle cx="56" cy="360" r="4" fill="white" opacity="0.8"/>
+              
+              <!-- Neck connector -->
+              <rect x="52" y="325" width="8" height="15" fill="#cbd5e1" opacity="0.5"/>
+              
+              <!-- Head -->
+              <rect x="36" y="285" width="40" height="40" rx="12" fill="url(#cardGradL)" stroke="#e2e8f0" stroke-width="1" class="svg-card"/>
+              <!-- Face visor -->
+              <rect x="42" y="295" width="28" height="18" rx="6" fill="#1e293b"/>
+              <!-- Glowing eyes -->
+              <circle cx="49" cy="304" r="3" fill="#00d2ff" filter="url(#softGlow)"/>
+              <circle cx="63" cy="304" r="3" fill="#00d2ff" filter="url(#softGlow)"/>
+              
+              <!-- Antennas -->
+              <line x1="45" y1="285" x2="41" y2="272" stroke="#667eea" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="41" cy="272" r="2" fill="#667eea"/>
+              <line x1="67" y1="285" x2="71" y2="272" stroke="#667eea" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="71" cy="272" r="2" fill="#667eea"/>
+              
+              <!-- Robotic hand holding tablet -->
+              <path d="M82,345 Q95,345 102,352" fill="none" stroke="#cbd5e1" stroke-width="7" stroke-linecap="round" opacity="0.8"/>
+              <!-- Tablet in hand -->
+              <rect x="96" y="338" width="46" height="32" rx="5" fill="#1e293b"/>
+              <rect x="99" y="341" width="40" height="24" rx="3" fill="#2d3748"/>
+              <!-- Chart on tablet -->
+              <polyline points="102,358 108,350 114,355 120,344 126,352 132,347 136,352" fill="none" stroke="#00d2ff" stroke-width="1.5" stroke-linecap="round"/>
+            </g>
+
+            <!-- === FLOATING PARTICLES & DECORATIONS === -->
+            <circle cx="380" cy="58" r="6" fill="#00d2ff" opacity="0.5" filter="url(#softGlow)"/>
+            <circle cx="395" cy="80" r="4" fill="#667eea" opacity="0.4"/>
+            <circle cx="370" cy="95" r="3" fill="#764ba2" opacity="0.5"/>
+
+            <circle cx="14" cy="112" r="5" fill="#667eea" opacity="0.35"/>
+            <circle cx="28" cy="130" r="3" fill="#00d2ff" opacity="0.4"/>
+            <circle cx="8" cy="145" r="4" fill="#764ba2" opacity="0.3"/>
+
+            <!-- DNA strand decorative -->
+            <path d="M400,140 Q410,155 400,170 Q390,185 400,200 Q410,215 400,230" fill="none" stroke="#667eea" stroke-width="1.5" stroke-dasharray="3 4" opacity="0.3" stroke-linecap="round"/>
+            <path d="M418,140 Q408,155 418,170 Q428,185 418,200 Q408,215 418,230" fill="none" stroke="#764ba2" stroke-width="1.5" stroke-dasharray="3 4" opacity="0.25" stroke-linecap="round"/>
+            <!-- Rungs of DNA -->
+            <line x1="400" y1="147" x2="418" y2="147" stroke="#667eea" stroke-width="1" opacity="0.2"/>
+            <line x1="397" y1="162" x2="421" y2="162" stroke="#00d2ff" stroke-width="1" opacity="0.2"/>
+            <line x1="400" y1="177" x2="418" y2="177" stroke="#667eea" stroke-width="1" opacity="0.2"/>
+            <line x1="397" y1="192" x2="421" y2="192" stroke="#00d2ff" stroke-width="1" opacity="0.2"/>
+            <line x1="400" y1="207" x2="418" y2="207" stroke="#667eea" stroke-width="1" opacity="0.2"/>
+            <line x1="397" y1="222" x2="421" y2="222" stroke="#00d2ff" stroke-width="1" opacity="0.2"/>
+
+            <!-- Plus signs -->
+            <text x="4" y="66" font-size="22" fill="#667eea" opacity="0.18" font-weight="bold">+</text>
+            <text x="418" y="300" font-size="18" fill="#00d2ff" opacity="0.22" font-weight="bold">+</text>
+            <text x="150" y="405" font-size="14" fill="#764ba2" opacity="0.2" font-weight="bold">+</text>
+            <text x="280" y="400" font-size="18" fill="#667eea" opacity="0.18" font-weight="bold">+</text>
+          </svg>
+          <div class="illus-caption">
+            <h3>Smart Liver Health Analytics</h3>
+            <p>Login to access your AI-powered dashboard<br>&amp; personalised clinical predictions</p>
+          </div>
+        </div>
+        <div class="form-side">
+          <h2 class="form-title">Login</h2>
+
+          {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+              {% if "success" in message.tags %}
+              <i class="fas fa-check-circle"></i>
+              {% elif "error" in message.tags or "danger" in message.tags %}
+              <i class="fas fa-exclamation-circle"></i>
+              {% else %}
+              <i class="fas fa-info-circle"></i>
+              {% endif %}
+              {{ message }}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+
+          <div class="social-login">
+            <button class="social-btn" aria-label="Login with Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </button>
+            <button class="social-btn" aria-label="Login with X">
+              <i class="fa-brands fa-x-twitter"></i>
+            </button>
+            <button class="social-btn" aria-label="Login with Google">
+              <i class="fab fa-google"></i>
+            </button>
+          </div>
+
+          <div class="or-divider">
+            <span>Or</span>
+          </div>
+
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="username">Username</label>
+
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"></i
+                ></span>
+                <input
+                  name="username"
+                  type="text"
+                  id="username"
+                  class="form-control"
+                  placeholder="Enter your Username"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fas fa-lock"></i
+                ></span>
+                <input
+                  name="password"
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  placeholder="Enter your password"
+                />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+
+          <div class="signup-link">
+            Don't have an account? <a href="{% url 'signup' %}">SignUp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none" style="width: 2880px;">
+      <path class="wave-bg" d="M0,192L48,197.3C96,203,192,213,288,192C384,171,480,117,576,112C672,107,768,107,864,133.3C960,160,1056,213,1152,213.3C1248,213,1344,160,1392,133.3L1440,107L1488,192L1536,197.3C1584,203,1680,213,1776,192C1872,171,1968,117,2064,112C2160,107,2256,107,2352,133.3C2448,160,2544,213,2640,213.3C2736,213,2832,160,2880,133.3L2880,320L0,320Z"></path>
+      <path class="wave-mid" d="M0,160L60,170.7C120,181,240,203,360,181.3C480,160,600,96,720,112C840,128,960,224,1080,218.7C1200,213,1320,107,1380,53.3L1440,0L1500,160L1560,170.7C1620,181,1740,203,1860,181.3C1980,160,2100,96,2220,112C2340,128,2460,224,2580,218.7C2700,213,2820,107,2880,53.3L2880,320L0,320Z"></path>
+      <path class="wave-top" d="M0,224L80,213.3C160,203,320,181,480,181.3C640,181,800,203,960,197.3C1120,192,1280,160,1360,144L1440,128L1520,224L1600,213.3C1680,203,1840,181,2000,181.3C2160,181,2320,203,2480,197.3C2640,192,2800,160,2880,144L2880,320L0,320Z"></path>
+    </svg>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-left">
+          <h3><i class="fa-solid fa-staff-snake"></i> Liver Cirrhosis</h3>
+          <p>Empowering patients and healthcare professionals with advanced, intelligent prediction tools. Stay informed, stay healthy.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="{% url 'login' %}"><i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard</a></li>
+            <li><a href="{% url 'signup' %}"><i class="fa-solid fa-user-plus"></i> Create Account</a></li>
+          </ul>
+        </div>
+        <div class="footer-social">
+          <h4>Connect</h4>
+          <p><i class="fa-solid fa-envelope"></i> support@livercirrhosis.org</p>
+          <div class="social-icons">
+            <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-icon" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-icon" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon" title="GitHub"><i class="fa-brands fa-github"></i></a>
+          </div>
+          <div class="made-with">
+            Made with <span class="heart"><i class="fa-solid fa-heart"></i></span> & Django
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2025 Liver Cirrhosis Project. All rights reserved.
+      </div>
+    </footer>
+
+    <script>
+      // Dark Mode Toggle Logic
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const themeIcon = themeToggleBtn.querySelector('i');
+      
+      // Check for saved theme preference in local storage
+      const savedTheme = localStorage.getItem('liverCirrhosisTheme');
+      if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          themeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+          if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.replace('fa-moon', 'fa-sun');
+              localStorage.setItem('liverCirrhosisTheme', 'dark');
+          } else {
+              themeIcon.classList.replace('fa-sun', 'fa-moon');
+              localStorage.setItem('liverCirrhosisTheme', 'light');
+          }
+      });
+
+      // Add scrolled class to navbar when user scrolls down
+      window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 50) {
+          nav.classList.add('nav-scrolled');
+        } else {
+          nav.classList.remove('nav-scrolled');
+        }
+      });
+    </script>
+      {% include 'ai.html' %}
+  </body>
+</html>

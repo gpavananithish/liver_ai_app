@@ -1,0 +1,1420 @@
+{% load static %} {% load tz %} {% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liver Cirrhosis - Patient Records</title>
+    <link rel="icon" href="{% static 'images/recordIcon.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+      
+      :root {
+        --primary: #667eea;
+        --secondary: #764ba2;
+        --accent: #00d2ff;
+        --glass-bg: rgba(255, 255, 255, 0.9);
+        --glass-border: rgba(255, 255, 255, 0.4);
+        --text-dark: #1e293b;
+        --text-light: #64748b;
+        --bg-color: #f4f7fb;
+        --card-bg: #ffffff;
+      }
+
+      body.dark-mode {
+        --primary: #8aa1f8;
+        --secondary: #9068be;
+        --accent: #4ddbff;
+        --glass-bg: rgba(15, 15, 15, 0.85);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --text-dark: #ffffff;
+        --text-light: #a0a0a0;
+        --bg-color: #0b0b0b;
+        --card-bg: #141414;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        font-family: 'Outfit', sans-serif;
+        background: var(--bg-color);
+        color: var(--text-dark);
+        margin: 0;
+        min-height: 100vh;
+        width: 100vw;
+        max-width: 100%;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: background 0.4s ease, color 0.4s ease;
+      }
+
+      body.dark-mode::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      /* Ultra-Premium Navbar */
+      nav {
+        background: transparent;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        transition: padding 0.5s ease, background 0.5s ease, width 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.6s ease, top 0.6s ease, box-shadow 0.6s ease;
+      }
+
+      nav.nav-scrolled {
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        padding: 10px 30px;
+        width: 70%;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode nav.nav-scrolled {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        background: rgb(89 89 89 / 85%);
+      }
+
+      /* Messages Notification Styles */
+      /* Premium Django Messages Pop-ups */
+      .messages {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: fixed;
+        top: 30px;
+        right: 30px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 400px;
+        pointer-events: none;
+      }
+
+      .messages li {
+        padding: 1.2rem 1.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px;
+        margin-bottom: 0;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        animation: slideInRight 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 0.6s ease 5s forwards;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        pointer-events: auto;
+        color: var(--text-dark);
+        border: 1px solid var(--glass-border);
+      }
+
+      body.dark-mode .messages li {
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      }
+
+      .messages li i {
+        font-size: 1.4rem;
+      }
+
+      .messages .success i { color: #667eea; text-shadow: 0 0 10px rgba(102, 126, 234, 0.4); }
+      .messages .error i, .messages .danger i { color: #ff4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.4); }
+      
+      body.dark-mode .messages .success i { color: #8aa1f8; }
+      body.dark-mode .messages .error i, body.dark-mode .messages .danger i { color: #ff6b81; }
+
+      @keyframes slideInRight {
+        0% { opacity: 0; transform: translateX(50px); }
+        100% { opacity: 1; transform: translateX(0); }
+      }
+
+      @keyframes fadeOut {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+      }
+
+      .navbar-left { display: flex; align-items: center; gap: 15px; text-decoration: none; margin-left: 0px;}
+      .company-logo { width: 35px; height: 35px; border-radius: 8px; animation: float 6s ease-in-out infinite;}
+      
+      @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-5px) rotate(3deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+      }
+
+      .company-name {
+        font-weight: 800; font-size: 1.2rem;
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        letter-spacing: 1px;
+      }
+      .navbar-right { display: flex; gap: 15px; align-items: center; margin-right: 0px; }
+      .nav-link {
+        color: var(--text-dark); text-decoration: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; position: relative; overflow: hidden; transition: all 0.3s ease; background: rgb(60 150 189 / 5%); border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      body.dark-mode .nav-link { background: rgb(60 150 189 / 5%); border: 1px solid rgba(255, 255, 255, 0.4); color: #fff; }
+      body.dark-mode .nav-link:hover { background: linear-gradient(to right, var(--accent), var(--primary)); border-color: transparent; }
+      .nav-link:hover { background: linear-gradient(to right, var(--accent), var(--primary)); color: #fff; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); }
+      .nav-link::after { content: ''; position: absolute; top: -98%; left: -50%; width: 200%; height: 200%; background: rgba(255, 255, 255, 0.2); transform: rotate(45deg) translateY(-100%); transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; }
+      .nav-link:hover::after { transform: rotate(45deg) translateY(100%); }
+
+      .container { padding: 120px 40px 40px; max-width: 1400px; margin: 0 auto; flex: 1; width: 100%; box-sizing: border-box; }
+
+      .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; }
+      .header-section h2 { font-size: 2.2rem; font-weight: 800; margin: 0; background: linear-gradient(135deg, var(--secondary), var(--primary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+      .btn {
+        padding: 10px 20px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; border: none; display: inline-flex; align-items: center; gap: 8px;
+      }
+      .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3); }
+      .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5); }
+      .btn-danger { 
+        background: linear-gradient(135deg, #ff4757, var(--secondary)); 
+        color: white; 
+        box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3); 
+      }
+      .btn-danger:hover { 
+        transform: translateY(-2px); 
+        box-shadow: 0 8px 20px rgba(255, 71, 87, 0.5); 
+      }
+      body.dark-mode .btn-danger { 
+        background: linear-gradient(135deg, #ff6b81, var(--secondary));
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Visualizations */
+      .charts-grid {
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); 
+        gap: 30px; 
+        margin-bottom: 40px;
+      }
+      .chart-card {
+        background: var(--card-bg); border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--glass-border);
+      }
+      body.dark-mode .chart-card { box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+      /* Clinical Table */
+      .table-card {
+        background: var(--card-bg); border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--glass-border); overflow-x: auto;
+      }
+      body.dark-mode .table-card { box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+
+      table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+      th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--glass-border); font-size: 0.95rem; }
+      th { font-weight: 700; color: var(--primary); background: rgba(102, 126, 234, 0.05); white-space: nowrap; }
+      tr:hover td { background: rgba(102, 126, 234, 0.02); }
+      body.dark-mode tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+      .badge { padding: 5px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+      .badge.stage-normal { background: rgba(46, 213, 115, 0.2); color: #2ed573; border: 1px solid rgba(46, 213, 115, 0.5); font-weight: bold; }
+      .badge.stage-initial { background: rgba(230, 150, 52, 0.692); color: #db841a; border: 1px solid rgba(223, 165, 19, 0.695); }
+      .badge.stage-intermediate { background: rgb(230 149 52 / 28%); color: #d58b2e; border: 1px solid rgb(213 165 46 / 40%); }
+      .badge.stage-end { background: rgba(203, 100, 10, 0.85); color: #ff8c01; border: 1px solid rgba(255, 140, 1, 0.695); }
+      body.dark-mode .badge.stage-intermediate { background: rgba(0, 0, 0, 0.6); }
+      body.dark-mode .badge.stage-end { background: rgba(0, 0, 0, 0.95); }
+
+      .badge.trend-down { background: rgba(46, 213, 115, 0.1); color: #2ed573; border: 1px solid rgba(46, 213, 115, 0.2); }
+      .badge.trend-stable { background: rgba(30, 144, 255, 0.1); color: #1e90ff; border: 1px solid rgba(30, 144, 255, 0.2); }
+      .badge.trend-up { background: rgba(255, 71, 87, 0.1); color: #ff4757; border: 1px solid rgba(255, 71, 87, 0.2); }
+
+      .action-btns { display: flex; gap: 10px; }
+      .btn-icon { padding: 8px; border-radius: 8px; cursor: pointer; border: none; font-size: 1rem; transition: 0.3s; }
+      .btn-dl { background: rgba(102, 126, 234, 0.1); color: var(--primary); }
+      .btn-dl:hover { background: var(--primary); color: white; }
+
+      .theme-btn {
+        background: none; border: none; color: var(--text-dark); font-size: 1.2rem; cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;
+      }
+      .theme-btn:hover { background: rgba(0, 0, 0, 0.05); transform: rotate(15deg); }
+      body.dark-mode .theme-btn:hover { background: rgba(255, 255, 255, 0.1); }
+
+      /* Profile Dropdown */
+      .profile-container { position: relative; cursor: pointer; display: flex; align-items: center; }
+      .profile-icon {
+        width: 35px;
+        height: 35px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .profile-container:hover .profile-icon {
+        transform: scale(1.1) rotate(5deg);
+        filter: drop-shadow(0 0 8px var(--primary));
+      }
+
+      /* Premium Dropdown Avatar */
+      .dropdown-avatar {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+        position: relative;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+      }
+
+      body.dark-mode .dropdown-avatar {
+        filter: drop-shadow(0 10px 25px rgba(0,0,0,0.4));
+      }
+      .profile-details {
+        display: none; position: absolute; top: 100%; right: 0; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 15px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); padding: 20px; z-index: 100; min-width: 250px; color: var(--text-dark); margin-top: 10px; backdrop-filter: blur(10px);
+      }
+      .profile-details::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 0;
+        width: 100%;
+        height: 10px;
+      }
+      .profile-container:hover .profile-details { display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 0.3s ease; }
+      .profile-details h3 { margin-top: 0; margin-bottom: 15px; color: var(--text-dark); font-weight: 700; }
+      .profile-details p { margin: 5px 0; font-size: 0.95rem; color: var(--text-light); align-self: flex-start; width: 100%; }
+      .profile-details p b { color: var(--text-dark); margin-right: 5px; }
+      .profile-details a { margin-top: 15px; display: inline-block; padding: 10px 20px; text-decoration: none; border-radius: 8px; font-weight: 600; width: 100%; text-align: center; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+ 
+      /* Tooltip Styles */
+      .tooltip-container { position: relative; display: inline-block; cursor: pointer; margin-left: auto; }
+      .tooltip-icon { color: var(--text-light); font-size: 0.9rem; transition: color 0.3s; }
+      .tooltip-container:hover .tooltip-icon { color: var(--primary); }
+      .tooltip-text {
+        visibility: hidden; width: 220px; background-color: var(--text-dark); color: var(--card-bg); text-align: center; border-radius: 8px; padding: 10px; position: absolute; z-index: 101; bottom: 125%; right: 0; opacity: 0; transition: opacity 0.3s, transform 0.3s; transform: translateY(10px); font-size: 0.8rem; font-weight: 400; line-height: 1.4; box-shadow: 0 10px 20px rgba(0,0,0,0.2); pointer-events: none;
+      }
+      .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; transform: translateY(0); }
+      .tooltip-text::after { content: ""; position: absolute; top: 100%; right: 10px; border-width: 5px; border-style: solid; border-color: var(--text-dark) transparent transparent transparent; }
+      
+      /* Mobile override for tooltip */
+      @media (max-width: 600px) {
+        .tooltip-text {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          bottom: auto;
+          right: auto;
+          transform: translate(-50%, -50%) scale(0.9);
+          width: 85%;
+          max-width: 320px;
+          visibility: hidden;
+          opacity: 0;
+          z-index: 1000;
+          pointer-events: none;
+          background: var(--text-dark);
+          color: var(--card-bg);
+          box-shadow: 0 0 0 100vmax rgba(0,0,0,0.4);
+          padding: 20px;
+          border-radius: 15px;
+          font-size: 0.9rem;
+        }
+        .tooltip-container:hover .tooltip-text {
+          visibility: visible;
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+          pointer-events: auto;
+        }
+        .tooltip-text::after { display: none; }
+      }
+
+      .card-header-actions { display: flex; align-items: center; gap: 10px; width: 100%; justify-content: space-between; margin-bottom: 5px; flex-wrap: wrap; }
+      .param-select-mini {
+          padding: 6px 10px; border-radius: 8px; font-size: 0.8rem; background: rgba(102, 126, 234, 0.05); border: 1px solid var(--glass-border); color: var(--text-dark); cursor: pointer; outline: none; transition: all 0.3s ease; font-family: 'Outfit', sans-serif;
+      }
+      .param-select-mini:hover { background: rgba(102, 126, 234, 0.1); border-color: var(--primary); }
+      body.dark-mode .param-select-mini { background: rgba(255, 255, 255, 0.05); }
+
+      /* Footer with Wave (same as home.html) */
+      .footer-wave { display: block; width: 100%; height: auto; margin-top: auto; margin-bottom: -5px; overflow: hidden; }
+      .footer-wave path { fill: rgba(50, 133, 211, 0.5); transition: fill 0.4s ease; }
+      body.dark-mode .footer-wave path { fill: rgba(218, 230, 234, 0.887); }
+
+      footer { background: #0f172a; color: #94a3b8; font-family: 'Outfit', sans-serif; position: relative; }
+      .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; padding: 2.5rem 1rem; max-width: 1200px; margin: 0 auto; gap: 3rem; }
+      .footer-left, .footer-links, .footer-social { flex: 1; min-width: 250px; }
+      footer h3, footer h4 { color: #f8fafc; margin-bottom: 1.5rem; font-weight: 800; letter-spacing: 1px; position: relative; padding-bottom: 12px; }
+      footer h3 i { background: linear-gradient(to right, var(--accent), var(--primary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-right: 8px; font-size: 1.2em; }
+      footer h3::after, footer h4::after { content: ''; position: absolute; left: 0; bottom: 0; height: 4px; width: 40px; background: linear-gradient(to right, var(--accent), var(--primary)); border-radius: 2px; transition: width 0.4s ease; }
+      .footer-left:hover h3::after, .footer-links:hover h4::after, .footer-social:hover h4::after { width: 70px; }
+      .footer-left p { font-size: 1.05rem; line-height: 1.8; }
+      .footer-links ul { list-style: none; padding: 0; }
+      .footer-links li { margin-bottom: 1.2rem; }
+      .footer-links a { color: #94a3b8; text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 12px; font-weight: 600; }
+      .footer-links a i { color: var(--primary); font-size: 0.9em; transition: transform 0.3s ease; }
+      .footer-links a:hover { color: #f8fafc; transform: translateX(10px); }
+      .footer-links a:hover i { transform: translateX(5px); color: var(--accent); }
+      .footer-social p { margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+      .footer-social p i { color: var(--primary); }
+      .social-icons { display: flex; gap: 15px; margin-bottom: 2rem; margin-top: 1rem; }
+      .social-icons a { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: rgba(255, 255, 255, 0.05); color: #f8fafc; border-radius: 50%; text-decoration: none; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-size: 1.2rem; }
+      .social-icons a:hover { background: linear-gradient(135deg, var(--primary), var(--secondary)); transform: translateY(-8px) rotate(360deg) scale(1.1); box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4); }
+      
+      .made-with { display: inline-flex; align-items: center; background: rgba(255, 255, 255, 0.05); padding: 12px 25px; border-radius: 30px; font-size: 1rem; color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); transition: all 0.4s ease; font-weight: 600; }
+      .made-with:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+      .heart { color: #ff4757; margin: 0 10px; font-size: 1.4rem; animation: pulse 1s infinite; display: inline-block; }
+      @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); text-shadow: 0 0 15px rgba(255, 71, 87, 0.8); } 100% { transform: scale(1); } }
+      .footer-bottom { text-align: center; padding: 1rem; background: rgba(0, 0, 0, 0.4); font-size: 0.95rem; color: #64748b; letter-spacing: 1px; border-top: 1px solid rgba(255,255,255,0.05); }
+      @media (max-width: 991px) {
+        nav { padding: 15px 20px; }
+        nav.nav-scrolled { width: 90%; }
+        .footer-content {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          text-align: left;
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        nav { padding: 12px 15px; flex-direction: column; justify-content: center; }
+        .company-name { display: inline-block; font-size: 1rem; }
+        .navbar-left { justify-content: center; margin-bottom: 10px; }
+        .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; }
+        nav.nav-scrolled { width: 95%; top: 10px; }
+        .nav-link { padding: 8px 10px; font-size: 0.75rem; }
+        .nav-link span { display: inline; }
+        .nav-link i { margin-right: 4px; font-size: 0.9rem; }
+ 
+        .container { padding: 160px 10px 40px; }
+        .charts-grid { grid-template-columns: 1fr; gap: 20px; }
+        .chart-card { padding: 15px; border-radius: 15px; }
+        .header-section { flex-direction: column; align-items: center; text-align: center; gap: 15px; }
+        .header-section h2 { font-size: 1.8rem; margin: 0; }
+        .header-section .btn { width: 100%; justify-content: center; }
+        
+        .radar-container { max-height: 300px !important; }
+ 
+        .footer-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+          padding: 1.5rem 1rem;
+          gap: 1.5rem;
+        }
+ 
+        .footer-wave { height: 60px; margin-bottom: -2px; width: 100%; display: block; }
+ 
+        footer h3, footer h4 { margin-bottom: 1rem; font-size: 1.2rem; }
+        footer h3::after, footer h4::after {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+ 
+        .footer-left p { font-size: 0.9rem; }
+        .social-icons {
+          justify-content: center;
+          margin-bottom: 1rem;
+        }
+        .footer-social p {
+          justify-content: center;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .header-section h2 { font-size: 1.5rem; }
+        .card-header-actions { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+        .card-header-actions > div:first-child { width: 100%; justify-content: center; flex-wrap: wrap; }
+        .tooltip-container { margin: 0; align-self: center; }
+        .param-select-mini { width: 100%; text-align: center; }
+        .chart-card h3 { font-size: 1rem; width: 100%; text-align: center; }
+        
+        /* Modal-like tooltip text */
+        .tooltip-text {
+            line-height: 1.6;
+            text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'home' %}" class="navbar-left">
+        <img src="{% static 'images/liver icon.png' %}" alt="Company Logo" class="company-logo" />
+        <span class="company-name">LIVER CIRRHOSIS</span>
+      </a>
+      <div class="navbar-right">
+        
+        <a href="{% url 'prediction' %}" class="nav-link"><i class="fa-solid fa-stethoscope"></i> <span>Prediction</span></a>
+        <a href="{% url 'about' %}" class="nav-link"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+        <button class="theme-btn" id="themeToggle" title="Toggle Dark/Light Mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <div class="profile-container">
+          <!-- Premium SVG Avatar used as Nav Icon -->
+          <svg class="profile-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="navAvatarGradRec" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:var(--primary);stop-opacity:1" />
+                <stop offset="100%" style="stop-color:var(--accent);stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="45" fill="none" stroke="url(#navAvatarGradRec)" stroke-width="5" />
+            <circle cx="50" cy="40" r="18" fill="url(#navAvatarGradRec)" />
+            <path d="M25 80C25 65 35 58 50 58C65 58 75 65 75 80" fill="url(#navAvatarGradRec)" />
+          </svg>
+
+          <div class="profile-details">
+            <div class="dropdown-avatar">
+              <!-- Larger version of the SVG avatar for the dropdown -->
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                <circle cx="50" cy="50" r="48" fill="var(--card-bg)" stroke="url(#navAvatarGradRec)" stroke-width="2" />
+                <circle cx="50" cy="40" r="20" fill="url(#navAvatarGradRec)" />
+                <path d="M22 82C22 65 34 58 50 58C66 58 78 65 78 82" fill="url(#navAvatarGradRec)" />
+              </svg>
+            </div>
+            <h3>Hi, {{ user.username }}</h3>
+            <p><b>Email:</b> {{ user.email }}</p>
+            {% if user.custom_user %}
+              <p><b>Gender:</b> {{ user.custom_user.gender }}</p>
+              <p><b>DOB:</b> {{ user.custom_user.dob|date:"Y-m-d" }}</p>
+            {% else %}
+              <p style="color:red; font-size:0.8rem;">Profile details not verified</p>
+            {% endif %}
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary" style="margin-bottom: 10px;">Edit Profile</a>
+            <a href="/logout" class="btn btn-danger">Log Out</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+            {% if "success" in message.tags %}
+            <i class="fas fa-check-circle"></i>
+            {% elif "error" in message.tags or "danger" in message.tags %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% else %}
+            <i class="fas fa-info-circle"></i>
+            {% endif %}
+            {{ message }}
+          </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      <div class="header-section">
+        <h2><i class="fa-solid fa-file-medical"></i> Patient Analytical Records</h2>
+        <div>
+          <a href="{% url 'download_pdf' %}" class="btn btn-primary"><i class="fa-solid fa-download"></i> Download Full Report</a>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+        <h3 style="margin: 0; color: var(--text-dark); font-size: 1.5rem;"><i class="fa-solid fa-chart-pie" style="color: var(--primary);"></i> Analytical Dashboard</h3>
+        <select id="chartFilter" class="btn" style="background: var(--card-bg); color: var(--text-dark); border: 1px solid var(--glass-border); font-family: 'Outfit', sans-serif; cursor: pointer; padding: 8px 15px; outline: none;">
+          <option value="all">All Time</option>
+          <option value="5">Last 5 Tests</option>
+          <option value="10">Last 10 Tests</option>
+          <option value="30">Last 30 Tests</option>
+        </select>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="card-header-actions">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-chart-line" style="color: var(--primary); font-size: 1.2rem;"></i>
+              <h3 style="margin: 0; color: var(--text-dark);">Prediction History</h3>
+              <div class="tooltip-container" style="margin-left: 0;">
+                <i class="fa-solid fa-circle-info tooltip-icon"></i>
+                <span class="tooltip-text">Visualizes the progression of Cirrhosis stages (Initial, Intermediate, End) over time to monitor recovery or clinical deterioration patterns.</span>
+              </div>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">Tracking your cirrhosis stage progression.</p>
+          <canvas id="stageChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header-actions">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-chart-pie" style="color: var(--secondary); font-size: 1.2rem;"></i>
+              <h3 style="margin: 0; color: var(--text-dark);">Stage Distribution</h3>
+              <div class="tooltip-container" style="margin-left: 0;">
+                <i class="fa-solid fa-circle-info tooltip-icon"></i>
+                <span class="tooltip-text">A summary breakdown of all clinical records, showing the frequency of each diagnosed stage to identify your most common status.</span>
+              </div>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">Summary of your recorded prediction results.</p>
+          <canvas id="stagePieChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header-actions">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-chart-bar" style="color: var(--accent); font-size: 1.2rem;"></i>
+              <select class="param-select-mini" id="barChartParam" onchange="renderCharts()">
+                <option value="bilirubin" selected>Bilirubin</option>
+                <option value="albumin">Albumin</option>
+                <option value="prothrombin">Prothrombin</option>
+                <option value="cholesterol">Cholesterol</option>
+                <option value="platelets">Platelets</option>
+                <option value="alk_phos">Alk. Phos</option>
+                <option value="age">Age</option>
+              </select>
+              <div class="tooltip-container" style="margin-left: 0;">
+                <i class="fa-solid fa-circle-info tooltip-icon"></i>
+                <span class="tooltip-text">A primary comparative bar chart. Switch parameters to see how specific clinical levels are hovering across your reports.</span>
+              </div>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">Dynamic tracking of selected biomarker levels.</p>
+          <canvas id="biomarkerChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header-actions">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-chart-area" style="color: #ff4757; font-size: 1.2rem;"></i>
+              <select class="param-select-mini" id="lineChartParam" onchange="renderCharts()">
+                <option value="prothrombin" selected>Prothrombin</option>
+                <option value="bilirubin">Bilirubin</option>
+                <option value="albumin">Albumin</option>
+                <option value="sgot">SGOT</option>
+                <option value="copper">Copper</option>
+                <option value="tryglicerides">Triglycerides</option>
+              </select>
+              <div class="tooltip-container" style="margin-left: 0;">
+                <i class="fa-solid fa-circle-info tooltip-icon"></i>
+                <span class="tooltip-text">Observes medical trends using a smooth Area Line chart. Useful for identifying gradual increases or decreases in vital clinical stats.</span>
+              </div>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">Smoothing and tracking vital clinical fluctuations.</p>
+          <canvas id="prothrombinChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header-actions">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-droplet" style="color: #f39c12; font-size: 1.2rem;"></i>
+              <h3 style="margin: 0; color: var(--text-dark);">Correlation Heatmap</h3>
+              <div class="tooltip-container" style="margin-left: 0;">
+                <i class="fa-solid fa-circle-info tooltip-icon"></i>
+                <span class="tooltip-text">Analyzes how Bilirubin (X-axis) and Albumin (Y-axis) fluctuate together, with bubble size indicating Prothrombin severity.</span>
+              </div>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">Biological correlation between vital clinical signs.</p>
+          <canvas id="bubbleChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header-actions">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-bullseye" style="color: #27ae60; font-size: 1.2rem;"></i>
+              <h3 style="margin: 0; color: var(--text-dark);">Biomarker Polar Map</h3>
+              <div class="tooltip-container" style="margin-left: 0;">
+                <i class="fa-solid fa-circle-info tooltip-icon"></i>
+                <span class="tooltip-text">A radial density map highlighting which health variables are currently occupying the largest clinical footprint in your profile.</span>
+              </div>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">Angular balance of your most recent clinical variables.</p>
+          <canvas id="polarAreaChart"></canvas>
+        </div>
+        
+        <div class="chart-card" style="grid-column: 1 / -1;">
+          <div class="card-header-actions" style="justify-content: center;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-spider" style="color: var(--primary); font-size: 1.2rem;"></i>
+              <h3 style="margin: 0; color: var(--text-dark);">Latest Biomarkers Overview</h3>
+              <div class="tooltip-container" style="margin-left: 0;">
+                <i class="fa-solid fa-circle-info tooltip-icon"></i>
+                <span class="tooltip-text" style="right: auto; left: 50%; transform: translateX(-50%);">A multi-axial radar view providing a snapshot of your most recent diagnostic parameters compared against each other.</span>
+              </div>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px; text-align: center;">A radar view comparing your most recent test values.</p>
+          <div class="radar-container" style="display: flex; justify-content: center; align-items: center; width: 100%; max-height: 400px;">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text Insights Section -->
+      {% if insights or trend_insights %}
+      <div class="chart-card" style="margin-bottom: 30px; grid-column: 1 / -1;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+          <i class="fa-solid fa-lightbulb" style="color: #f1c40f; font-size: 1.5rem;"></i>
+          <h3 style="margin: 0; color: var(--text-dark); font-size: 1.3rem;">Simplified Health Insights</h3>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+          {% for insight in insights %}
+            {% if insight.type == 'all_normal' %}
+            <div style="background: rgba(46, 213, 115, 0.1); padding: 15px; border-radius: 12px; border-left: 4px solid #2ed573;">
+              <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); font-weight: 500;"><i class="fa-solid fa-circle-check" style="color: #2ed573; margin-right: 5px;"></i> {{ insight.text }}</p>
+            </div>
+            {% elif insight.type == 'positive' %}
+            <div style="background: rgba(46, 213, 115, 0.05); padding: 15px; border-radius: 12px; border-left: 4px solid #2ed573;">
+              <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark);"><i class="fa-solid fa-arrow-trend-up" style="color: #2ed573; margin-right: 5px;"></i> {{ insight.text }}</p>
+            </div>
+            {% elif insight.type == 'negative' %}
+            <div style="background: rgba(255, 71, 87, 0.05); padding: 15px; border-radius: 12px; border-left: 4px solid #ff4757;">
+              <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark);"><i class="fa-solid fa-arrow-trend-down" style="color: #ff4757; margin-right: 5px;"></i> {{ insight.text }}</p>
+            </div>
+            {% elif insight.type == 'stable' %}
+            <div style="background: rgba(30, 144, 255, 0.05); padding: 15px; border-radius: 12px; border-left: 4px solid #1e90ff;">
+              <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark);"><i class="fa-solid fa-minus" style="color: #1e90ff; margin-right: 5px;"></i> {{ insight.text }}</p>
+            </div>
+            {% else %}
+            <div style="background: rgba(102, 126, 234, 0.05); padding: 15px; border-radius: 12px; border-left: 4px solid var(--primary);">
+              <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark);"><i class="fa-solid fa-info-circle" style="color: var(--primary); margin-right: 5px;"></i> {{ insight.text }}</p>
+            </div>
+            {% endif %}
+          {% endfor %}
+          {% for trend in trend_insights %}
+            <div style="background: rgba(46, 213, 115, 0.05); padding: 15px; border-radius: 12px; border-left: 4px solid #2ed573;">
+              <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark);"><i class="fa-solid fa-chart-line" style="color: #2ed573; margin-right: 5px;"></i> {{ trend }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Previous vs Current Comparison -->
+      {% if comparisons %}
+      <div class="table-card" style="margin-bottom: 30px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+          <i class="fa-solid fa-code-compare" style="color: var(--secondary); font-size: 1.3rem;"></i>
+          <h3 style="margin: 0; color: var(--text-dark); font-size: 1.3rem;">Latest vs Previous Test Comparison</h3>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Previous Value</th>
+              <th>Latest Value</th>
+              <th>Change</th>
+              <th>Trend</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for comp in comparisons %}
+            <tr>
+              <td style="font-weight: 600;">{{ comp.parameter }}</td>
+              <td>{{ comp.previous }}</td>
+              <td>{{ comp.current }}</td>
+              <td>
+                {% if comp.status_class == 'increased' %}
+                  <span style="color: #ff4757; font-weight: 600;">+{{ comp.diff }}</span>
+                {% elif comp.status_class == 'decreased' %}
+                  <span style="color: #2ed573; font-weight: 600;">-{{ comp.diff }}</span>
+                {% else %}
+                  <span style="color: var(--text-light);">0</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if comp.status_class == 'increased' %}
+                  <span class="badge trend-up"><i class="fa-solid fa-arrow-trend-up"></i> Increased</span>
+                {% elif comp.status_class == 'decreased' %}
+                  <span class="badge trend-down"><i class="fa-solid fa-arrow-trend-down"></i> Decreased</span>
+                {% else %}
+                  <span class="badge trend-stable"><i class="fa-solid fa-minus"></i> Stable</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      <!-- Dynamic Custom Chart Builder -->
+      <div class="chart-card" style="margin-bottom: 40px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+          <i class="fa-solid fa-sliders" style="color: var(--accent); font-size: 1.3rem;"></i>
+          <h3 style="margin: 0; color: var(--text-dark); font-size: 1.3rem;">Dynamic Custom Chart Generator</h3>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 20px;">Select parameters and chart type to build a custom visual trend.</p>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; margin-bottom: 20px; background: rgba(102, 126, 234, 0.02); padding: 20px; border-radius: 15px; border: 1px solid var(--glass-border);">
+          <div style="flex: 1; min-width: 250px; color: var(--text-dark);">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">Select Parameters:</label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;" id="paramCheckboxes">
+              <label><input type="checkbox" value="age"> Age</label>
+              <label><input type="checkbox" value="bilirubin" checked> Bilirubin</label>
+              <label><input type="checkbox" value="cholesterol"> Cholesterol</label>
+              <label><input type="checkbox" value="albumin" checked> Albumin</label>
+              <label><input type="checkbox" value="copper"> Copper</label>
+              <label><input type="checkbox" value="alk_phos"> Alk. Phos.</label>
+              <label><input type="checkbox" value="sgot"> SGOT</label>
+              <label><input type="checkbox" value="tryglicerides"> Triglycerides</label>
+              <label><input type="checkbox" value="platelets"> Platelets</label>
+              <label><input type="checkbox" value="prothrombin"> Prothrombin</label>
+            </div>
+          </div>
+          
+          <div style="min-width: 150px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem;">Chart Type:</label>
+            <select id="customChartType" class="btn" style="width: 100%; background: var(--card-bg); color: var(--text-dark); border: 1px solid var(--glass-border); padding: 10px;">
+              <option value="line">Line Chart</option>
+              <option value="bar">Bar Chart</option>
+              <option value="scatter">Scatter Plot</option>
+              <option value="pie">Pie Chart</option>
+              <option value="doughnut">Doughnut Chart</option>
+              <option value="radar">Radar Chart</option>
+              <option value="polarArea">Polar Area Chart</option>
+            </select>
+          </div>
+          
+          <div>
+            <button type="button" class="btn btn-primary" onclick="generateCustomChart()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate</button>
+          </div>
+        </div>
+
+        <div style="width: 100%; min-height: 400px; display: flex; justify-content: center; align-items: center;">
+          <canvas id="dynamicCustomChart"></canvas>
+        </div>
+      </div>
+
+      <form method="POST" action="{% url 'delete_selected_predictions' %}">
+        {% csrf_token %}
+        <div class="table-card">
+          <div style="display:flex; justify-content:space-between; margin-bottom: 20px; align-items: center;">
+            <h3 style="margin:0; color:var(--text-dark);"><i class="fa-solid fa-clipboard-list"></i> Clinical Logs</h3>
+            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete Selected</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="select_all" onclick="toggleCheckboxes()"></th>
+                <th>Date & Time</th>
+                <th>Stage Result</th>
+                <th>Bilirubin</th>
+                <th>Albumin</th>
+                <th>Prothrombin</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for prediction in predictions %}
+              <tr>
+                <td><input type="checkbox" name="prediction_ids" value="{{ prediction.pk }}" /></td>
+                <td>
+                  <div style="font-weight: 600;"><i class="fa-regular fa-clock" style="color:var(--primary); margin-right:5px;"></i>{% timezone "Asia/Kolkata" %}{{prediction.prediction_date|localtime|date:"Y-m-d"}}{%endtimezone %}</div>
+                  <div style="font-size: 0.8rem; color:var(--text-light);">{% timezone "Asia/Kolkata" %}{{prediction.prediction_date|localtime|time:"H:i"}}{%endtimezone %}</div>
+                </td>
+                <td>
+                  <span class="badge {% if 'Normal' in prediction.prediction_result %}stage-normal{% elif 'Intial' in prediction.prediction_result or 'Initial' in prediction.prediction_result %}stage-initial{% elif 'Intermediate' in prediction.prediction_result %}stage-intermediate{% else %}stage-end{% endif %}">
+                    {{ prediction.prediction_result }}
+                  </span>
+                </td>
+                <td>{{ prediction.bilirubin }}</td>
+                <td>{{ prediction.albumin }}</td>
+                <td>{{ prediction.prothrombin }}</td>
+                <td>{{ prediction.age }}</td>
+                <td>{{ prediction.sex }}</td>
+                <td class="action-btns">
+                  <a href="{% url 'download_pdf' %}?id={{prediction.pk}}" class="btn-icon btn-dl" title="Download Record"><i class="fa-solid fa-file-pdf"></i></a>
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="9" style="text-align:center; padding: 40px; color:var(--text-light);">No records found. Complete a <a href="{% url 'prediction' %}" style="color:var(--primary);">Prediction</a> first!</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+
+    <!-- Custom Footer Wave for Records Page -->
+    <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 280" preserveAspectRatio="none">
+      <path fill-opacity="1" d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,218.7C840,224,960,192,1080,165.3C1200,139,1320,117,1380,106.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+    </svg>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-left">
+          <h3><i class="fa-solid fa-staff-snake"></i> Liver Cirrhosis</h3>
+          <p>Empowering patients and healthcare professionals with advanced, intelligent prediction tools. Stay informed, stay healthy.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li><a href="{% url 'prediction' %}"><i class="fa-solid fa-stethoscope"></i> Prediction</a></li>
+            <li><a href="{% url 'records' %}"><i class="fa-solid fa-file-medical"></i> Dashboard</a></li>
+            <li><a href="{% url 'edit_profile' %}"><i class="fa-solid fa-user-pen"></i> Edit Profile</a></li>
+            <li><a href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+            <li><a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+          </ul>
+        </div>
+        <div class="footer-social">
+          <h4>Connect</h4>
+          <p><i class="fa-solid fa-envelope"></i> support@livercirrhosis.org</p>
+          <div class="social-icons">
+            <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-icon" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-icon" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon" title="GitHub"><i class="fa-brands fa-github"></i></a>
+          </div>
+          <div class="made-with">
+            Made with <span class="heart"><i class="fa-solid fa-heart"></i></span> & Django
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2025 Liver Cirrhosis Project. All rights reserved.
+      </div>
+    </footer>
+
+    <div id="predictions-data" style="display: none;">
+      {% for p in predictions reversed %}
+        <div class="prediction-item" 
+             data-date="{{ p.prediction_date|date:'Y-m-d H:i' }}" 
+             data-result="{{ p.prediction_result }}" 
+             data-bilirubin="{{ p.bilirubin|default:'0' }}" 
+             data-albumin="{{ p.albumin|default:'0' }}"
+             data-prothrombin="{{ p.prothrombin|default:'0' }}"
+             data-cholesterol="{{ p.cholesterol|default:'0' }}"
+             data-copper="{{ p.copper|default:'0' }}"
+             data-alk_phos="{{ p.alk_phos|default:'0' }}"
+             data-sgot="{{ p.sgot|default:'0' }}"
+             data-tryglicerides="{{ p.tryglicerides|default:'0' }}"
+             data-platelets="{{ p.platelets|default:'0' }}"
+             data-age="{{ p.age|default:'0' }}">
+        </div>
+      {% endfor %}
+    </div>
+
+    <script id="chartDataJson" type="application/json">
+      {{ chart_data_json|safe }}
+    </script>
+    <script>
+      // Apply theme as early as possible before rendering any content
+      const savedTheme = localStorage.getItem('liverCirrhosisTheme');
+      if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+      }
+
+      let customChartInstance;
+      
+      function formatChartLabel(dateStr) {
+        if (!dateStr) return '';
+        const d = new Date(dateStr.replace(' ', 'T'));
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        if (window.innerWidth > 768) {
+          options.hour = '2-digit';
+          options.minute = '2-digit';
+        }
+        return d.toLocaleDateString('en-GB', options).replace(',', '');
+      }
+
+      function generateCustomChart() {
+        if (customChartInstance) {
+          customChartInstance.destroy();
+        }
+        
+        const rawJsonElem = document.getElementById('chartDataJson');
+        if (!rawJsonElem) return;
+
+        const rawJson = rawJsonElem.textContent;
+        let pData = [];
+        try {
+          pData = JSON.parse(rawJson);
+        } catch (e) {
+          console.error("Could not parse chart data", e, rawJson);
+          return;
+        }
+        
+        const labels = pData.map(d => formatChartLabel(d.date));
+        
+        const checkedBoxIds = document.querySelectorAll('#paramCheckboxes input:checked');
+        const selectedParams = Array.from(checkedBoxIds).map(cb => cb.value);
+        const chartType = document.getElementById('customChartType').value;
+        
+        if (selectedParams.length === 0) {
+          alert("Please select at least one parameter.");
+          return;
+        }
+        
+        const colors = [
+          '#667eea', '#764ba2', '#00d2ff', '#ff4757', '#2ed573', 
+          '#ffa502', '#ff6b81', '#1e90ff', '#eccc68', '#7bed9f',
+          '#ff9f43', '#54a0ff', '#5f27cd', '#ff6b6b', '#48dbfb'
+        ];
+        
+        const datasetArr = selectedParams.map((param, index) => {
+          const baseColor = colors[index % colors.length];
+          const dataPoints = pData.map((d, i) => {
+             if (chartType === 'scatter') {
+               return {x: i, y: d[param]};
+             }
+             return d[param];
+          });
+          
+          // Custom representation logic
+          let bg, border;
+          if (['pie', 'doughnut', 'polarArea'].includes(chartType)) {
+            // Radial charts need an array of colors for slices
+            bg = colors.map((c, i) => colors[(i + (index * 2)) % colors.length]);
+            border = document.body.classList.contains('dark-mode') ? 'transparent' : '#fff';
+          } else if (chartType === 'line') {
+            bg = baseColor + '33'; // Soft area fill
+            border = baseColor;
+          } else if (chartType === 'bar') {
+            bg = baseColor + 'cc'; // Slightly transparent bars
+            border = baseColor;
+          } else {
+            bg = baseColor;
+            border = baseColor;
+          }
+          
+          return {
+            label: param.charAt(0).toUpperCase() + param.slice(1).replace('_', ' '),
+            data: dataPoints,
+            borderColor: border,
+            backgroundColor: bg,
+            fill: chartType === 'line',
+            tension: chartType === 'line' ? 0.4 : 0,
+            borderWidth: chartType === 'bar' ? 1 : 3,
+            pointBackgroundColor: border,
+            pointRadius: chartType === 'line' || chartType === 'scatter' ? 5 : 0,
+            pointHoverRadius: 8,
+          }
+        });
+
+        const textColor = document.body.classList.contains('dark-mode') ? '#ffffff' : '#1e293b';
+        const gridColor = document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+        const ctx = document.getElementById('dynamicCustomChart');
+        if (!ctx) return;
+        
+        const isRadialNoScale = ['pie', 'doughnut'].includes(chartType);
+        const isRadialScale = ['radar', 'polarArea'].includes(chartType);
+        
+        let options = {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 1000,
+            easing: 'easeInOutQuart'
+          },
+          plugins: { 
+            legend: { 
+              display: true,
+              position: window.innerWidth < 640 ? 'bottom' : 'top',
+              labels: { 
+                color: textColor,
+                usePointStyle: true,
+                padding: 20
+              } 
+            },
+            tooltip: {
+              padding: 12,
+              backgroundColor: document.body.classList.contains('dark-mode') ? '#1e1e1e' : '#ffffff',
+              titleColor: textColor,
+              bodyColor: textColor,
+              borderColor: gridColor,
+              borderWidth: 1,
+              displayColors: true,
+              callbacks: {
+                label: function(context) {
+                  let label = context.dataset.label || '';
+                  if (label) label += ': ';
+                  if (context.parsed.y !== undefined) label += context.parsed.y;
+                  else if (context.parsed !== undefined) label += context.parsed;
+                  return label;
+                }
+              }
+            }
+          }
+        };
+
+        if (!isRadialNoScale && !isRadialScale) {
+          options.scales = {
+            y: { ticks: { color: textColor }, grid: { color: gridColor } },
+            x: { 
+              ticks: { color: textColor }, 
+              grid: { color: gridColor }, 
+              type: chartType === 'scatter' ? 'linear' : 'category'
+            }
+          };
+          if (chartType === 'scatter') {
+            options.scales.x.ticks = {
+               color: textColor,
+               callback: function(value) {
+                   return labels[value] || '';
+               }
+            };
+          }
+        } else if (isRadialScale) {
+          options.scales = {
+            r: {
+              grid: { color: gridColor },
+              angleLines: { color: gridColor },
+              pointLabels: { color: textColor, font: { size: 12 } },
+              ticks: { display: false, backdropColor: 'transparent' }
+            }
+          };
+        }
+
+        customChartInstance = new Chart(ctx, {
+          type: chartType,
+          data: {
+            labels: chartType === 'scatter' ? undefined : labels,
+            datasets: datasetArr
+          },
+          options: options
+        });
+      }
+
+      setTimeout(generateCustomChart, 300);
+
+      window.addEventListener('resize', () => {
+          setTimeout(generateCustomChart, 100);
+      });
+
+      document.getElementById('themeToggle').addEventListener('click', () => {
+          setTimeout(generateCustomChart, 50);
+      });
+
+      function toggleCheckboxes() {
+        var checkboxes = document.getElementsByName("prediction_ids");
+        var selectAll = document.getElementById("select_all");
+        for (var i = 0; i < checkboxes.length; i++) { checkboxes[i].checked = selectAll.checked; }
+      }
+
+      // Variables for Chart Data
+      let dates = [];
+      let stages = [];
+      let allParams = {
+        bilirubin: [], albumin: [], prothrombin: [],
+        cholesterol: [], copper: [], alk_phos: [],
+        sgot: [], tryglicerides: [], platelets: [], age: []
+      };
+
+      let normalCount = 0;
+      let initialCount = 0;
+      let intermediateCount = 0;
+      let endCount = 0;
+      
+      function updateData(filterValue) {
+        dates = [];
+        stages = [];
+        bilirubins = [];
+        albumins = [];
+        prothrombins = [];
+        normalCount = 0;
+        initialCount = 0;
+        intermediateCount = 0;
+        endCount = 0;
+
+        let items = Array.from(document.querySelectorAll('#predictions-data .prediction-item'));
+        
+        if (filterValue !== 'all') {
+          const limit = parseInt(filterValue, 10);
+          items = items.slice(-limit); // get the last `limit` items
+        }
+
+        items.forEach(item => {
+          const dateRaw = item.getAttribute('data-date');
+          const result = item.getAttribute('data-result');
+          const date = formatChartLabel(dateRaw);
+          
+          dates.push(date);
+          let stageY = 3;
+          if (result.includes('Normal')) {
+            stageY = 0;
+            normalCount++;
+          } else if (result.includes('Intial') || result.includes('Initial')) {
+            stageY = 1;
+            initialCount++;
+          } else if (result.includes('Intermediate')) {
+            stageY = 2;
+            intermediateCount++;
+          } else {
+            endCount++;
+          }
+          stages.push({x: date, y: stageY});
+          
+          // Collect all numeric parameters
+          Object.keys(allParams).forEach(key => {
+            const val = item.getAttribute('data-' + key);
+            allParams[key].push(Number(val) || 0);
+          });
+        });
+        
+        renderCharts();
+      }
+
+      document.getElementById('chartFilter').addEventListener('change', function() {
+        updateData(this.value);
+      });
+
+      // Functions to get theme colors
+      const getTextColor = () => document.body.classList.contains('dark-mode') ? '#ffffff' : '#1e293b';
+      const getGridColor = () => document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+
+      // Variables to hold chart instances
+      let stageChart, stagePieChart, biomarkerChart, prothrombinChart, radarChart, bubbleChart, polarChart;
+
+      function renderCharts() {
+        const textColor = getTextColor();
+        const gridColor = getGridColor();
+
+        // Destroy existing charts if they exist (for theme toggling)
+        if (stageChart) stageChart.destroy();
+        if (stagePieChart) stagePieChart.destroy();
+        if (biomarkerChart) biomarkerChart.destroy();
+        if (prothrombinChart) prothrombinChart.destroy();
+        if (radarChart) radarChart.destroy();
+        if (bubbleChart) bubbleChart.destroy();
+        if (polarChart) polarChart.destroy();
+
+        // 1. Stage Line Chart
+        stageChart = new Chart(document.getElementById('stageChart'), {
+          type: 'line',
+          data: {
+            labels: dates,
+            datasets: [{
+              label: 'Cirrhosis Stage Trend (0=Normal, 1=Initial, 2=Intermediate, 3=End)',
+              data: stages,
+              borderColor: '#667eea',
+              backgroundColor: 'rgba(102, 126, 234, 0.2)',
+              fill: true,
+              tension: 0.4,
+              borderWidth: 3,
+              pointBackgroundColor: '#667eea',
+              pointRadius: 4,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: { ticks: { stepSize: 1, color: textColor }, min: 0, max: 4, grid: { color: gridColor } },
+              x: { ticks: { display: false, color: textColor }, grid: { color: gridColor } }
+            }
+          }
+        });
+
+        // 2. Stage Pie Chart
+        const pieData = [normalCount, initialCount, intermediateCount, endCount];
+        const pieLabels = ['Normal', 'Initial Stage', 'Intermediate Stage', 'End Stage'];
+        stagePieChart = new Chart(document.getElementById('stagePieChart'), {
+          type: 'doughnut',
+          data: {
+            labels: pieLabels,
+            datasets: [{
+              data: pieData,
+              backgroundColor: ['#00d2ff', '#2ed573', '#ffa502', '#ff4757'],
+              borderWidth: document.body.classList.contains('dark-mode') ? 0 : 2,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: 'bottom', labels: { color: textColor, padding: 20 } }
+            },
+            cutout: '60%'
+          }
+        });
+
+        // 3. Biomarker Bar Chart (Dynamic)
+        const barParam = document.getElementById('barChartParam').value;
+        const barLabel = barParam.charAt(0).toUpperCase() + barParam.slice(1);
+        
+        biomarkerChart = new Chart(document.getElementById('biomarkerChart'), {
+          type: 'bar',
+          data: {
+            labels: dates,
+            datasets: [
+              { label: barLabel, data: allParams[barParam], backgroundColor: '#00d2ff', borderRadius: 4 }
+            ]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { ticks: { color: textColor }, grid: { color: gridColor } },
+              x: { ticks: { display: false, color: textColor }, grid: { display: false } }
+            },
+            plugins: {
+              legend: { labels: { color: textColor } }
+            }
+          }
+        });
+
+        // 4. Smooth Trend Chart (Dynamic)
+        const lineParam = document.getElementById('lineChartParam').value;
+        const lineLabel = lineParam.charAt(0).toUpperCase() + lineParam.slice(1);
+
+        prothrombinChart = new Chart(document.getElementById('prothrombinChart'), {
+          type: 'line',
+          data: {
+            labels: dates,
+            datasets: [{
+              label: lineLabel,
+              data: allParams[lineParam],
+              borderColor: '#ff4757',
+              backgroundColor: 'rgba(255, 71, 87, 0.1)',
+              fill: true,
+              tension: 0.4,
+              borderWidth: 3,
+              pointBackgroundColor: '#ff4757',
+              pointRadius: 4,
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { ticks: { color: textColor }, grid: { color: gridColor } },
+              x: { ticks: { display: false, color: textColor }, grid: { color: gridColor } }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+
+        // 5. Radar Chart for Latest Values
+        let latestBilirubin = allParams.bilirubin.length ? allParams.bilirubin[allParams.bilirubin.length - 1] : 0;
+        let latestAlbumin = allParams.albumin.length ? allParams.albumin[allParams.albumin.length - 1] : 0;
+        let latestProthrombin = allParams.prothrombin.length ? allParams.prothrombin[allParams.prothrombin.length - 1] : 0;
+        
+        radarChart = new Chart(document.getElementById('radarChart'), {
+          type: 'radar',
+          data: {
+            labels: ['Bilirubin', 'Albumin', 'Prothrombin'],
+            datasets: [{
+              label: 'Most Recent Test Values',
+              data: [latestBilirubin, latestAlbumin, latestProthrombin],
+              backgroundColor: 'rgba(102, 126, 234, 0.4)',
+              borderColor: '#667eea',
+              pointBackgroundColor: '#667eea',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: '#667eea'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                angleLines: { color: gridColor },
+                grid: { color: gridColor },
+                pointLabels: { color: textColor, font: { size: 14 } },
+                ticks: { display: false, backdropColor: 'transparent' }
+              }
+            },
+            plugins: { legend: { labels: { color: textColor } } }
+          }
+        });
+
+        // 6. Correlation Heatmap (Bubble Graph)
+        const bubbleData = allParams.bilirubin.map((b, i) => ({
+            x: b,
+            y: allParams.albumin[i],
+            r: Math.max(5, allParams.prothrombin[i] / 1.5) // Dynamically size by prothrombin
+        }));
+        
+        bubbleChart = new Chart(document.getElementById('bubbleChart'), {
+          type: 'bubble',
+          data: {
+            datasets: [{
+              label: 'Bilirubin(x) Albumin(y) Prothrombin(size)',
+              data: bubbleData,
+              backgroundColor: 'rgba(243, 156, 18, 0.6)',
+              borderColor: '#f39c12',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: { title: {display: true, text: 'Bilirubin', color: textColor}, ticks: { color: textColor }, grid: { color: gridColor } },
+              y: { title: {display: true, text: 'Albumin', color: textColor}, ticks: { color: textColor }, grid: { color: gridColor } }
+            },
+            plugins: { legend: { display: false } }
+          }
+        });
+
+        // 7. Polar Area Biomarker Density Map
+        polarChart = new Chart(document.getElementById('polarAreaChart'), {
+          type: 'polarArea',
+          data: {
+            labels: ['Bilirubin', 'Albumin', 'Prothrombin'],
+            datasets: [{
+              label: 'Latest Profile',
+              data: [latestBilirubin, latestAlbumin, latestProthrombin],
+              backgroundColor: ['rgba(0, 210, 255, 0.6)', 'rgba(118, 75, 162, 0.6)', 'rgba(255, 71, 87, 0.6)'],
+              borderWidth: document.body.classList.contains('dark-mode') ? 0 : 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              r: {
+                angleLines: { color: gridColor },
+                grid: { color: gridColor },
+                pointLabels: { display: false },
+                ticks: { display: false, backdropColor: 'transparent' }
+              }
+            },
+            plugins: { legend: { position: 'bottom', labels: { color: textColor } } }
+          }
+        });
+      }
+
+      // Initial Render
+      updateData('all');
+      // Dark Mode Toggle Logic
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const themeIcon = themeToggleBtn.querySelector('i');
+      
+      if (document.body.classList.contains('dark-mode')) {
+          themeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+          if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.replace('fa-moon', 'fa-sun');
+              localStorage.setItem('liverCirrhosisTheme', 'dark');
+          } else {
+              themeIcon.classList.replace('fa-sun', 'fa-moon');
+              localStorage.setItem('liverCirrhosisTheme', 'light');
+          }
+          // Re-render charts on theme change to update colors
+          renderCharts();
+      });
+
+      // Navbar Scroll Logic
+      window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 50) {
+          nav.classList.add('nav-scrolled');
+        } else {
+          nav.classList.remove('nav-scrolled');
+        }
+      });
+    </script>
+    {% include 'ai.html' %}
+  </body>
+</html>

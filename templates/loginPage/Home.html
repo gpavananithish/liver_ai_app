@@ -1,0 +1,1439 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liver Cirrhosis - Home</title>
+    <link rel="icon" href="{% static 'images/homeIcon.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+      :root {
+        --primary: #667eea;
+        --secondary: #764ba2;
+        --accent: #00d2ff;
+        --glass-bg: rgba(255, 255, 255, 0.9);
+        --glass-border: rgba(255, 255, 255, 0.4);
+        --nav-glass: rgba(255, 255, 255, 0.15);
+        --text-dark: #1e293b;
+        --text-light: #64748b;
+        --bg-color: #f4f7fb;
+        --card-bg: #ffffff;
+      }
+
+      body.dark-mode {
+        --primary: #8aa1f8;
+        --secondary: #9068be;
+        --accent: #4ddbff;
+        --glass-bg: rgba(15, 15, 15, 0.85); /* Darker glass */
+        --glass-border: rgba(255, 255, 255, 0.08); /* Fainter border */
+        --nav-glass: rgba(10, 10, 10, 0.8);
+        --text-dark: #ffffff; /* Brighter white for contrast */
+        --text-light: #a0a0a0;
+        --bg-color: #0b0b0b; /* Very dark black/charcoal */
+        --card-bg: #141414; /* Slightly lighter medium black */
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Outfit', sans-serif;
+        background: var(--bg-color); /* Updated to CSS variable */
+        color: var(--text-dark);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        transition: background 0.4s ease, color 0.4s ease;
+      }
+
+      @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      /* Ultra-Premium Navbar */
+      nav {
+        background: transparent;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        /* Smooth transition for width, padding, background, box-shadow, and positioning */
+        transition: padding 0.5s ease, background 0.5s ease, width 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.6s ease, top 0.6s ease, box-shadow 0.6s ease;
+      }
+
+      nav.nav-scrolled {
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        padding: 10px 30px;
+        width: 70%;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode nav.nav-scrolled {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        background: rgb(89 89 89 / 85%)
+      }
+
+      .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .company-logo {
+        width: 35px; /* Reduced from 50px */
+        height: 35px; /* Reduced from 50px */
+        border-radius: 8px; /* Slightly smaller radius */
+        background: transparent; /* Removed white background */
+        box-shadow: none; /* Removed shadow */
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-5px) rotate(3deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+      }
+
+      .company-name {
+        font-weight: 800;
+        font-size: 1.2rem; /* Reduced from 1.5rem */
+        background: linear-gradient(to right, var(--accent), var(--primary)); /* Gradient applied here */
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 1px;
+        text-shadow: none; /* Removed text shadow */
+      }
+
+      .navbar-right {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text-dark); /* Changed from #fff to dark text */
+        text-decoration: none;
+        padding: 8px 16px; /* Reduced from 10px 20px */
+        border-radius: 20px; /* Reduced from 30px */
+        font-weight: 600;
+        font-size: 0.9rem; /* Reduced from 0.95rem */
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background:rgb(60 150 189 / 5%); /* Darker subtle background */
+        border: 1px solid rgba(0, 0, 0, 0.1); /* Darker border */
+      }
+
+      body.dark-mode .nav-link {
+        background:rgb(60 150 189 / 5%); /* Matching the body card backgrounds */
+        border: 1px solid rgba(255, 255, 255, 0.4); /* High visibility bright border */
+        color: #fff;
+      }
+
+      body.dark-mode .nav-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-color: transparent;
+      }
+
+      .nav-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+      
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        top: -98%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(45deg) translateY(-100%);
+        transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+      }
+
+      .nav-link:hover::after {
+        transform: rotate(45deg) translateY(100%);
+      }
+
+      .theme-btn {
+        background: none;
+        border: none;
+        color: var(--text-dark);
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .theme-btn:hover {
+        background: rgba(0, 0, 0, 0.05);
+        transform: rotate(15deg);
+      }
+
+      body.dark-mode .theme-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Profile Dropdown Styling */
+      .profile-container {
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
+
+      .profile-icon {
+        width: 35px;
+        height: 35px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .profile-container:hover .profile-icon {
+        transform: scale(1.1) rotate(5deg);
+        filter: drop-shadow(0 0 8px var(--primary));
+      }
+
+      .profile-details {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        z-index: 1000;
+        min-width: 250px;
+        color: var(--text-dark);
+        margin-top: 10px;
+        animation: fadeIn 0.3s ease;
+      }
+
+      /* Hover Bridge */
+      .profile-details::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 0;
+        width: 100%;
+        height: 10px;
+      }
+
+      .profile-container:hover .profile-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .dropdown-avatar {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
+      }
+
+      .profile-details h3 { margin-bottom: 15px; color: var(--text-dark); font-weight: 700; }
+      .profile-details p { margin: 5px 0; font-size: 0.9rem; color: var(--text-light); width: 100%; text-align: left; }
+      .profile-details p b { color: var(--text-dark); }
+      
+      .logout-btn {
+        margin-top: 15px;
+        width: 100%;
+        padding: 10px;
+        background: linear-gradient(135deg, #ff4757, var(--secondary));
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .logout-btn:hover { 
+        transform: translateY(-2px); 
+        box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3); 
+      }
+
+      body.dark-mode .logout-btn {
+        background: linear-gradient(135deg, #ff6b81, var(--secondary));
+      }
+
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+      /* Main Content Area */
+      main {
+        flex: 1;
+        padding: 90px 20px 40px; /* Reduced top padding (was 120px) because navbar is smaller */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      @keyframes scaleUpFade {
+        from { opacity: 0; transform: scale(0.95) translateY(40px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+      }
+
+      .content {
+        background: var(--glass-bg);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid var(--glass-border);
+        padding: 4rem 3rem;
+        width: 100%;
+        max-width: 1050px;
+        border-radius: 30px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255,255,255,0.5);
+        text-align: center;
+        animation: scaleUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        overflow: hidden;
+      }
+
+      body.dark-mode .content {
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+      }
+
+      /* Decorative glow behind content */
+      .content::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(102,126,234,0.08) 0%, transparent 60%);
+        pointer-events: none;
+        animation: rotateGlow 20s linear infinite;
+      }
+
+      @keyframes rotateGlow {
+        100% { transform: rotate(360deg); }
+      }
+
+      h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--secondary), var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+        position: relative;
+      }
+
+      p.intro-text {
+        font-size: 1.25rem;
+        line-height: 1.8;
+        margin-bottom: 3.5rem;
+        color: var(--text-light);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+      }
+
+      /* Modern Action Cards */
+      .links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2.5rem;
+        position: relative;
+      }
+
+      .lgn-link, .signup-link {
+        margin: 19px;
+        background: var(--card-bg); /* Updated to CSS variable */
+        border-radius: 20px;
+        padding: 1.5rem 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      body.dark-mode .lgn-link, body.dark-mode .signup-link {
+        background: var(--card-bg);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--glass-border);
+      }
+
+      body.dark-mode .lgn-link:hover, body.dark-mode .signup-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-color: transparent;
+      }
+
+      .lgn-link::before, .signup-link::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: -1;
+      }
+
+      .lgn-link:hover, .signup-link:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        border-color: rgba(102, 126, 234, 0.3);
+      }
+
+      .lgn-link:hover::before, .signup-link:hover::before {
+        opacity: 1;
+      }
+
+      .links-text {
+        color: var(--text-dark);
+        font-weight: 800;
+        font-size: 1.3rem;
+        display: block;
+        min-height: 3.5rem; /* Reserve space so icons don't hit text */
+      }
+
+      .icon-container {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        padding: 2px;
+        transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .icon-container .inner {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.4s ease;
+      }
+
+      body.dark-mode .icon-container .inner {
+        background: var(--card-bg); /* Use dark card bg instead of white */
+      }
+
+      .linkIcon {
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
+        transition: all 0.4s ease;
+      }
+
+      body.dark-mode .linkIcon {
+        filter: brightness(0) invert(1);
+      }
+
+      .lgn-link:hover .icon-container, .signup-link:hover .icon-container {
+        transform: scale(1.05); /* reduced scaling */
+        box-shadow: 0 15px 30px rgba(102, 126, 234, 0.5);
+      }
+
+      .lgn-link:hover .inner, .signup-link:hover .inner {
+        background: transparent;
+      }
+      
+      .lgn-link:hover .linkIcon, .signup-link:hover .linkIcon {
+        transform: scale(1.1);
+      }
+
+      /* Advanced Footer with Wave */
+      .footer-wave {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin-top: auto;
+        margin-bottom: -5px;
+      }
+
+      .footer-wave path {
+        fill: rgba(50, 133, 211, 0.5);
+        transition: fill 0.4s ease;
+      }
+
+      body.dark-mode .footer-wave path {
+        fill: rgba(218, 230, 234, 0.887);
+      }
+
+      footer {
+        background: #0f172a;
+        color: #94a3b8;
+        font-family: 'Outfit', sans-serif;
+        position: relative;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 2.5rem 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 3rem;
+      }
+
+      .footer-left, .footer-links, .footer-social {
+        flex: 1;
+        min-width: 250px;
+      }
+
+      footer h3, footer h4 {
+        color: #f8fafc;
+        margin-bottom: 1.5rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        position: relative;
+        padding-bottom: 12px;
+      }
+
+      footer h3 i {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-right: 8px;
+        font-size: 1.2em;
+      }
+
+      footer h3::after, footer h4::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 40px;
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-radius: 2px;
+        transition: width 0.4s ease;
+      }
+
+      .footer-left:hover h3::after, .footer-links:hover h4::after, .footer-social:hover h4::after {
+        width: 70px;
+      }
+
+      .footer-left p {
+        font-size: 1.05rem;
+        line-height: 1.8;
+      }
+
+      .footer-links ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 1.2rem;
+      }
+
+      .footer-links a {
+        color: #94a3b8;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+      }
+
+      .footer-links a i {
+        color: var(--primary);
+        font-size: 0.9em;
+        transition: transform 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: #f8fafc;
+        transform: translateX(10px);
+      }
+
+      .footer-links a:hover i {
+        transform: translateX(5px);
+        color: var(--accent);
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+      }
+
+      .social-icons a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #f8fafc;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-size: 1.2rem;
+      }
+
+      .social-icons a:hover {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        transform: translateY(-8px) rotate(360deg) scale(1.1);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .made-with {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-size: 1rem;
+        color: #f8fafc;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 0.4s ease;
+        font-weight: 600;
+      }
+
+      .made-with:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      }
+
+      .heart {
+        color: #ff4757;
+        margin: 0 10px;
+        font-size: 1.4rem;
+        animation: pulse 1s infinite;
+        display: inline-block;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); text-shadow: 0 0 15px rgba(255, 71, 87, 0.8); }
+        100% { transform: scale(1); }
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.4);
+        font-size: 0.95rem;
+        color: #64748b;
+        letter-spacing: 1px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 991px) {
+        .content { padding: 4rem 2rem; }
+        h1 { font-size: 2.8rem; }
+        nav { padding: 15px 25px; }
+        nav.nav-scrolled { width: 85%; }
+        .footer-content {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          text-align: left;
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        nav { padding: 12px 15px; flex-direction: column; justify-content: center; }
+        .company-name { display: inline-block; font-size: 1rem; }
+        .navbar-left { justify-content: center; margin-bottom: 10px; }
+        .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; flex-wrap: wrap; }
+        nav.nav-scrolled { width: 95%; top: 10px; padding: 12px 15px; }
+        .nav-link { padding: 8px 10px; font-size: 0.75rem; }
+        .nav-link span { display: inline; }
+        .nav-link i { margin-right: 4px; font-size: 0.9rem; }
+        
+        main { padding: 160px 15px 15px; }
+        .content { padding: 2rem 1.2rem; }
+        h1 { font-size: 2.2rem; }
+        
+        .links {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          padding: 0 10px;
+        }
+        
+        .lgn-link, .signup-link {
+          margin: 0;
+          margin-top: 15px;
+          padding: 1.2rem 1.5rem;
+        }
+        
+        .footer-content {
+          grid-template-columns: 1fr;
+          gap: 30px;
+          text-align: center;
+        }
+        
+        footer h3::after, footer h4::after {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        
+        .social-icons {
+          justify-content: center;
+        }
+
+        .footer-social p {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 { font-size: 1.8rem; }
+        .p1 { font-size: 0.95rem; }
+        .company-logo { width: 30px; height: 30px; }
+        .links-text { font-size: 0.9rem; }
+        .theme-btn { width: 35px; height: 35px; font-size: 1rem; }
+      }
+
+      /*
+       * CRITICAL FIX — Home Page Chat Overlay
+       * The .content div has backdrop-filter, overflow:hidden, and an infinite
+       * CSS animation (rotateGlow on ::before) — all of which create new
+       * stacking contexts that TRAP fixed-position children, preventing the
+       * chat overlay from covering the full viewport.
+       *
+       * When the chat is open on mobile, we neutralize these stacking contexts
+       * on .content so the fixed chat wrapper can escape and cover the screen.
+       */
+      @media (max-width: 768px) {
+        body.chat-open .content {
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          overflow: visible !important;
+          animation: none !important;
+          transform: none !important;
+        }
+        body.chat-open .content::before {
+          animation: none !important;
+          transform: none !important;
+        }
+        /* Also ensure overview section animations don't create stacking contexts */
+        body.chat-open .browser-mock,
+        body.chat-open .overview-section {
+          transform: none !important;
+        }
+      }
+      .overview-section {
+        padding: 100px 20px;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 120px;
+      }
+      .overview-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+      .overview-header h2 {
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--secondary), var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 20px;
+      }
+      .showcase-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+      }
+      .showcase-row.reverse {
+        direction: rtl;
+      }
+      .showcase-row.reverse .showcase-text {
+        direction: ltr;
+      }
+      .showcase-text {
+        text-align: left;
+      }
+      .showcase-text h3 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--text-dark);
+      }
+      .showcase-text p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--text-light);
+        margin-bottom: 30px;
+      }
+      
+      /* Browser Mockup */
+      .browser-mock {
+        background: var(--card-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.4s ease;
+      }
+      body.dark-mode .browser-mock {
+        box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+      }
+      .browser-mock:hover {
+        transform: translateY(-10px);
+      }
+      .browser-bar {
+        height: 35px;
+        background: rgba(102, 126, 234, 0.05);
+        border-bottom: 1px solid var(--glass-border);
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        gap: 8px;
+      }
+      .dot { width: 10px; height: 10px; border-radius: 50%; }
+      .dot.red { background: #ff5f56; }
+      .dot.amber { background: #ffbd2e; }
+      .dot.green { background: #27c93f; }
+      
+      .mock-content {
+        padding: 20px;
+        min-height: 320px;
+      }
+      
+      /* Feature Specific Mocks */
+      .mock-chat {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .m-msg {
+        max-width: 80%;
+        padding: 10px 15px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+      }
+      .m-msg.ai {
+        background: rgba(102, 126, 234, 0.1);
+        align-self: flex-start;
+        border-left: 3px solid var(--primary);
+      }
+      .m-msg.user {
+        background: var(--primary);
+        color: white;
+        align-self: flex-end;
+      }
+      
+      .mock-prediction {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .mock-field {
+        height: 35px;
+        background: rgba(0,0,0,0.03);
+        border: 1px solid var(--glass-border);
+        border-radius: 8px;
+      }
+      body.dark-mode .mock-field { background: rgba(255,255,255,0.03); }
+
+      @media (max-width: 991px) {
+        .showcase-row { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+        .showcase-row.reverse { direction: ltr; }
+        .showcase-text { text-align: center; }
+        .overview-section { gap: 80px; }
+
+      /* Diagnostic Cards */
+      .diagnostic-card {
+        background: var(--card-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 28px;
+        padding: 35px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 340px;
+        min-height: 420px;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      body.dark-mode .diagnostic-card {
+        background: var(--card-bg);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        border: 1px solid var(--glass-border);
+      }
+      .diagnostic-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+        border-color: var(--primary);
+      }
+      .card-tag {
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--primary);
+        letter-spacing: 1.5px;
+        margin-bottom: 20px;
+        background: rgba(102, 126, 234, 0.08);
+        padding: 5px 14px;
+        border-radius: 15px;
+      }
+      @media (max-width: 600px) {
+        .diagnostic-card { width: 100%; max-width: 320px; }
+      }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'home' %}" class="navbar-left" style="text-decoration: none;">
+        <img
+          src="{% static 'images/liver icon.png' %}"
+          alt="Company Logo"
+          class="company-logo"
+        />
+        <span class="company-name">LIVER CIRRHOSIS</span>
+      </a>
+      <div class="navbar-right">
+        {% if user.is_authenticated %}
+          <a href="{% url 'prediction' %}" class="nav-link"><i class="fa-solid fa-stethoscope"></i> <span>Prediction</span></a>
+          <a href="{% url 'records' %}" class="nav-link"><i class="fa-solid fa-file-medical"></i> <span>Dashboard</span></a>
+          <a href="{% url 'about' %}" class="nav-link"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+          
+          <div class="profile-container">
+            <svg class="profile-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="navAvatarGradHome" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:var(--primary);stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:var(--accent);stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="45" fill="none" stroke="url(#navAvatarGradHome)" stroke-width="5" />
+              <circle cx="50" cy="40" r="18" fill="url(#navAvatarGradHome)" />
+              <path d="M25 80C25 65 35 58 50 58C65 58 75 65 75 80" fill="url(#navAvatarGradHome)" />
+            </svg>
+
+            <div class="profile-details">
+              <h3>User Details</h3>
+              <div class="dropdown-avatar">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                  <circle cx="50" cy="50" r="48" fill="var(--card-bg)" stroke="url(#navAvatarGradHome)" stroke-width="2" />
+                  <circle cx="50" cy="40" r="20" fill="url(#navAvatarGradHome)" />
+                  <path d="M22 82C22 65 34 58 50 58C66 58 78 65 78 82" fill="url(#navAvatarGradHome)" />
+                </svg>
+              </div>
+              <p><b>Name:</b> {{ user.custom_user.first_name }} {{ user.custom_user.last_name }}</p>
+              <p><b>Email:</b> {{ user.email }}</p>
+              <a href="{% url 'edit_profile' %}" style="color: var(--primary); font-size: 0.85rem; text-decoration: none; margin-top: 5px; font-weight: 600;">Edit Profile</a>
+              <a href="{% url 'logout' %}" class="logout-btn">Log Out</a>
+            </div>
+          </div>
+
+          <button class="theme-btn" id="themeToggle" aria-label="Toggle Dark Mode">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        {% else %}
+          <a href="{% url 'login' %}" class="nav-link"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+          <a href="{% url 'signup' %}" class="nav-link"><i class="fa-solid fa-user-plus"></i> SignUp</a>
+          <button class="theme-btn" id="themeToggle" aria-label="Toggle Dark Mode">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        {% endif %}
+      </div>
+    </nav>
+
+    <main>
+      <div class="content">
+        <div>
+          <h1>Welcome to the Liver Cirrhosis Project</h1>
+          <p>
+            {% if user.is_authenticated %}
+              Welcome back, <b>{{ user.custom_user.first_name }} {{ user.custom_user.last_name }}</b>! You are currently logged in. Navigate to dashboard to view personalized predictions, check detailed past records, and manage your profile securely.
+            {% else %}
+              This project aims to provide information and resources related to
+              liver cirrhosis, including causes, symptoms, diagnosis, and
+              treatment options. We are dedicated to supporting patients,
+              families, and healthcare professionals in the fight against this
+              disease.
+            {% endif %}
+          </p>
+        </div>
+        
+        <div class="links">
+          {% if user.is_authenticated %}
+            <div class="lgn-link" style="grid-column: 1 / -1; max-width: 500px; margin: 0 auto; margin-top: 15px; width: 100%;">
+              <span class="links-text">Ready to check your health status?</span>
+              <p>
+                <a href="{% url 'prediction' %}">
+                  <div class="icon-container">
+                    <div class="inner">
+                      <img class="linkIcon" src="{% static 'images/predictIcon.png' %}" alt="predict" />
+                    </div>
+                  </div>
+                </a>
+              </p>
+              
+              <a href="{% url 'prediction' %}" style="display:inline-block; margin-top:15px; text-decoration:none; font-weight:700; color:var(--primary);">Go To Prediction</a>
+            </div>
+          {% else %}
+            <div class="lgn-link">
+              <span class="links-text">Already have an account? Click Below</span>
+              <p>
+                <a href="{% url 'login' %}">
+                  <img
+                    class="linkIcon"
+                    src="{% static 'images/activeUser.png' %}"
+                    alt="lgn"
+                  />
+                </a>
+              </p>
+            </div>
+            <div class="signup-link">
+              <span class="links-text">Don't have an account? Click Below</span>
+              <p>
+                <a href="{% url 'signup' %}">
+                  <img
+                    class="linkIcon"
+                    src="{% static 'images/addUser.png' %}"
+                    alt="signup"
+                  />
+                </a>
+              </p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Platform Showcase Section -->
+      <section class="overview-section">
+        <div class="overview-header">
+          <h2>Your Intelligent Health Journey</h2>
+          <p style="color: var(--text-light); font-size: 1.2rem; max-width: 700px; margin: 0 auto;">Experience our cutting-edge diagnostic platform. Get clinical precision with a human touch.</p>
+        </div>
+
+        <!-- Dashboard Showcase -->
+        <div class="showcase-row">
+          <div class="showcase-text" data-aos="fade-right">
+            <h3>Interactive Clinical Dashboard</h3>
+            <p>Monitor your health with beautiful, theme-aware visualizations. Our interactive records system tracks over 10 clinical parameters, visualizing your journey with surgical precision.</p>
+            <ul style="list-style: none; margin-bottom: 30px; color: var(--text-light); font-size: 1rem;">
+              <li style="margin-bottom: 15px;"><i class="fa-solid fa-circle-check" style="color: var(--primary); margin-right: 10px;"></i> Dynamic Progress Charts</li>
+              <li style="margin-bottom: 15px;"><i class="fa-solid fa-circle-check" style="color: var(--primary); margin-right: 10px;"></i> Advanced Biomarker Comparisons</li>
+              <li><i class="fa-solid fa-circle-check" style="color: var(--primary); margin-right: 10px;"></i> Custom Visual Parameter Builders</li>
+            </ul>
+            <a href="{% url 'signup' %}" class="nav-link" style="display:inline-block; padding: 12px 25px;">Get Started For Free</a>
+          </div>
+          <div class="browser-mock" data-aos="zoom-in">
+            <div class="browser-bar">
+               <div class="dot red"></div><div class="dot amber"></div><div class="dot green"></div>
+               <div style="background: rgba(0,0,0,0.05); flex: 1; height: 20px; border-radius: 10px; font-size: 10px; display: flex; align-items: center; border-radius: 10px; padding-left: 10px; font-size: 10px; color: var(--text-light);">liver-app.med/dashboard</div>
+            </div>
+            <div class="mock-content">
+              <div style="display: flex; flex-direction: column; gap: 20px;">
+                <canvas id="mockHomeChart" style="max-height: 200px;"></canvas>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                  <div style="background: rgba(102, 126, 234, 0.05); padding: 15px; border-radius: 12px; border-top: 3px solid var(--primary);">
+                    <div style="font-size: 0.7rem; color: var(--text-light);">Recent Result</div>
+                    <div style="font-weight: 700; color:var(--text-dark);">Stage: Normal</div>
+                  </div>
+                  <div style="background: rgba(0, 210, 255, 0.05); padding: 15px; border-radius: 12px; border-top: 3px solid var(--accent);">
+                    <div style="font-size: 0.7rem; color: var(--text-light);">Bilirubin Trend</div>
+                    <div style="font-weight: 700; color:var(--text-dark);">-12.4% Optimal</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Chat Showcase -->
+        <div class="showcase-row reverse">
+          <div class="showcase-text" data-aos="fade-left">
+            <h3>Conversational AI Companion</h3>
+            <p>Meet Dr. Qwen, your personal medical AI. Upload reports, ask questions about your symptoms, and get clear, formatted medical insights based on state-of-the-art LLM intelligence.</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+               <span style="background: rgba(102, 126, 234, 0.1); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; color: var(--primary);"><i class="fa-solid fa-file-pdf"></i> Report Analysis</span>
+               <span style="background: rgba(0, 210, 255, 0.1); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; color: var(--accent);"><i class="fa-solid fa-clock"></i> History Recall</span>
+            </div>
+          </div>
+          <div class="browser-mock" data-aos="zoom-in">
+             <div class="browser-bar">
+                <div class="dot red"></div><div class="dot amber"></div><div class="dot green"></div>
+                <div style="background: rgba(0,0,0,0.05); flex: 1; height: 20px; border-radius: 10px; font-size: 10px; display: flex; align-items: center; padding-left: 10px; color: var(--text-light);">liver-app.med/ai-chat</div>
+             </div>
+             <div class="mock-content mock-chat">
+                <div class="m-msg ai"><strong>Dr. Qwen:</strong> Based on your Bilirubin levels of 1.2 mg/dL, your markers are within the normal range. Would you like me to explain the other biomarkers?</div>
+                <div class="m-msg user">Can you explain what Albumin does?</div>
+                <div class="m-msg ai"><strong>Dr. Qwen:</strong> Certainly! Albumin is a protein made by your liver...</div>
+                <div style="margin-top: auto; height: 35px; border: 1px solid var(--glass-border); border-radius: 20px; display: flex; align-items: center; padding: 0 15px; font-size: 0.85rem; color: var(--text-light);">Type a medical question...</div>
+             </div>
+          </div>
+        </div>
+
+        <!-- Prediction Showcase -->
+        <div class="showcase-row">
+          <div class="showcase-text" data-aos="fade-right">
+            <h3>Medical-Grade Predictions</h3>
+            <p>Our ensemble-based LightGBM model processes your clinical biomarkers to predict hepatic stages with military-grade precision. Integrated reporting allows you to export these findings for your physician instantly.</p>
+            <div style="background: rgba(255, 71, 87, 0.05); padding: 20px; border-radius: 15px; border-left: 4px solid #ff4757;">
+               <p style="margin:0; font-style: italic; font-size: 0.95rem;">"Highly accurate and beautifully presented reports that bridge the patient-doctor gap."</p>
+            </div>
+          </div>
+          <div class="browser-mock" data-aos="zoom-in">
+             <div class="browser-bar">
+                <div class="dot red"></div><div class="dot amber"></div><div class="dot green"></div>
+                <div style="background: rgba(0,0,0,0.05); flex: 1; height: 20px; border-radius: 10px; font-size: 10px; display: flex; align-items: center; padding-left: 10px; color: var(--text-light);">liver-app.med/prediction</div>
+             </div>
+             <div class="mock-content">
+                <div class="mock-prediction">
+                   <div class="mock-field"></div><div class="mock-field"></div>
+                   <div class="mock-field"></div><div class="mock-field"></div>
+                   <div class="mock-field" style="grid-column: 1 / -1;"></div>
+                </div>
+                <div style="margin-top: 25px; height: 40px; background: linear-gradient(to right, var(--primary), var(--secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">Know Your Liver Health</div>
+                <div style="margin-top: 20px; text-align: center;">
+                   <i class="fa-solid fa-file-pdf" style="font-size: 2.5rem; color: #ff4757;"></i>
+                   <p style="font-size: 0.7rem; color: var(--text-light); margin-top: 5px;">Download_Report.pdf</p>
+                </div>
+             </div>
+          </div>
+        </div>
+
+        <!-- Multi-Chart Diagnostic Showcase -->
+        <div class="showcase-row reverse">
+          <div class="showcase-text" data-aos="fade-left">
+            <h3>Multi-Signature Profiling</h3>
+            <p>Go beyond simple numbers. Our advanced diagnostic suite generates composite health signatures, allowing you to visualize how your Albumin, Copper, and Platelets markers interact in a unified profile.</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+               <div style="text-align: center;">
+                  <div style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">20+</div>
+                  <div style="font-size: 0.8rem; color: var(--text-light);">Clinical Markers</div>
+               </div>
+               <div style="text-align: center;">
+                  <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent);">Real-time</div>
+                  <div style="font-size: 0.8rem; color: var(--text-light);">Data Processing</div>
+               </div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: center; width: 100%;" data-aos="zoom-in">
+             <div class="diagnostic-card" style="width: 100%; max-width: 550px; min-height: auto; gap: 50px; padding: 50px;">
+                <!-- Section 1: Radar -->
+                <div style="width: 100%;">
+                   <div class="card-tag" style="margin-bottom: 30px; display: inline-block;">Health Signature</div>
+                   <div style="height: 300px; width: 100%; position: relative;">
+                      <canvas id="mockRadarChart"></canvas>
+                   </div>
+                   <p style="font-size: 0.85rem; color: var(--text-light); text-align: center; margin-top: 20px; font-weight: 500;">Multi-parameter biomarker analysis</p>
+                </div>
+
+                <!-- Premium Divider -->
+                <div style="height: 1px; width: 100%; background: linear-gradient(to right, transparent, var(--glass-border), transparent);"></div>
+
+                <!-- Section 2: Doughnut -->
+                <div style="width: 100%;">
+                   <div class="card-tag" style="margin-bottom: 30px; display: inline-block;">Risk Assessment</div>
+                   <div style="height: 220px; width: 100%; position: relative; display: flex; align-items: center; justify-content: center;">
+                      <canvas id="mockDoughnutChart"></canvas>
+                   </div>
+                   <div style="margin-top: 35px; width: 100%;">
+                      <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center;">
+                         <span style="width: 10px; height: 10px; background: #27c93f; border-radius: 50%;"></span>
+                         94.8% Confidence Score
+                      </div>
+                      <div style="height: 8px; width: 100%; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden;">
+                         <div style="height: 100%; width: 98%; background: linear-gradient(to right, var(--primary), var(--accent)); box-shadow: 0 0 10px var(--primary);"></div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+
+        {% if not user.is_authenticated %}
+        <!-- Technology & Security Grid -->
+        <div class="overview-header" style="margin-top: 40px;" data-aos="fade-up">
+           <h2>Technology Behind The Precision</h2>
+           <p style="color: var(--text-light); font-size: 1.1rem;">Powerful algorithms. Uncompromising security.</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;" data-aos="fade-up">
+           <div class="f-card" style="flex-direction: column; text-align: center; padding: 40px 30px;">
+              <div class="f-icon" style="margin: 0 auto 20px; width: 70px; height: 70px; font-size: 2rem;"><i class="fa-solid fa-shield-virus"></i></div>
+              <h4>Encrypted Records</h4>
+              <p>Your clinical data is stored using AES-256 bit encryption. Only verified account holders can access their medical history.</p>
+           </div>
+           <div class="f-card" style="flex-direction: column; text-align: center; padding: 40px 30px;">
+              <div class="f-icon" style="margin: 0 auto 20px; width: 70px; height: 70px; font-size: 2rem; background: linear-gradient(135deg, var(--secondary), var(--primary));"><i class="fa-solid fa-microchip"></i></div>
+              <h4>Ensemble Learning</h4>
+              <p>We utilize multi-layer Gradient Boosting models (LightGBM) to deliver predictive accuracy that exceeds traditional methods.</p>
+           </div>
+           <div class="f-card" style="flex-direction: column; text-align: center; padding: 40px 30px;">
+              <div class="f-icon" style="margin: 0 auto 20px; width: 70px; height: 70px; font-size: 2rem; background: linear-gradient(135deg, var(--accent), var(--primary));"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+              <h4>Cloud Sync History</h4>
+              <p>Access your reports and terminal AI chat sessions from any device, anywhere in the world, with seamless cloud synchronization.</p>
+           </div>
+        </div>
+
+        <!-- Call to Action Banner -->
+        <div style="margin-top: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 40px; padding: 60px 40px; text-align: center; color: white; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);" data-aos="zoom-in">
+           <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+           <div style="position: absolute; bottom: -20px; left: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+           
+           <h2 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 20px; -webkit-text-fill-color: white;">Join the Health Revolution</h2>
+           <p style="font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto 40px; line-height: 1.6;">Create your secure account today and start monitoring your clinical biomarkers with the world's most advanced AI-driven hepatology tool.</p>
+           <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+              <a href="{% url 'signup' %}" style="background: #fff; color: var(--primary); padding: 15px 40px; border-radius: 30px; font-weight: 800; text-decoration: none; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: 0.3s; display: inline-block;">Create Free Account</a>
+              <a href="{% url 'about' %}" style="background: rgba(255,255,255,0.1); color: #fff; padding: 15px 40px; border-radius: 30px; font-weight: 800; text-decoration: none; font-size: 1.1rem; border: 1px solid rgba(255,255,255,0.3); transition: 0.3s; display: inline-block;">Read Technical Specs</a>
+           </div>
+        </div>
+        {% endif %}
+      </section>
+    </main>
+
+    <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 280"><path fill-opacity="1" d="M0,128L48,138.7C96,149,192,171,288,160C384,149,480,107,576,112C672,117,768,171,864,186.7C960,203,1056,181,1152,149.3C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-left">
+          <h3><i class="fa-solid fa-staff-snake"></i> Liver Cirrhosis</h3>
+          <p>Empowering patients and healthcare professionals with advanced, intelligent prediction tools. Stay informed, stay healthy.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'prediction' %}"><i class="fa-solid fa-stethoscope"></i> Prediction</a></li>
+              <li><a href="{% url 'records' %}"><i class="fa-solid fa-file-medical"></i> Dashboard</a></li>
+              <li><a href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+              <li><a href="{% url 'edit_profile' %}"><i class="fa-solid fa-user-pen"></i> Edit Profile</a></li>
+              <li><a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            {% else %}
+              <li><a href="{% url 'login' %}"><i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard</a></li>
+              <li><a href="{% url 'signup' %}"><i class="fa-solid fa-user-plus"></i> Create Account</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        <div class="footer-social">
+          <h4>Connect</h4>
+          <p><i class="fa-solid fa-envelope"></i> support@livercirrhosis.org</p>
+          <div class="social-icons">
+            <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-icon" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-icon" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon" title="GitHub"><i class="fa-brands fa-github"></i></a>
+          </div>
+          <div class="made-with">
+            Made with <span class="heart"><i class="fa-solid fa-heart"></i></span> & Django
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2025 Liver Cirrhosis Project. All rights reserved.
+      </div>
+    </footer>
+
+    <script>
+      // Dark Mode Toggle Logic
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const themeIcon = themeToggleBtn.querySelector('i');
+      
+      // Check for saved theme preference in local storage
+      const savedTheme = localStorage.getItem('liverCirrhosisTheme');
+      if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          themeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+          if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.replace('fa-moon', 'fa-sun');
+              localStorage.setItem('liverCirrhosisTheme', 'dark');
+          } else {
+              themeIcon.classList.replace('fa-sun', 'fa-moon');
+              localStorage.setItem('liverCirrhosisTheme', 'light');
+          }
+      });
+
+      // Add scrolled class to navbar when user scrolls down
+      window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 50) {
+          nav.classList.add('nav-scrolled');
+        } else {
+          nav.classList.remove('nav-scrolled');
+        }
+      });
+
+      // Mock Chart for Home Page Overview
+      function renderMockChart() {
+        const ctx = document.getElementById('mockHomeChart').getContext('2d');
+        const isDark = document.body.classList.contains('dark-mode');
+        const textColor = isDark ? '#ffffff' : '#1e293b';
+        const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+
+        if (window.myMockChart) window.myMockChart.destroy();
+
+        window.myMockChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Clinical Progress',
+                    data: [12, 19, 15, 8, 12, 5],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#667eea'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { ticks: { color: textColor }, grid: { color: gridColor } },
+                    x: { ticks: { color: textColor }, grid: { display: false } }
+                }
+            }
+        });
+
+        // Radar Chart Mock
+        const radarCtx = document.getElementById('mockRadarChart').getContext('2d');
+        if (window.myMockRadar) window.myMockRadar.destroy();
+        window.myMockRadar = new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Albumin', 'Bilirubin', 'Copper', 'Platelets', 'AST', 'Protime'],
+                datasets: [{
+                    label: 'Health Profile',
+                    data: [80, 20, 30, 70, 40, 60],
+                    borderColor: '#00d2ff',
+                    backgroundColor: 'rgba(0, 210, 255, 0.2)',
+                    borderWidth: 2,
+                    pointRadius: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    r: {
+                        angleLines: { color: gridColor },
+                        grid: { color: gridColor },
+                        pointLabels: { color: textColor, font: { size: 10 } },
+                        ticks: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Doughnut Chart Mock
+        const doughnutCtx = document.getElementById('mockDoughnutChart').getContext('2d');
+        if (window.myMockDoughnut) window.myMockDoughnut.destroy();
+        window.myMockDoughnut = new Chart(doughnutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Normal', 'Stage 1', 'Stage 2'],
+                datasets: [{
+                    data: [70, 20, 10],
+                    backgroundColor: ['#667eea', '#764ba2', '#00d2ff'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: { legend: { display: false } }
+            }
+        });
+      }
+
+      // Initial render and theme toggle update
+      renderMockChart();
+      themeToggleBtn.addEventListener('click', () => {
+          setTimeout(renderMockChart, 50);
+      });
+    </script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 1000,
+        once: true,
+      });
+    </script>
+      {% include 'ai.html' %}
+    <script>
+      // HOME PAGE CHAT FIX:
+      // This page has backdrop-filter, overflow:hidden, and CSS animations on
+      // .content and its ::before pseudo-element. These create stacking contexts
+      // that trap fixed-position children. Moving chat elements to be direct
+      // children of <body> is the only guaranteed way to escape all of them.
+      (function() {
+        var bubble = document.getElementById('chatBubble');
+        var wrapper = document.getElementById('chatWrapper');
+        if (bubble && wrapper) {
+          document.body.appendChild(bubble);
+          document.body.appendChild(wrapper);
+        }
+      })();
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      /*Nav bar css*/
+
+      nav {
+        background-color: #353a3f; /* Darker background for navbar */
+        color: #fff; /* White text color */
+        padding: 2px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* More prominent shadow */
+      }
+
+      .navbar-left {
+        display: flex;
+        align-items: center;
+      }
+
+      .company-logo {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        border-radius: 5px;
+      }
+
+      .company-name {
+        font-weight: 10px;
+        font-size: 1.2rem;
+      }
+
+      .navbar-right {
+        margin-right: 20px;
+        display: flex;
+      }
+
+      .nav-link {
+        color: #fff; /* White link color */
+        position: relative;
+        text-decoration: none;
+        margin-left: 20px;
+        padding: 6px 8px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      .nav-link::after {
+        content: "";
+        height: 4px;
+        position: absolute;
+        border-radius: 5px;
+        left: 0;
+        bottom: 0;
+        width: 0;
+        background-color: #58c1c5;
+        transition: all 0.2s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .container {
+        padding: 20px;
+      }
+      .table-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .download-btn {
+        display: inline-block;
+        margin: 20px 0;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+      }
+      .download-btn:hover {
+        background-color: #218838;
+      }
+
+      footer {
+        background-color: #343a40; /* Darker footer */
+        color: white;
+        padding: 1rem;
+        text-align: center;
+        margin-top: auto;
+      }
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        nav {
+          flex-direction: column;
+          align-items: center;
+          box-shadow: none;
+        }
+
+        .navbar-right {
+          margin-top: 10px;
+          flex-direction: column;
+        }
+
+        .nav-link {
+          margin: 10px 0;
+          margin-left: 0;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/aboutstyle.css' %}" />
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'home' %}" class="navbar-left" style="text-decoration: none;">
+        <img
+          src="{% static 'images/liver icon.png' %}"
+          alt="Company Logo"
+          class="company-logo"
+        />
+        <span class="company-name">LIVER CIRRHOSIS</span>
+      </a>
+      <div class="navbar-right">
+        <a href="{% url 'prediction' %}" class="nav-link">Prediction</a>
+        <a href="{% url 'records' %}" class="nav-link">Records</a>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="table-container">
+        <h2>Patient Records</h2>
+        <a href="#% url 'download_pdf' %" class="download-btn"
+          >Download as PDF</a
+        >
+        <table>
+          <thead>
+            <tr>
+              <th>N_Days</th>
+              <th>Status</th>
+              <th>Drug</th>
+              <th>Age</th>
+              <th>Sex</th>
+              <th>Ascites</th>
+              <th>Hepatomegaly</th>
+              <th>Spiders</th>
+              <th>Edema</th>
+              <th>Bilirubin</th>
+              <th>Cholesterol</th>
+              <th>Albumin</th>
+              <th>Copper</th>
+              <th>Alk_Phos</th>
+              <th>SGOT</th>
+              <th>Tryglicerides</th>
+              <th>Platelets</th>
+              <th>Prothrombin</th>
+              <th>Stage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Add your records here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <footer>&copy; 2025 Liver Cirrhosis Project</footer>
+      {% include 'ai.html' %}
+  </body>
+</html>
