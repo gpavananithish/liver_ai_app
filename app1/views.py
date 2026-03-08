@@ -5,24 +5,20 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login as auth_login,logout as auth_logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-import joblib
-import pandas as pd
-from sklearn.preprocessing import LabelEncoder 
-from lightgbm import LGBMClassifier
-from sklearn.model_selection import train_test_split
 import os
 import json
 import requests
 import markdown
 
-# PyMuPDF
-import fitz
-from openai import OpenAI
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-#code for downloading records
 from django.template.loader import get_template
-from xhtml2pdf import pisa
+
+# These heavy imports are now inside functions to save memory
+# import joblib
+# import pandas as pd
+# import fitz
+# from xhtml2pdf import pisa
 
 from django.http import HttpResponse
 from myproject import settings
@@ -31,13 +27,9 @@ from .models import CustomUser, Prediction, ChatSession
 
 # Create your views here.
 
-# Global variables to store the model and encoders
-_lgbm_model = None
-_encoders = None
-_cat_features = None
-
 def load_ml_model():
     """Helper function to load the pre-trained model and encoders on demand."""
+    import joblib # Import inside function to save memory
     global _lgbm_model, _encoders, _cat_features
     if _lgbm_model is None:
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -275,6 +267,7 @@ def delete_selected_predictions(request):
 
 @login_required(login_url='login')
 def prediction(request):
+    import pandas as pd # Import inside function to save memory
     error_message = None  # Initialize error_message here
     if request.method == 'POST':
         try:
@@ -441,6 +434,7 @@ def prediction(request):
 
 @login_required(login_url='login')
 def download_pdf(request):
+    from xhtml2pdf import pisa # Import inside function to save memory
     prediction_id = request.GET.get('id')
     if prediction_id:
         predictions = Prediction.objects.filter(user=request.user, id=prediction_id)
@@ -567,6 +561,7 @@ HEADERS = {
 
 def extract_text_from_pdf(pdf_file):
     """Helper function to read text from an uploaded PDF using PyMuPDF."""
+    import fitz # Import inside function to save memory
     text = ""
     # Open the uploaded PDF stream
     with fitz.open(stream=pdf_file.read(), filetype="pdf") as doc:
