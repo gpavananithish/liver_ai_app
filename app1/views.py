@@ -31,20 +31,25 @@ from .models import CustomUser, Prediction, ChatSession
 
 # Create your views here.
 
-# Load pre-trained model and encoders at startup
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_DIR = os.path.join(BASE_DIR, 'app1', 'model')
+# Global variables to store the model and encoders
+_lgbm_model = None
+_encoders = None
+_cat_features = None
 
-try:
-    lgbm_model = joblib.load(os.path.join(MODEL_DIR, 'lgbm_model.joblib'))
-    encoders = joblib.load(os.path.join(MODEL_DIR, 'encoders.joblib'))
-    cat_features = joblib.load(os.path.join(MODEL_DIR, 'cat_features.joblib'))
-    print("Pre-trained model and encoders loaded successfully.")
-except Exception as e:
-    print(f"Warning: Could not load pre-trained model: {e}")
-    lgbm_model = None
-    encoders = None
-    cat_features = None
+def load_ml_model():
+    """Helper function to load the pre-trained model and encoders on demand."""
+    global _lgbm_model, _encoders, _cat_features
+    if _lgbm_model is None:
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        MODEL_DIR = os.path.join(BASE_DIR, 'app1', 'model')
+        try:
+            _lgbm_model = joblib.load(os.path.join(MODEL_DIR, 'lgbm_model.joblib'))
+            _encoders = joblib.load(os.path.join(MODEL_DIR, 'encoders.joblib'))
+            _cat_features = joblib.load(os.path.join(MODEL_DIR, 'cat_features.joblib'))
+            print("Pre-trained model and encoders loaded successfully.")
+        except Exception as e:
+            print(f"Warning: Could not load pre-trained model: {e}")
+    return _lgbm_model, _encoders, _cat_features
 
 
 def home(request):
@@ -320,6 +325,9 @@ def prediction(request):
 
             # Create a Pandas DataFrame from the input data
             input_df = pd.DataFrame(input_data)
+
+            # Lazy load the model and encoders
+            lgbm_model, encoders, _ = load_ml_model()
 
             if lgbm_model and encoders:
                 # Preprocess the input data using saved encoders
