@@ -45,7 +45,7 @@ def load_ml_model():
 
 
 def home(request):
-    return render(request,'loginPage/home.html')
+    return render(request,'loginPage/Home.html')
 
 
 def login(request):

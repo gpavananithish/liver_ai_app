@@ -160,3 +160,6 @@ STORAGES = {
     },
 }
 
+# Prevent app crash if a static file is missing or misspelled
+WHITENOISE_MANIFEST_STRICT = False
+
