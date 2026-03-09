@@ -29,16 +29,22 @@ APPEND_SLASH=True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-(m&hu(l*w9n-f#mu5$y*i_(8yi06&+fux3_kbrx2!j+zf6rymt')
 
-# Automatically set DEBUG=True locally, and DEBUG=False on Render
-DEBUG = 'RENDER_EXTERNAL_HOSTNAME' not in os.environ
+# Automatically set DEBUG=True locally, and DEBUG=False on Render/PythonAnywhere
+DEBUG = 'RENDER_EXTERNAL_HOSTNAME' not in os.environ and 'PYTHONANYWHERE_DOMAIN' not in os.environ
 
 ALLOWED_HOSTS = ['*']
 
+# Render Configuration
 if 'RENDER_EXTERNAL_HOSTNAME' in os.environ:
     RENDER_HOST = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
     ALLOWED_HOSTS.append(RENDER_HOST)
-    # Necessary for forms to work on Render
     CSRF_TRUSTED_ORIGINS = [f'https://{RENDER_HOST}']
+
+# PythonAnywhere Configuration
+if 'PYTHONANYWHERE_DOMAIN' in os.environ:
+    PA_HOST = os.environ.get('PYTHONANYWHERE_DOMAIN')
+    ALLOWED_HOSTS.append(PA_HOST)
+    CSRF_TRUSTED_ORIGINS = [f'https://{PA_HOST}']
 
 
 # Application definition
@@ -162,4 +168,7 @@ STORAGES = {
 
 # Prevent app crash if a static file is missing or misspelled
 WHITENOISE_MANIFEST_STRICT = False
+
+# Hugging Face API Token for Dr. Qwen AI Chatbot
+HF_TOKEN = os.environ.get("HF_TOKEN", "")
 

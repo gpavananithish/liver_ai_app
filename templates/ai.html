@@ -693,7 +693,9 @@
   }
 
   function clearFile() {
-    fileInput.value = '';
+    if (fileInput) {
+      fileInput.value = '';
+    }
     fileIndicator.style.display = 'none';
     autoResize(chatInput);
   }
@@ -740,9 +742,24 @@
         chatMessages.appendChild(aiRow);
         chatHistory = data.history || chatHistory;
         if (data.session_id) currentSessionId = data.session_id;
+      } else if (data.error) {
+        const errRow = document.createElement('div');
+        errRow.className = 'chat-msg ai';
+        errRow.innerHTML = `
+          <div class="avatar" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div class="msg-bubble" style="color: #ef4444; background: rgba(239, 68, 68, 0.05); font-size: 0.85rem;">${data.error}</div>
+        `;
+        chatMessages.appendChild(errRow);
       }
     } catch (error) {
       typingIndicator.style.display = 'none';
+      const errRow = document.createElement('div');
+      errRow.className = 'chat-msg ai';
+      errRow.innerHTML = `
+        <div class="avatar" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="msg-bubble" style="color: #ef4444; background: rgba(239, 68, 68, 0.05);">Network error: Could not connect to Dr. Qwen.</div>
+      `;
+      chatMessages.appendChild(errRow);
     }
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }

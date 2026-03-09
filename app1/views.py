@@ -549,15 +549,8 @@ def edit_profile(request):
 
 # --- QWEN 2.5 AI CHAT INTEGRATION ---
 
-# Hugging Face token config - you should set this in your environment variables on Render.
-# Example: Key: HF_TOKEN, Value: hf_your_secret_token
-HF_TOKEN = os.environ.get("HF_TOKEN", "")
-
 # Setup the requests details to point to Hugging Face
 API_URL = "https://router.huggingface.co/v1/chat/completions"
-HEADERS = {
-    "Authorization": f"Bearer {HF_TOKEN}",
-}
 
 def extract_text_from_pdf(pdf_file):
     """Helper function to read text from an uploaded PDF using PyMuPDF."""
@@ -615,6 +608,15 @@ def ai_chat(request):
     Can read an uploaded PDF file and maintain chat history.
     """
     if request.method == "POST":
+        # Get token from settings
+        hf_token = getattr(settings, 'HF_TOKEN', '')
+        if not hf_token:
+            return JsonResponse({"error": "AI Chat is currently unavailable (API Token missing). Please contact the administrator."}, status=503)
+        
+        headers = {
+            "Authorization": f"Bearer {hf_token}",
+        }
+        
         try:
             user_message = request.POST.get("message", "Hello")
             chat_history_str = request.POST.get("history", "[]")
@@ -727,7 +729,7 @@ def ai_chat(request):
                 "max_tokens": 1000,
                 "temperature": 0.3
             }
-            response = requests.post(API_URL, headers=HEADERS, json=payload)
+            response = requests.post(API_URL, headers=headers, json=payload)
             response_json = response.json()
 
             # Extract the AI's reply
@@ -742,19 +744,24 @@ def ai_chat(request):
             # Save the AI's raw reply to history so the loop continues
             chat_history.append({"role": "assistant", "content": ai_reply_raw})
 
-            # Note: We save the *original* user message and the *raw* AI reply in history to return to the frontend,
-            # not the massive PDF text every single time, to save bandwidth, and to keep history consistent.
-            clean_history = chat_history[:-2] + [{"role": "user", "content": user_message}, {"role": "assistant", "content": ai_reply_raw}]
+            # Prepare history for the frontend:
+            # We want to keep the system prompt if it exists, plus the final user/assistant exchange.
+            system_msgs = [msg for msg in chat_history if msg.get("role") == "system"]
+            clean_history = system_msgs + chat_history[-2:] if len(chat_history) >= 2 else chat_history
             
             # --- Session Management ---
             # Automatically save/update session if user is logged in
             if request.user.is_authenticated:
+                # Convert string "null" from JS to actual None
+                if session_id == "null" or session_id == "undefined":
+                    session_id = None
+                
                 if session_id:
                     try:
                         session = ChatSession.objects.get(id=session_id, user=request.user)
                         session.history = clean_history
                         session.save()
-                    except ChatSession.DoesNotExist:
+                    except (ChatSession.DoesNotExist, ValueError):
                         session_id = None # Fallback to creating new
 
                 if not session_id:
