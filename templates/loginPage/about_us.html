@@ -90,7 +90,7 @@
         -webkit-backdrop-filter: blur(15px);
         border: 1px solid var(--glass-border);
         padding: 10px 30px;
-        width: 70%;
+        width: 75%; /* Responsive width */
         top: 15px;
         left: 50%;
         transform: translateX(-50%);
@@ -177,7 +177,7 @@
       .nav-link::after {
         content: '';
         position: absolute;
-        top: -98%;
+        top: -110%;
         left: -50%;
         width: 200%;
         height: 200%;
@@ -704,16 +704,20 @@
       }
 
       @media (max-width: 768px) {
-        nav { padding: 12px 15px; flex-direction: column; justify-content: center; }
+        nav { padding: 10px 10px; flex-direction: column; justify-content: center; }
         .company-name { display: inline-block; font-size: 1rem; }
         .navbar-left { justify-content: center; margin-bottom: 10px; }
         .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; }
-        nav.nav-scrolled { width: 95%; top: 10px; }
+        nav.nav-scrolled {
+        width: 96%;
+       
+        padding: 10px 4px;
+        top: 10px;}
         .nav-link { padding: 8px 10px; font-size: 0.75rem; }
         .nav-link span { display: inline; }
         .nav-link i { margin-right: 4px; font-size: 0.9rem; }
         .card-container { grid-template-columns: 1fr; gap: 20px; }
-        .container { padding: 160px 15px 40px; }
+        .container { padding: 160px 10px 40px; }
         .container h2 { font-size: 2rem; }
         
         .footer-wave { height: 80px; margin-bottom: -2px; }

@@ -8,10 +8,10 @@
     <link rel="icon" href="{% static 'images/homeIcon.png' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <style>
       @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
 
+    
       :root {
         --primary: #667eea;
         --secondary: #764ba2;
@@ -55,11 +55,6 @@
         transition: background 0.4s ease, color 0.4s ease;
       }
 
-      @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
 
       /* Ultra-Premium Navbar */
       nav {
@@ -84,7 +79,7 @@
         -webkit-backdrop-filter: blur(15px);
         border: 1px solid var(--glass-border);
         padding: 10px 30px;
-        width: 70%;
+        width: 75%; /* Responsive width */
         top: 15px;
         left: 50%;
         transform: translateX(-50%);
@@ -95,13 +90,14 @@
       body.dark-mode nav.nav-scrolled {
         border: 1px solid rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(10px);
-        background: rgb(89 89 89 / 85%)
+        background: var(--glass-bg);
       }
 
       .navbar-left {
         display: flex;
         align-items: center;
         gap: 15px;
+        margin-left: 0;
       }
 
       .company-logo {
@@ -110,14 +106,8 @@
         border-radius: 8px; /* Slightly smaller radius */
         background: transparent; /* Removed white background */
         box-shadow: none; /* Removed shadow */
-        animation: float 6s ease-in-out infinite;
       }
 
-      @keyframes float {
-        0% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-5px) rotate(3deg); }
-        100% { transform: translateY(0px) rotate(0deg); }
-      }
 
       .company-name {
         font-weight: 800;
@@ -308,10 +298,6 @@
         position: relative;
       }
 
-      @keyframes scaleUpFade {
-        from { opacity: 0; transform: scale(0.95) translateY(40px); }
-        to { opacity: 1; transform: scale(1) translateY(0); }
-      }
 
       .content {
         background: var(--glass-bg);
@@ -324,7 +310,6 @@
         border-radius: 30px;
         box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255,255,255,0.5);
         text-align: center;
-        animation: scaleUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         overflow: hidden;
       }
 
@@ -342,12 +327,8 @@
         height: 200%;
         background: radial-gradient(circle, rgba(102,126,234,0.08) 0%, transparent 60%);
         pointer-events: none;
-        animation: rotateGlow 20s linear infinite;
       }
 
-      @keyframes rotateGlow {
-        100% { transform: rotate(360deg); }
-      }
 
       h1 {
         font-size: 3.5rem;
@@ -374,7 +355,7 @@
       /* Modern Action Cards */
       .links {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 2.5rem;
         position: relative;
       }
@@ -385,7 +366,7 @@
         border-radius: 20px;
         padding: 1.5rem 2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: all 0.4s ease;
         position: relative;
         overflow: hidden;
         z-index: 1;
@@ -413,7 +394,6 @@
       }
 
       .lgn-link:hover, .signup-link:hover {
-        transform: translateY(-15px);
         box-shadow: 0 20px 40px rgba(0,0,0,0.12);
         border-color: rgba(102, 126, 234, 0.3);
       }
@@ -648,15 +628,9 @@
         color: #ff4757;
         margin: 0 10px;
         font-size: 1.4rem;
-        animation: pulse 1s infinite;
         display: inline-block;
       }
 
-      @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.3); text-shadow: 0 0 15px rgba(255, 71, 87, 0.8); }
-        100% { transform: scale(1); }
-      }
 
       .footer-bottom {
         text-align: center;
@@ -683,17 +657,20 @@
       }
 
       @media (max-width: 768px) {
-        nav { padding: 12px 15px; flex-direction: column; justify-content: center; }
+        nav { padding: 12px 15px; flex-direction: column; justify-content: center; z-index: 1001; }
         .company-name { display: inline-block; font-size: 1rem; }
-        .navbar-left { justify-content: center; margin-bottom: 10px; }
+        .navbar-left { justify-content: center; margin-bottom: 10px; margin-left: 0; }
         .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; flex-wrap: wrap; }
-        nav.nav-scrolled { width: 95%; top: 10px; padding: 12px 15px; }
+        nav.nav-scrolled {
+        width: 95%;
+        padding: 10px 0px;
+        top: 10px; }
         .nav-link { padding: 8px 10px; font-size: 0.75rem; }
         .nav-link span { display: inline; }
         .nav-link i { margin-right: 4px; font-size: 0.9rem; }
-        
-        main { padding: 160px 15px 15px; }
-        .content { padding: 2rem 1.2rem; }
+
+        main { padding: 180px 15px 40px; }
+        .content { padding: 2.5rem 1.2rem; }
         h1 { font-size: 2.2rem; }
         
         .links {
@@ -708,33 +685,33 @@
           margin-top: 15px;
           padding: 1.2rem 1.5rem;
         }
-        
-        .footer-content {
+
+        .footer-content { 
           grid-template-columns: 1fr;
-          gap: 30px;
           text-align: center;
+          padding: 1.5rem 1rem; 
+          gap: 1.5rem; 
         }
-        
+        .footer-wave { margin-bottom: -2px; width: 100%; display: block; }
+        footer h3, footer h4 { margin-bottom: 1rem; font-size: 1.2rem; }
         footer h3::after, footer h4::after {
           left: 50%;
           transform: translateX(-50%);
         }
-        
-        .social-icons {
-          justify-content: center;
-        }
-
+        .footer-left p { font-size: 0.9rem; }
+        .social-icons { justify-content: center; margin-bottom: 1rem; }
         .footer-social p {
           justify-content: center;
         }
       }
 
       @media (max-width: 480px) {
-        h1 { font-size: 1.8rem; }
-        .p1 { font-size: 0.95rem; }
+        .company-name { display: inline-block; font-size: 0.9rem; }
         .company-logo { width: 30px; height: 30px; }
-        .links-text { font-size: 0.9rem; }
-        .theme-btn { width: 35px; height: 35px; font-size: 1rem; }
+        .nav-link { padding: 6px 8px; font-size: 0.7rem; }
+        h1 { font-size: 1.8rem; }
+        p.intro-text { font-size: 1rem; margin-bottom: 2rem; }
+        .theme-btn { width: 34px; height: 34px; font-size: 0.9rem; }
       }
 
       /*
@@ -823,13 +800,13 @@
         box-shadow: 0 30px 60px rgba(0,0,0,0.12);
         overflow: hidden;
         position: relative;
-        transition: transform 0.4s ease;
+        transition: all 0.4s ease;
       }
       body.dark-mode .browser-mock {
         box-shadow: 0 30px 60px rgba(0,0,0,0.4);
       }
       .browser-mock:hover {
-        transform: translateY(-10px);
+        border-color: var(--primary);
       }
       .browser-bar {
         height: 35px;
@@ -897,12 +874,12 @@
         background: var(--card-bg);
         border: 1px solid var(--glass-border);
         border-radius: 28px;
-        padding: 35px;
+       
         box-shadow: 0 15px 35px rgba(0,0,0,0.05);
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 340px;
+        width: 100%;
         min-height: 420px;
         transition: all 0.4s ease;
         position: relative;
@@ -915,7 +892,6 @@
         border: 1px solid var(--glass-border);
       }
       .diagnostic-card:hover {
-        transform: translateY(-10px);
         box-shadow: 0 25px 50px rgba(0,0,0,0.1);
         border-color: var(--primary);
       }
@@ -931,9 +907,13 @@
         border-radius: 15px;
       }
       @media (max-width: 600px) {
-        .diagnostic-card { width: 100%; max-width: 320px; }
+        .diagnostic-card { 
+            margin: -23px;
+            width: 100%; 
+           
+          }
       }
-      }
+    }
     </style>
   </head>
   <body>
@@ -1065,7 +1045,7 @@
 
         <!-- Dashboard Showcase -->
         <div class="showcase-row">
-          <div class="showcase-text" data-aos="fade-right">
+          <div class="showcase-text">
             <h3>Interactive Clinical Dashboard</h3>
             <p>Monitor your health with beautiful, theme-aware visualizations. Our interactive records system tracks over 10 clinical parameters, visualizing your journey with surgical precision.</p>
             <ul style="list-style: none; margin-bottom: 30px; color: var(--text-light); font-size: 1rem;">
@@ -1100,7 +1080,7 @@
 
         <!-- AI Chat Showcase -->
         <div class="showcase-row reverse">
-          <div class="showcase-text" data-aos="fade-left">
+          <div class="showcase-text">
             <h3>Conversational AI Companion</h3>
             <p>Meet Dr. Qwen, your personal medical AI. Upload reports, ask questions about your symptoms, and get clear, formatted medical insights based on state-of-the-art LLM intelligence.</p>
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -1124,7 +1104,7 @@
 
         <!-- Prediction Showcase -->
         <div class="showcase-row">
-          <div class="showcase-text" data-aos="fade-right">
+          <div class="showcase-text">
             <h3>Medical-Grade Predictions</h3>
             <p>Our ensemble-based LightGBM model processes your clinical biomarkers to predict hepatic stages with military-grade precision. Integrated reporting allows you to export these findings for your physician instantly.</p>
             <div style="background: rgba(255, 71, 87, 0.05); padding: 20px; border-radius: 15px; border-left: 4px solid #ff4757;">
@@ -1153,7 +1133,7 @@
 
         <!-- Multi-Chart Diagnostic Showcase -->
         <div class="showcase-row reverse">
-          <div class="showcase-text" data-aos="fade-left">
+          <div class="showcase-text">
             <h3>Multi-Signature Profiling</h3>
             <p>Go beyond simple numbers. Our advanced diagnostic suite generates composite health signatures, allowing you to visualize how your Albumin, Copper, and Platelets markers interact in a unified profile.</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
@@ -1167,10 +1147,10 @@
                </div>
             </div>
           </div>
-          <div style="display: flex; justify-content: center; width: 100%;" data-aos="zoom-in">
-             <div class="diagnostic-card" style="width: 100%; max-width: 550px; min-height: auto; gap: 50px; padding: 50px;">
+          <div style="display: flex; justify-content: center; width: 100%;">
+             <div class="diagnostic-card" >
                 <!-- Section 1: Radar -->
-                <div style="width: 100%;">
+                <div >
                    <div class="card-tag" style="margin-bottom: 30px; display: inline-block;">Health Signature</div>
                    <div style="height: 300px; width: 100%; position: relative;">
                       <canvas id="mockRadarChart"></canvas>
@@ -1179,20 +1159,20 @@
                 </div>
 
                 <!-- Premium Divider -->
-                <div style="height: 1px; width: 100%; background: linear-gradient(to right, transparent, var(--glass-border), transparent);"></div>
+                <div style="height: 1px; background: linear-gradient(to right, transparent, var(--glass-border), transparent);"></div>
 
                 <!-- Section 2: Doughnut -->
-                <div style="width: 100%;">
+                <div >
                    <div class="card-tag" style="margin-bottom: 30px; display: inline-block;">Risk Assessment</div>
-                   <div style="height: 220px; width: 100%; position: relative; display: flex; align-items: center; justify-content: center;">
+                   <div style="height: 220px;  position: relative; display: flex; align-items: center; justify-content: center;">
                       <canvas id="mockDoughnutChart"></canvas>
                    </div>
-                   <div style="margin-top: 35px; width: 100%;">
+                   <div style="margin-top: 35px; ">
                       <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; justify-content: center;">
                          <span style="width: 10px; height: 10px; background: #27c93f; border-radius: 50%;"></span>
                          94.8% Confidence Score
                       </div>
-                      <div style="height: 8px; width: 100%; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden;">
+                      <div style="height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden;">
                          <div style="height: 100%; width: 98%; background: linear-gradient(to right, var(--primary), var(--accent)); box-shadow: 0 0 10px var(--primary);"></div>
                       </div>
                    </div>
@@ -1203,12 +1183,12 @@
 
         {% if not user.is_authenticated %}
         <!-- Technology & Security Grid -->
-        <div class="overview-header" style="margin-top: 40px;" data-aos="fade-up">
+        <div class="overview-header" style="margin-top: 40px;">
            <h2>Technology Behind The Precision</h2>
            <p style="color: var(--text-light); font-size: 1.1rem;">Powerful algorithms. Uncompromising security.</p>
         </div>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;" data-aos="fade-up">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
            <div class="f-card" style="flex-direction: column; text-align: center; padding: 40px 30px;">
               <div class="f-icon" style="margin: 0 auto 20px; width: 70px; height: 70px; font-size: 2rem;"><i class="fa-solid fa-shield-virus"></i></div>
               <h4>Encrypted Records</h4>
@@ -1227,7 +1207,7 @@
         </div>
 
         <!-- Call to Action Banner -->
-        <div style="margin-top: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 40px; padding: 60px 40px; text-align: center; color: white; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);" data-aos="zoom-in">
+        <div style="margin-top: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 40px; padding: 60px 40px; text-align: center; color: white; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);">
            <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
            <div style="position: absolute; bottom: -20px; left: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
            
@@ -1242,7 +1222,7 @@
       </section>
     </main>
 
-    <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 280"><path fill-opacity="1" d="M0,128L48,138.7C96,149,192,171,288,160C384,149,480,107,576,112C672,117,768,171,864,186.7C960,203,1056,181,1152,149.3C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+    <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 280" width="100%"><path fill-opacity="1" d="M0,128L48,138.7C96,149,192,171,288,160C384,149,480,107,576,112C672,117,768,171,864,186.7C960,203,1056,181,1152,149.3C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
     <footer>
       <div class="footer-content">
         <div class="footer-left">
@@ -1409,13 +1389,6 @@
       renderMockChart();
       themeToggleBtn.addEventListener('click', () => {
           setTimeout(renderMockChart, 50);
-      });
-    </script>
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-      AOS.init({
-        duration: 1000,
-        once: true,
       });
     </script>
       {% include 'ai.html' %}

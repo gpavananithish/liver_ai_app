@@ -29,8 +29,8 @@ APPEND_SLASH=True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-(m&hu(l*w9n-f#mu5$y*i_(8yi06&+fux3_kbrx2!j+zf6rymt')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+# Automatically set DEBUG=True locally, and DEBUG=False on Render
+DEBUG = 'RENDER_EXTERNAL_HOSTNAME' not in os.environ
 
 ALLOWED_HOSTS = ['*']
 

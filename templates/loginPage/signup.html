@@ -51,21 +51,35 @@
         transition: background 0.4s ease, color 0.4s ease;
       }
 
+      /* Main container overrides */
+      .container {
+        flex: 1;
+        width: 95%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 120px 20px 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+      }
+
       /* Ultra-Premium Navbar */
       nav {
-        background: transparent;
-        padding: 20px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        width: 100%;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
-        transition: padding 0.5s ease, background 0.5s ease, width 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.6s ease, top 0.6s ease, box-shadow 0.6s ease;
-      }
+    background: transparent;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    transition: padding 0.5s ease, background 0.5s ease, width 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.6s ease, top 0.6s ease, box-shadow 0.6s ease;
+  }
 
       nav.nav-scrolled {
         background: var(--glass-bg);
@@ -73,7 +87,7 @@
         -webkit-backdrop-filter: blur(15px);
         border: 1px solid var(--glass-border);
         padding: 10px 30px;
-        width: 70%;
+        width: 75%; /* Increased for better coverage */
         top: 15px;
         left: 50%;
         transform: translateX(-50%);
@@ -84,28 +98,22 @@
       body.dark-mode nav.nav-scrolled {
         border: 1px solid rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(10px);
-        background: rgb(89 89 89 / 85%);
+        background: var(--nav-glass);
       }
 
       .navbar-left {
-        margin-left: 40px;
+        margin-left: 0;
         display: flex;
         align-items: center;
         gap: 15px;
       }
 
       .company-logo {
+        margin-left: 20px;
         width: 35px;
         height: 35px;
         border-radius: 8px;
         background: transparent;
-        animation: float 6s ease-in-out infinite;
-      }
-
-      @keyframes float {
-        0% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-5px) rotate(3deg); }
-        100% { transform: translateY(0px) rotate(0deg); }
       }
 
       .company-name {
@@ -119,7 +127,7 @@
       }
 
       .navbar-right {
-        margin-right: 20px;
+        margin-right: 30px;
         display: flex;
         gap: 15px;
         align-items: center;
@@ -197,14 +205,7 @@
         background: rgba(255, 255, 255, 0.1);
       }
 
-      /* Main container overrides */
-      .container {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 120px 2rem 2rem;
-      }
+     
 
       .login-block {
         display: flex;
@@ -858,7 +859,7 @@
           max-width: 900px;
         }
         nav { padding: 15px 25px; }
-        nav.nav-scrolled { width: 85%; }
+        nav.nav-scrolled { width: 92%; }
         .form-side { padding: 2rem; }
         .image-side { padding: 20px; }
         .footer-content {
@@ -870,16 +871,38 @@
       }
 
       @media (max-width: 768px) {
-        nav { padding: 12px 15px; flex-direction: column; justify-content: center; }
+        nav { padding: 12px 15px; flex-direction: column; justify-content: center; z-index: 1001; }
         .company-name { display: inline-block; font-size: 1rem; }
         .navbar-left { justify-content: center; margin-bottom: 10px; margin-left: 0; }
         .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; flex-wrap: wrap; }
-        nav.nav-scrolled { width: 95%; top: 10px; padding: 12px 15px; }
+        nav.nav-scrolled { 
+        width: 95%;
+        top: 10px;
+        padding: 10px 2px; 
+      }
         .nav-link { padding: 8px 10px; font-size: 0.75rem; }
         .nav-link i { margin-right: 4px; font-size: 0.9rem; }
 
         .container { 
-          padding: 160px 1rem 2rem; 
+          padding: 160px 0rem 40px; 
+        }
+
+        .footer-content { 
+          grid-template-columns: 1fr;
+          text-align: center;
+          padding: 1.5rem 1rem; 
+          gap: 1.5rem; 
+        }
+        .footer-wave { height: 80px; margin-bottom: -2px; }
+        footer h3, footer h4 { margin-bottom: 1rem; font-size: 1.2rem; }
+        footer h3::after, footer h4::after {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        .footer-left p { font-size: 0.9rem; }
+        .social-icons-footer { justify-content: center; margin-bottom: 1rem; }
+        .footer-social p {
+          justify-content: center;
         }
         
         .login-block {
@@ -914,27 +937,10 @@
           gap: 1rem;
         }
 
-        .footer-content {
-          grid-template-columns: 1fr;
-          text-align: center;
-          gap: 30px;
-        }
-        
-        footer h3::after, footer h4::after {
-          left: 50%;
-          transform: translateX(-50%);
-        }
-        
-        .social-icons-footer {
-          justify-content: center;
-        }
-
-        .footer-social p {
-          justify-content: center;
-        }
       }
 
       @media (max-width: 480px) {
+        .company-name { display: inline-block; font-size: 0.9rem; }
         .company-logo { width: 30px; height: 30px; }
         .theme-btn { width: 35px; height: 35px; font-size: 1rem; }
         .btn-primary { padding: 0.8rem 1.5rem; font-size: 1rem; }

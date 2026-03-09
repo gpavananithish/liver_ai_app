@@ -89,7 +89,7 @@
         -webkit-backdrop-filter: blur(15px);
         border: 1px solid var(--glass-border);
         padding: 10px 30px;
-        width: 70%;
+        width: 75%; /* More responsive width */
         top: 15px;
         left: 50%;
         transform: translateX(-50%);
@@ -100,11 +100,11 @@
       body.dark-mode nav.nav-scrolled {
         border: 1px solid rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(10px);
-        background: rgb(89 89 89 / 85%);
+        background: var(--glass-bg);
       }
 
       .navbar-left {
-        margin-left: 0px;
+        margin-left: 0;
         display: flex;
         align-items: center;
         gap: 15px;
@@ -115,14 +115,8 @@
         height: 35px;
         border-radius: 8px;
         background: transparent;
-        animation: float 6s ease-in-out infinite;
       }
 
-      @keyframes float {
-        0% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-5px) rotate(3deg); }
-        100% { transform: translateY(0px) rotate(0deg); }
-      }
 
       .company-name {
         font-weight: 800;
@@ -353,10 +347,13 @@
       /* Main container overrides */
       .container {
         flex: 1;
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 120px 20px 60px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 120px 2rem 2rem;
       }
 
       .prediction-block {
@@ -877,6 +874,7 @@
         color: #64748b;
       }
 
+      /* Mobile-Responsive Improvements */
       @media (max-width: 991px) {
         nav { padding: 15px 20px; }
         nav.nav-scrolled { width: 90%; }
@@ -889,15 +887,62 @@
       }
 
       @media (max-width: 768px) {
-        nav { padding: 12px 15px; flex-direction: column; justify-content: center; }
+        nav { padding: 12px 15px; flex-direction: column; justify-content: center; z-index: 1001; }
         .company-name { display: inline-block; font-size: 1rem; }
-        .navbar-left { justify-content: center; margin-bottom: 10px; }
-        .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; }
-        nav.nav-scrolled { width: 95%; top: 10px; }
+        .navbar-left { justify-content: center; margin-bottom: 10px; margin-left: 0; }
+        .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; flex-wrap: wrap; }
+        nav.nav-scrolled { 
+        width: 95%;
+        padding: 10px 15px;
+        top: 10px; }
         .nav-link { padding: 8px 10px; font-size: 0.75rem; }
         .nav-link span { display: inline; }
         .nav-link i { margin-right: 4px; font-size: 0.9rem; }
+        .profile-container { order: 2; margin-left: 5px; }
+
+        .container { 
+          padding: 160px 1rem 40px; 
+        }
         
+        .prediction-block {
+          width: 100%;
+          padding: 1.5rem 1rem;
+          border-radius: 20px;
+        }
+        
+        .form-title {
+          font-size: 1.6rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .button-group {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .btn {
+          width: 100%;
+          padding: 0.8rem 1.5rem;
+          font-size: 1rem;
+        }
+
+        .result-container {
+          padding: 15px;
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .info-box {
+          width: 280px;
+          left: 50%;
+          transform: translateX(-50%) translateY(10px);
+        }
+
         .footer-content {
           grid-template-columns: 1fr;
           text-align: center;
@@ -905,7 +950,7 @@
           gap: 1.5rem;
         }
 
-        .footer-wave { height: 80px; margin-bottom: -2px; }
+        .footer-wave { height: 80px; margin-bottom: -2px; width: 100%; display: block; }
 
         footer h3, footer h4 { margin-bottom: 1rem; font-size: 1.2rem; }
         
@@ -922,20 +967,22 @@
         .footer-social p {
           justify-content: center;
         }
-        
-        .button-group {
-          flex-direction: column;
-        }
-        
-        .prediction-block {
-          padding: 20px;
-        }
-        
-        .container { padding: 160px 15px 15px; }
       }
-      
+
       @media (max-width: 480px) {
-        .form-title { font-size: 1.8rem; }
+        .company-name { display: inline-block; font-size: 0.9rem; }
+        .company-logo { width: 30px; height: 30px; }
+        .form-title { font-size: 1.4rem; }
+        .nav-link span { display: inline; font-size: 0.7rem; }
+        .nav-link { padding: 8px 6px; }
+        .nav-link i { font-size: 0.9rem; margin-right: 2px; }
+        .messages {
+          top: 70px;
+          right: 5%;
+          left: 5%;
+          width: 90%;
+          max-width: none;
+        }
       }
     </style>
   </head>
@@ -1242,7 +1289,7 @@
     </div>
 
     <!-- Creative Triple-Layered Curvy Flow Footer -->
-    <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none" style="width: 2880px;">
+    <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none" style="width: 100%;">
       <path class="wave-bg" d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,218.7C672,213,768,139,864,128C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1488,229.3C1536,203,1632,149,1728,154.7C1824,160,1920,224,2016,218.7C2112,213,2208,139,2304,128C2400,117,2496,171,2592,197.3C2688,224,2784,224,2832,224L2880,224L2880,320L0,320Z"></path>
       <path class="wave-mid" d="M0,128L48,149.3C96,171,192,213,288,208C384,203,480,149,576,144C672,139,768,181,864,186.7C960,192,1056,160,1152,144C1248,128,1344,128,1392,128L1440,128L1488,149.3C1536,171,1632,213,1728,208C1824,203,1920,149,2016,144C2112,139,2208,181,2304,186.7C2400,192,2496,160,2592,144C2688,128,2784,128,2832,128L2880,128L2880,320L0,320Z"></path>
       <path class="wave-top" d="M0,192L48,170.7C96,149,192,107,288,112C384,117,480,171,576,165.3C672,160,768,96,864,101.3C960,107,1056,181,1152,197.3C1248,213,1344,171,1392,149.3L1440,128L1488,170.7C1536,149,1632,107,1728,112C1824,117,1920,171,2016,165.3C2112,160,2208,96,2304,101.3C2400,107,2496,181,2592,197.3C2688,213,2784,171,2832,149.3L2880,128L2880,320L0,320Z"></path>
