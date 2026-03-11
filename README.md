@@ -2,7 +2,7 @@
 
 Welcome to **Liver AI**, a powerful yet simple healthcare platform designed to help people understand liver health better. This project uses smart Machine Learning to predict liver cirrhosis stages and an empathetic AI Chatbot to guide users through their health journey.
 
-- **🌍Check Out Here**: [Hosted on PythonAnywhere](https://gpavananitish.pythonanywhere.com/) 
+- **🌍Check Out Here**: [Live Demo](https://pavan0550w.pythonanywhere.com/) 
 ---
 
 ## 🚀 Key Features
@@ -95,7 +95,7 @@ myproject/
 ## 🌐 Deployment & Links
 
 - **📂 GitHub Code**: [gpavananithish/liver_ai_app](https://github.com/gpavananithish/liver_ai_app)
-- **🌍 Live Demo**: [Hosted on PythonAnywhere](https://gpavananitish.pythonanywhere.com/) 
+- **🌍 Live Demo**: [Hosted on PythonAnywhere](https://pavan0550w.pythonanywhere.com/) 
 
 ---
 
