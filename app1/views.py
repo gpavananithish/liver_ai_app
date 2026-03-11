@@ -26,6 +26,9 @@ from .models import CustomUser, Prediction, ChatSession
 
 
 # Create your views here.
+_lgbm_model = None
+_encoders = None
+_cat_features = None
 
 def load_ml_model():
     """Helper function to load the pre-trained model and encoders on demand."""
