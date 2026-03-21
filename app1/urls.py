@@ -13,6 +13,7 @@ urlpatterns = [
     path('delete_selected_predictions/', views.delete_selected_predictions, name='delete_selected_predictions'),
     path('download_pdf/', views.download_pdf, name='download_pdf'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
+    path('delete_account/', views.delete_account, name='delete_account'),
     path('ai_chat/', views.ai_chat, name='ai_chat'),
     path('ai_chat/sessions/', views.list_chat_sessions, name='list_chat_sessions'),
     path('ai_chat/sessions/<int:session_id>/', views.load_chat_session, name='load_chat_session'),

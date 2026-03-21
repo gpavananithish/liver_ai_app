@@ -864,6 +864,65 @@
       }
       body.dark-mode .mock-field { background: rgba(255,255,255,0.03); }
 
+      /* Premium Django Messages */
+      .messages {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: fixed;
+        top: 120px;
+        right: 30px;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 400px;
+        pointer-events: none;
+      }
+
+      .messages li {
+        padding: 1.2rem 1.5rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px;
+        margin-bottom: 0;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        animation: slideInRight 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 0.6s ease 5s forwards;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        pointer-events: auto;
+        color: var(--text-dark);
+        border: 1px solid var(--glass-border);
+      }
+
+      body.dark-mode .messages li {
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      }
+
+      .messages li i {
+        font-size: 1.4rem;
+      }
+
+      .messages .success i { color: #667eea; text-shadow: 0 0 10px rgba(102, 126, 234, 0.4); }
+      .messages .error i, .messages .danger i, .alert-danger i { color: #ff4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.4); }
+      
+      body.dark-mode .messages .success i { color: #8aa1f8; }
+      body.dark-mode .messages .error i, body.dark-mode .messages .danger i, body.dark-mode .alert-danger i { color: #ff6b81; }
+
+      @keyframes slideInRight {
+        0% { opacity: 0; transform: translateX(50px); }
+        100% { opacity: 1; transform: translateX(0); }
+      }
+
+      @keyframes fadeOut {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); visibility: hidden; }
+      }
+
       @media (max-width: 991px) {
         .showcase-row { grid-template-columns: 1fr; gap: 40px; text-align: center; }
         .showcase-row.reverse { direction: ltr; }
@@ -918,6 +977,22 @@
     </style>
   </head>
   <body>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages%}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if "success" in message.tags %}
+        <i class="fas fa-check-circle"></i>
+        {% elif "error" in message.tags or "danger" in message.tags %}
+        <i class="fas fa-exclamation-circle"></i>
+        {% else %}
+        <i class="fas fa-info-circle"></i>
+        {% endif %}
+        {{ message }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <nav>
       <a href="{% url 'home' %}" class="navbar-left" style="text-decoration: none;">
         <img
@@ -968,6 +1043,8 @@
         {% else %}
           <a href="{% url 'login' %}" class="nav-link"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
           <a href="{% url 'signup' %}" class="nav-link"><i class="fa-solid fa-user-plus"></i> SignUp</a>
+          <a href="{% url 'about' %}" class="nav-link"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+          
           <button class="theme-btn" id="themeToggle" aria-label="Toggle Dark Mode">
             <i class="fa-solid fa-moon"></i>
           </button>
@@ -1242,6 +1319,7 @@
             {% else %}
               <li><a href="{% url 'login' %}"><i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard</a></li>
               <li><a href="{% url 'signup' %}"><i class="fa-solid fa-user-plus"></i> Create Account</a></li>
+              <li><a href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
             {% endif %}
           </ul>
         </div>

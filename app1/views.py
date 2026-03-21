@@ -66,7 +66,8 @@ def login(request):
         else:
              messages.error(request, "Invalid username or password")  # Use Django messages
      else: #This is where you would put the redirect message
-       if not request.user.is_authenticated:
+       # Only show the error message if the user was redirected from a restricted page
+       if not request.user.is_authenticated and 'next' in request.GET:
            messages.error(request, 'Please log in to view the page.')
      
      return render(request,'loginPage/login.html')
@@ -93,13 +94,15 @@ def signup(request):
                 custom_user = CustomUser.objects.create(user=user, email=email,first_name=first_name,last_name=last_name,gender=gender,dob=dob) # Create the custom user
                 custom_user.save()
                 
-                messages.success(request,"Your Account created sucessfully Login Now")
-                login(request, user)
-                return redirect('login')
-            except:
-                messages.error(request,"User already exists")
+                # Log the user in directly after account creation
+                auth_login(request, user)
+                messages.success(request, "Your account was created successfully! Welcome to the platform.")
+                return redirect('home')
+            except Exception as e:
+                # If the creation fails (e.g. IntegrityError for duplicate username)
+                messages.error(request, "User already exists or details are invalid.")
         else:
-            messages.error(request,"Passwords does not matched")   
+            messages.error(request,"Passwords do not match")   
     return render(request,'loginPage/signup.html')
 
 
@@ -107,7 +110,7 @@ def logout(request):
     auth_logout(request)
     return redirect('home')
 
-@login_required(login_url='login')  # Correct usage
+# @login_required(login_url='login')  # Correct usage
 def about(request):
     return render(request,'loginPage/about_us.html')
 
@@ -548,6 +551,17 @@ def edit_profile(request):
 
     # If it's a GET request, pre-populate the form
     return render(request, 'loginPage/edit_profile.html', {'user': request.user})
+
+
+@login_required(login_url='login')
+def delete_account(request):
+    if request.method == 'POST':
+        # Safely delete the user and completely log them out
+        request.user.delete()
+        messages.success(request, "Your account and all associated data have been permanently deleted.")
+        return redirect('home')
+    # If accessed via GET, redirect back to profile
+    return redirect('edit_profile')
 
 
 # --- QWEN 2.5 AI CHAT INTEGRATION ---
