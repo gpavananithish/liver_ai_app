@@ -808,3 +808,21 @@ def ai_chat(request):
             return JsonResponse({"error": "I'm sorry, I encountered an error connecting to the AI. " + str(e)}, status=500)
 
     return JsonResponse({"error": "Only POST method is allowed"}, status=400)
+
+
+def privacy_policy(request):
+    return render(request, 'loginPage/privacy_policy.html')
+
+
+def terms_of_service(request):
+    return render(request, 'loginPage/terms_of_service.html')
+
+
+def robots_txt(request):
+    content = "User-agent: *\nDisallow: /admin/\nAllow: /\n\nUser-agent: Mediapartners-Google\nAllow: /\n\nUser-agent: Googlebot\nAllow: /\n"
+    return HttpResponse(content, content_type="text/plain")
+
+
+def ads_txt(request):
+    content = "google.com, pub-8831880884824519, DIRECT, f08c47fec0942fa0\n"
+    return HttpResponse(content, content_type="text/plain")

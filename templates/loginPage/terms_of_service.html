@@ -1,0 +1,799 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include 'adsense.html' %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liver Cirrhosis - Terms of Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="icon" href="{% static 'images/AboutUsIcon.png' %}" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+      
+      :root {
+        --primary: #667eea;
+        --secondary: #764ba2;
+        --accent: #00d2ff;
+        --glass-bg: rgba(255, 255, 255, 0.9);
+        --glass-border: rgba(255, 255, 255, 0.4);
+        --nav-glass: rgba(255, 255, 255, 0.15);
+        --text-dark: #1e293b;
+        --text-light: #64748b;
+        --bg-color: #f4f7fb;
+        --card-bg: #ffffff;
+      }
+
+      body.dark-mode {
+        --primary: #8aa1f8;
+        --secondary: #9068be;
+        --accent: #4ddbff;
+        --glass-bg: rgba(15, 15, 15, 0.85);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --nav-glass: rgba(10, 10, 10, 0.8);
+        --text-dark: #ffffff;
+        --text-light: #a0a0a0;
+        --bg-color: #0b0b0b;
+        --card-bg: #141414;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        font-family: 'Outfit', sans-serif;
+        background: var(--bg-color);
+        color: var(--text-dark);
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+        width: 100vw;
+        max-width: 100%;
+        transition: background 0.4s ease, color 0.4s ease;
+        position: relative;
+      }
+
+      body.dark-mode::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      /* Navbar */
+      nav {
+        background: transparent;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        transition: padding 0.5s ease, background 0.5s ease, width 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.6s ease, top 0.6s ease, box-shadow 0.6s ease;
+      }
+
+      nav.nav-scrolled {
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        padding: 10px 30px;
+        width: 75%;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode nav.nav-scrolled {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        background: rgb(89 89 89 / 85%);
+      }
+
+      .navbar-left {
+        margin-left: 40px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .company-logo {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        background: transparent;
+      }
+
+      .company-name {
+        font-weight: 800;
+        font-size: 1.2rem;
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: 1px;
+      }
+
+      .navbar-right {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text-dark);
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: rgb(60 150 189 / 5%);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-mode .nav-link {
+        background: rgb(60 150 189 / 5%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: #fff;
+      }
+
+      body.dark-mode .nav-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-color: transparent;
+      }
+
+      .nav-link:hover {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        color: #fff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .nav-link i { margin-right: 8px; }
+
+      .theme-btn {
+        background: none;
+        border: none;
+        color: var(--text-dark);
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .theme-btn:hover {
+        background: rgba(0, 0, 0, 0.05);
+        transform: rotate(15deg);
+      }
+
+      body.dark-mode .theme-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Container layout */
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 120px 20px 60px;
+      }
+
+      .container h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+      }
+
+      .terms-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 45px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        text-align: left;
+        line-height: 1.8;
+      }
+
+      body.dark-mode .terms-card {
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      }
+
+      .terms-card h2 {
+        color: var(--primary);
+        font-size: 1.6rem;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        font-weight: 700;
+        border-bottom: 2px solid var(--glass-border);
+        padding-bottom: 8px;
+      }
+
+      .terms-card p {
+        color: var(--text-dark);
+        font-size: 1.05rem;
+        margin-bottom: 20px;
+        opacity: 0.9;
+      }
+
+      .terms-card ul {
+        margin-bottom: 20px;
+        padding-left: 20px;
+        color: var(--text-dark);
+        font-size: 1.05rem;
+      }
+
+      .terms-card li {
+        margin-bottom: 8px;
+      }
+
+      .disclaimer-box {
+        background: rgba(255, 71, 87, 0.05);
+        border-left: 4px solid #ff4757;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+      }
+
+      body.dark-mode .disclaimer-box {
+        background: rgba(255, 107, 129, 0.08);
+        border-left-color: #ff6b81;
+      }
+
+      .disclaimer-box h3 {
+        color: #ff4757;
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      body.dark-mode .disclaimer-box h3 {
+        color: #ff6b81;
+      }
+
+      .disclaimer-box p {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      /* Pulse organic footer divider */
+      .footer-wave {
+        display: block;
+        width: 100%;
+        height: 180px;
+        margin-top: auto;
+        margin-bottom: -48px;
+        position: relative;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      .pulse-line {
+        fill: none;
+        stroke: rgba(50, 133, 211, 0.5);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 2000;
+        stroke-dashoffset: 2000;
+        animation: pulseDraw 8s linear infinite;
+        opacity: 0.8;
+      }
+
+      .pulse-blob {
+        fill: rgba(50, 133, 211, 0.15);
+        animation: blobFloat 12s ease-in-out infinite;
+      }
+
+      .pulse-blob-2 {
+        fill: rgba(50, 133, 211, 0.1);
+        animation: blobFloat 15s ease-in-out infinite reverse;
+      }
+
+      body.dark-mode .pulse-blob { fill: rgb(55 108 112 / 20%); }
+      body.dark-mode .pulse-blob-2 { fill: rgb(55 108 112 / 40%); }
+      body.dark-mode .pulse-line { stroke: rgb(68 212 223 / 90%); opacity: 0.9; }
+
+      @keyframes pulseDraw { to { stroke-dashoffset: 0; } }
+      @keyframes blobFloat {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(50px, -30px) scale(1.1); }
+        66% { transform: translate(-30px, 20px) scale(0.9); }
+      }
+
+      footer {
+        background: #0f172a;
+        color: #94a3b8;
+        font-family: 'Outfit', sans-serif;
+        position: relative;
+        text-align: left;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 2rem 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 3rem;
+      }
+
+      .footer-left, .footer-links, .footer-social {
+        flex: 1;
+        min-width: 250px;
+      }
+
+      footer h3, footer h4 {
+        color: #f8fafc;
+        margin-bottom: 1.5rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        position: relative;
+        padding-bottom: 12px;
+      }
+
+      footer h3 i {
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-right: 8px;
+        font-size: 1.2em;
+      }
+
+      footer h3::after, footer h4::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 40px;
+        background: linear-gradient(to right, var(--accent), var(--primary));
+        border-radius: 2px;
+        transition: width 0.4s ease;
+      }
+
+      .footer-left:hover h3::after, .footer-links:hover h4::after, .footer-social:hover h4::after {
+        width: 70px;
+      }
+
+      .footer-left p {
+        font-size: 1rem;
+        line-height: 1.8;
+      }
+
+      .footer-links ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 1.2rem;
+      }
+
+      .footer-links a {
+        color: #94a3b8;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+      }
+
+      .footer-links a i {
+        color: var(--primary);
+        font-size: 0.9em;
+        transition: transform 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: #f8fafc;
+        transform: translateX(10px);
+      }
+
+      .social-icons-footer {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+      }
+
+      .social-icons-footer a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #f8fafc;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-size: 1.2rem;
+      }
+
+      .social-icons-footer a:hover {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        transform: translateY(-8px) rotate(360deg) scale(1.1);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .made-with {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-size: 1rem;
+        color: #f8fafc;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 0.4s ease;
+        font-weight: 600;
+      }
+
+      .made-with:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      }
+
+      .heart {
+        color: #ff4757;
+        margin: 0 10px;
+        font-size: 1.4rem;
+        animation: pulse 1s infinite;
+        display: inline-block;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); text-shadow: 0 0 15px rgba(255, 71, 87, 0.8); }
+        100% { transform: scale(1); }
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(0, 0, 0, 0.4);
+        font-size: 0.95rem;
+        color: #64748b;
+        letter-spacing: 1px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+      }
+
+      @media (max-width: 991px) {
+        nav { padding: 15px 20px; }
+        nav.nav-scrolled { width: 90%; }
+        .footer-content {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          text-align: left;
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        nav { padding: 10px 10px; flex-direction: column; justify-content: center; }
+        .company-name { display: inline-block; font-size: 1rem; }
+        .navbar-left { justify-content: center; margin-bottom: 10px; }
+        .navbar-right { gap: 8px; justify-content: center; width: 100%; margin: 0; }
+        nav.nav-scrolled { width: 96%; padding: 10px 4px; top: 10px;}
+        .nav-link { padding: 8px 10px; font-size: 0.75rem; }
+        .nav-link span { display: inline; }
+        .nav-link i { margin-right: 4px; font-size: 0.9rem; }
+        .container { padding: 160px 10px 40px; }
+        .terms-card { padding: 25px 20px; }
+        .footer-wave { height: 80px; margin-bottom: -2px; }
+        .footer-content { 
+          grid-template-columns: 1fr;
+          text-align: center;
+          padding: 1.5rem 1rem; 
+          gap: 1.5rem; 
+        }
+        footer h3, footer h4 { margin-bottom: 1rem; font-size: 1.2rem; }
+        footer h3::after, footer h4::after { left: 50%; transform: translateX(-50%); }
+        .footer-left p { font-size: 0.9rem; }
+        .social-icons-footer { justify-content: center; margin-bottom: 1rem; }
+        .footer-social p { justify-content: center; }
+      }
+
+      /* Profile Dropdown Logic */
+      .profile-container {
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
+
+      .profile-icon {
+        width: 35px;
+        height: 35px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .profile-container:hover .profile-icon {
+        transform: scale(1.1) rotate(5deg);
+        filter: drop-shadow(0 0 8px var(--primary));
+      }
+
+      .profile-details {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--card-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        z-index: 100;
+        min-width: 250px;
+        color: var(--text-dark);
+        margin-top: 10px;
+        backdrop-filter: blur(10px);
+        animation: fadeInAvatar 0.3s ease;
+      }
+
+      .profile-details::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 0;
+        width: 100%;
+        height: 10px;
+      }
+
+      .profile-container:hover .profile-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .dropdown-avatar {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
+      }
+
+      .profile-details h3 { margin-bottom: 15px; color: var(--text-dark); font-weight: 700; }
+      .profile-details p { margin: 5px 0; font-size: 0.9rem; color: var(--text-light); width: 100%; text-align: left; }
+      .profile-details p b { color: var(--text-dark); }
+      
+      .logout-btn {
+        margin-top: 15px;
+        width: 100%;
+        padding: 10px;
+        background: linear-gradient(135deg, #ff4757, var(--secondary));
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .logout-btn:hover { 
+        transform: translateY(-2px); 
+        box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3); 
+      }
+
+      body.dark-mode .logout-btn {
+        background: linear-gradient(135deg, #ff6b81, var(--secondary));
+      }
+
+      @keyframes fadeInAvatar { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'home' %}" class="navbar-left" style="text-decoration: none;">
+        <img src="{% static 'images/liver icon.png' %}" alt="Company Logo" class="company-logo" />
+        <span class="company-name">LIVER CIRRHOSIS</span>
+      </a>
+      <div class="navbar-right">
+        {% if user.is_authenticated %}
+          <a href="{% url 'prediction' %}" class="nav-link"><i class="fa-solid fa-stethoscope"></i> <span>Prediction</span></a>
+          <a href="{% url 'records' %}" class="nav-link"><i class="fa-solid fa-file-medical"></i> <span>Dashboard</span></a>
+          <a href="{% url 'about' %}" class="nav-link"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+          
+          <div class="profile-container">
+            <svg class="profile-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="navAvatarGradTerms" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:var(--primary);stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:var(--accent);stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="45" fill="none" stroke="url(#navAvatarGradTerms)" stroke-width="5" />
+              <circle cx="50" cy="40" r="18" fill="url(#navAvatarGradTerms)" />
+              <path d="M25 80C25 65 35 58 50 58C65 58 75 65 75 80" fill="url(#navAvatarGradTerms)" />
+            </svg>
+
+            <div class="profile-details">
+              <h3>User Details</h3>
+              <div class="dropdown-avatar">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                  <circle cx="50" cy="50" r="48" fill="var(--card-bg)" stroke="url(#navAvatarGradTerms)" stroke-width="2" />
+                  <circle cx="50" cy="40" r="20" fill="url(#navAvatarGradTerms)" />
+                  <path d="M22 82C22 65 34 58 50 58C66 58 78 65 78 82" fill="url(#navAvatarGradTerms)" />
+                </svg>
+              </div>
+              <p><b>Name:</b> {{ user.custom_user.first_name }} {{ user.custom_user.last_name }}</p>
+              <p><b>Email:</b> {{ user.email }}</p>
+              <a href="{% url 'edit_profile' %}" style="color: var(--primary); font-size: 0.85rem; text-decoration: none; margin-top: 5px; font-weight: 600;">Edit Profile</a>
+              <a href="{% url 'logout' %}" class="logout-btn">Log Out</a>
+            </div>
+          </div>
+          <button class="theme-btn" id="themeToggle" aria-label="Toggle Dark Mode">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        {% else %}
+          <a href="{% url 'login' %}" class="nav-link"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+          <a href="{% url 'signup' %}" class="nav-link"><i class="fa-solid fa-user-plus"></i> SignUp</a>
+          <a href="{% url 'about' %}" class="nav-link"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a>
+          <button class="theme-btn" id="themeToggle" aria-label="Toggle Dark Mode">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>Terms of Service</h1>
+      <div class="terms-card">
+        <div class="disclaimer-box">
+          <h3>⚠️ MEDICAL DISCLAIMER</h3>
+          <p>The staging predictions and chatbot support offered by the Service are for informational and educational purposes only. They do not constitute professional medical advice, diagnosis, treatment, or clinical judgment. Always seek the advice of your physician or other qualified healthcare provider with any questions regarding a medical condition.</p>
+        </div>
+
+        <p><strong>Effective Date: June 16, 2026</strong></p>
+        <p>Please read these Terms of Service ("Terms") carefully before using the website operated by the Liver Cirrhosis Project ("we", "us", or "our"). By accessing or using our website, you agree to be bound by these Terms.</p>
+
+        <h2>1. Description of Service</h2>
+        <p>We provide users with access to digital health tracking resources, including a LightGBM-based machine learning stage predictor for liver cirrhosis, an analytical records dashboard, and an AI chat assistant, Dr. Qwen (the "Service").</p>
+
+        <h2>2. Eligibility and User Accounts</h2>
+        <p>By creating an account, you represent that you are at least 13 years old or have parent/legal guardian consent. You are responsible for safeguarding your account login information and are fully responsible for all activities that occur under your account.</p>
+
+        <h2>3. Acceptable Use Policy</h2>
+        <p>You agree not to use the Service to:</p>
+        <ul>
+          <li>Submit false, misleading, or deceptive health records or personal information.</li>
+          <li>Incorporate any automated scraping, data extraction, or abuse scripts targeting our prediction or AI chat APIs.</li>
+          <li>Violate any local, national, or international laws or regulations.</li>
+        </ul>
+
+        <h2>4. Third-Party Ads and Content</h2>
+        <p>The Service serves advertisements provided by Google AdSense. We do not endorse the products, services, or claims made in third-party advertisements served on our site. Your interactions with any advertisers are solely between you and the advertiser.</p>
+
+        <h2>5. Limitation of Liability</h2>
+        <p>To the maximum extent permitted by applicable law, in no event shall we or our developers be liable for any direct, indirect, incidental, special, consequential, or exemplary damages arising out of the use of, or inability to use, the Service, including but not limited to reliance on any predictions, reports, or advice generated by our AI health consultant.</p>
+
+        <h2>6. Termination of Accounts</h2>
+        <p>We reserve the right to suspend or terminate your account and access to the Service at our sole discretion, without notice, for conduct that we believe violates these Terms or is harmful to other users or the Service.</p>
+
+        <h2>7. Changes to Terms</h2>
+        <p>We reserve the right to modify or replace these Terms at any time. We will post the revised terms on this page with the updated effective date. Your continued use of the Service after changes are posted constitutes acceptance of the new terms.</p>
+
+        <h2>8. Contact Us</h2>
+        <p>If you have any questions about these Terms of Service, please contact us at <strong>support@livercirrhosis.org</strong>.</p>
+      </div>
+    </div>
+
+    <!-- organic footer pulse wave divider -->
+    <div class="footer-wave">
+      <svg viewBox="0 0 1440 180" style="width:100%; height:100%;">
+        <path class="pulse-blob" d="M0,80 C240,140 480,20 720,80 C960,140 1200,40 1440,80 L1440,180 L0,180 Z" />
+        <path class="pulse-blob-2" d="M0,100 C300,40 600,140 900,100 C1200,60 1350,120 1440,90 L1440,180 L0,180 Z" />
+        <path class="pulse-line" d="M0,90 C120,90 200,90 250,90 C270,90 280,30 290,150 C300,150 310,90 330,90 C450,90 550,90 620,90 C635,90 642,50 648,130 C655,130 660,90 675,90 C800,90 950,90 1050,90 C1065,90 1072,40 1078,140 C1085,140 1090,90 1105,90 C1250,90 1350,90 1440,90" />
+      </svg>
+    </div>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-left">
+          <h3><i class="fa-solid fa-staff-snake"></i> Liver Cirrhosis</h3>
+          <p style="margin-bottom: 15px;">Empowering patients and healthcare professionals with advanced, intelligent prediction tools. Stay informed, stay healthy.</p>
+          <p style="font-size: 0.75rem; line-height: 1.4; color: #64748b;"><strong style="color: #94a3b8;">Disclaimer:</strong> This application is for informational and educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a physician for any medical concerns.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'prediction' %}"><i class="fa-solid fa-stethoscope"></i> Prediction</a></li>
+              <li><a href="{% url 'records' %}"><i class="fa-solid fa-file-medical"></i> Dashboard</a></li>
+              <li><a href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+              <li><a href="{% url 'edit_profile' %}"><i class="fa-solid fa-user-pen"></i> Edit Profile</a></li>
+              <li><a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            {% else %}
+              <li><a href="{% url 'login' %}"><i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard</a></li>
+              <li><a href="{% url 'signup' %}"><i class="fa-solid fa-user-plus"></i> Create Account</a></li>
+              <li><a href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+            {% endif %}
+            <li><a href="{% url 'privacy_policy' %}"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a></li>
+            <li><a href="{% url 'terms_of_service' %}"><i class="fa-solid fa-file-contract"></i> Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-social">
+          <h4>Connect</h4>
+          <p><i class="fa-solid fa-envelope"></i> support@livercirrhosis.org</p>
+          <div class="social-icons-footer">
+            <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-icon" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-icon" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon" title="GitHub"><i class="fa-brands fa-github"></i></a>
+          </div>
+          <div class="made-with">
+            Made with <span class="heart"><i class="fa-solid fa-heart"></i></span> & Django
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2025 Liver Cirrhosis Project. All rights reserved.
+      </div>
+    </footer>
+
+    <script>
+      // Dark Mode Toggle Logic
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const themeIcon = themeToggleBtn.querySelector('i');
+      
+      const savedTheme = localStorage.getItem('liverCirrhosisTheme');
+      if (savedTheme === 'dark') {
+          document.body.classList.add('dark-mode');
+          themeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+          if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.replace('fa-moon', 'fa-sun');
+              localStorage.setItem('liverCirrhosisTheme', 'dark');
+          } else {
+              themeIcon.classList.replace('fa-sun', 'fa-moon');
+              localStorage.setItem('liverCirrhosisTheme', 'light');
+          }
+      });
+
+      // Add scrolled class to navbar when user scrolls down
+      window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 50) {
+          nav.classList.add('nav-scrolled');
+        } else {
+          nav.classList.remove('nav-scrolled');
+        }
+      });
+    </script>
+    {% include 'ai.html' %}
+  </body>
+</html>

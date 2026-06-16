@@ -18,4 +18,8 @@ urlpatterns = [
     path('ai_chat/sessions/', views.list_chat_sessions, name='list_chat_sessions'),
     path('ai_chat/sessions/<int:session_id>/', views.load_chat_session, name='load_chat_session'),
     path('ai_chat/sessions/<int:session_id>/delete/', views.delete_chat_session, name='delete_chat_session'),
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+    path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
+    path('robots.txt', views.robots_txt, name='robots_txt'),
+    path('ads.txt', views.ads_txt, name='ads_txt'),
 ]
